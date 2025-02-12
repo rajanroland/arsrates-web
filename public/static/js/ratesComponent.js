@@ -203,14 +203,22 @@ const RatesContainer = () => {
   useEffect(() => {
     const fetchRates = async () => {
       try {
-        const response = await fetch("/static/data/current_rates.json", {
+        console.log('Attempting to fetch rates from:', "/static/data/current_rates.json");
+         const response = await fetch("/static/data/current_rates.json", {
           headers: {
             'Cache-Control': 'no-cache' // Bypass browser caching
           }
         });
 
+        console.log('Fetch response status:', response.status);
+
+        if (!response.ok) {
+          console.error('Failed to fetch rates:', response.statusText);
+          return;
+        }
+
         const data = await response.json();
-        
+        console.log('Rates data:', data);
         // Check if the timestamp has changed
         if (data.timestamp !== lastKnownTimestamp) {
           console.log('New rates detected:', data.timestamp);
