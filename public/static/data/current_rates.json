@@ -1,0 +1,64 @@
+{
+    "rates": {
+        "MC": {
+            "rate": 1109.6316023080337,
+            "projected": false,
+            "change_24h": 0.0
+        },
+        "WU": {
+            "rate": 1193.5,
+            "change_24h": 0.0
+        },
+        "CCL": {
+            "buy": 1190.6,
+            "mid": 1193.65,
+            "sell": 1196.7,
+            "change_24h": 0.0
+        },
+        "MEP": {
+            "buy": 1182.5,
+            "mid": 1184.3,
+            "sell": 1186.1,
+            "change_24h": 0.0
+        },
+        "BLUE": {
+            "buy": 1200,
+            "mid": 1210.0,
+            "sell": 1220,
+            "change_24h": 0.0
+        },
+        "VISA": {
+            "rate": 1109.625938,
+            "change_24h": -0.29
+        },
+        "CRYPTO": {
+            "buy": 1210,
+            "mid": 1212.5,
+            "sell": 1215,
+            "change_24h": 0.0
+        },
+        "TARJETA": {
+            "rate": 1399.13,
+            "change_24h": 0.0
+        },
+        "OFFICIAL": {
+            "buy": 1036.25,
+            "mid": 1056.25,
+            "sell": 1076.25,
+            "change_24h": 0.0
+        }
+    },
+    "labels": {
+        "MC": "Mastercard",
+        "WU": "Western Union",
+        "CCL": "D\u00f3lar CCL",
+        "MEP": "D\u00f3lar MEP",
+        "BLUE": "D\u00f3lar Blue",
+        "VISA": "Visa",
+        "CRYPTO": "D\u00f3lar Cripto",
+        "TARJETA": "D\u00f3lar Tarjeta",
+        "OFFICIAL": "D\u00f3lar Official"
+    },
+    "timestamp": "2025-02-12T20:50:41.14497-03:00",
+    "last_updated": "2025-02-12T20:50:41.14497-03:00"
+}
