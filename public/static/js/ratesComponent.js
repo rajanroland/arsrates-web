@@ -217,24 +217,34 @@ const RatesContainer = () => {
         }
 
         const data = await response.json();
-
-        if (data.timestamp !== lastKnownTimestamp) {
-          setRatesData(data);
-          setLastKnownTimestamp(data.timestamp);
-          
-          // Update the last-updated element
+        // In the useEffect of RatesContainer:
+        const updateLastUpdated = (timestamp) => {
           const lastUpdatedElement = document.getElementById('last-updated');
           if (lastUpdatedElement) {
-            const timestamp = new Date(data.timestamp);
-            const timeString = timestamp.toLocaleTimeString('en-US', {
+            const date = new Date(timestamp);
+            const dateString = date.toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric'
+            });
+            const timeString = date.toLocaleTimeString('en-US', {
               hour: '2-digit',
               minute: '2-digit',
               hour12: true,
               timeZone: 'America/Argentina/Buenos_Aires'
             });
-            lastUpdatedElement.textContent = `Last Updated: ${timeString} ARG`;
+            lastUpdatedElement.textContent = `Last Updated: ${dateString}, ${timeString} ARG`;
           }
+        };
+
+        // Update the fetch rates section to use this:
+        if (data.timestamp !== lastKnownTimestamp) {
+          setRatesData(data);
+          setLastKnownTimestamp(data.timestamp);
+          updateLastUpdated(data.timestamp);
         }
+
+
       } catch (error) {
         console.error("Error loading rates:", error);
       }
