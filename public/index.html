@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<!-- arsrates/app/templates/index.html  -->
+<!-- arsrates/app/templates/index.html    -->
     <head>
         <!-- arsrates/app/templates/partials/head.html -->
 <meta charset="UTF-8">
@@ -12,31 +12,32 @@
 <meta name="theme-color" content="#4F46E5">
 
 <!-- Stylesheets -->
-<link href="https://api.arsrates.comhttps://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://api.arsrates.comhttps://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/static/css/styles.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/styles.css">
 
 <!-- PWA/Icons -->
-<link rel="manifest" href="/static/manifest.json">
-<link rel="apple-touch-icon" href="/static/images/icon-192x192.png">
-<link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+<link rel="manifest" href="static/manifest.json">
+<link rel="apple-touch-icon" href="static/images/icon-192x192.png">
+<link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
 
         <!-- React-specific scripts -->
         <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
-        <script src="/static/js/ratesComponent.js?v=1"></script>
+        <script src="static/js/ratesComponent.js"></script>
 
         <title>ARS Rates Monitor</title>
+    
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-                               <meta http-equiv="Pragma" content="no-cache">
-                               <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 
     <body>
         <!-- arsrates/app/templates/partials/navbar.html -->
 <nav class="navbar navbar-expand-lg">
     <div class="container">
-        <a class="navbar-brand" href="https://api.arsrates.comhttps://api.arsrates.com">ARS Rates</a>
+        <a class="navbar-brand" href="https://api.arsrates.com">ARS Rates</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -44,16 +45,16 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="https://api.arsrates.comhttps://api.arsrates.com/guide">Quick Guide</a>
+                    <a class="nav-link" href="https://api.arsrates.com/guide">Quick Guide</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://api.arsrates.comhttps://api.arsrates.com/wu-guide">WU Guide</a>
+                    <a class="nav-link" href="https://api.arsrates.com/wu-guide">WU Guide</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://api.arsrates.comhttps://api.arsrates.com/wu-locations">Find WU Location</a>
+                    <a class="nav-link" href="https://api.arsrates.com/wu-locations">Find WU Location</a>
                 </li>
                 <li class="nav-item">
-                    <a class="features-button" href="https://api.arsrates.com/features">
+                    <a class="features-button" href="/features">
                         <span class="features-icon">✨</span> Features
                     </a>
                 </li>
@@ -65,7 +66,7 @@
     </div>
 </nav>
 
-  
+
         <main class="container mt-4">
             <div class="container" style="max-width: 400px;">
                 <div class="row">
@@ -156,7 +157,18 @@
 </script>
         </main>
 
-        <!-- INCLUDE scripts  X-->
+        <!-- arsrates/app/templates/partials/scripts.html -->
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- App Configuration and Authentication -->
+<script src="static/js/config.js"></script>
+<script src="static/js/auth.js"></script>
+
+<!-- Add any other global utility functions after auth.js -->
+<script>
+// Add any global utility functions that aren't auth-related here
+</script>
 
         <!-- Page-specific initialization -->
         <script>
@@ -168,8 +180,6 @@
                 );
             });
         </script>
-    
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    </body>
 
 </html>

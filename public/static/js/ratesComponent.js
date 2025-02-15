@@ -202,29 +202,42 @@ const RatesContainer = () => {
 
   useEffect(() => {
     const fetchRates = async () => {
-        try {
-            const jsonPath = '/static/data/current_rates.json';
-            const response = await fetch(jsonPath, {
-                headers: {
-                    'Cache-Control': 'no-cache, no-store, must-revalidate',
-                    'Pragma': 'no-cache',
-                    'Expires': '0'
-                }
-            });
+      try {
+        const jsonPath = '/static/data/current_rates.json';
+        const response = await fetch(jsonPath, {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        });
 
-            if (!response.ok) {
-                throw new Error(`Failed to fetch rates: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            if (data.timestamp !== lastKnownTimestamp) {
-                setRatesData(data);
-                setLastKnownTimestamp(data.timestamp);
-            }
-        } catch (error) {
-            console.error("Error loading rates:", error);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch rates: ${response.status}`);
         }
+
+        const data = await response.json();
+
+        if (data.timestamp !== lastKnownTimestamp) {
+          setRatesData(data);
+          setLastKnownTimestamp(data.timestamp);
+          
+          // Update the last-updated element
+          const lastUpdatedElement = document.getElementById('last-updated');
+          if (lastUpdatedElement) {
+            const timestamp = new Date(data.timestamp);
+            const timeString = timestamp.toLocaleTimeString('en-US', {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: true,
+              timeZone: 'America/Argentina/Buenos_Aires'
+            });
+            lastUpdatedElement.textContent = `Last Updated: ${timeString} ARG`;
+          }
+        }
+      } catch (error) {
+        console.error("Error loading rates:", error);
+      }
     };
 
     fetchRates();
