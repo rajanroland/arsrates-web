@@ -202,51 +202,33 @@ const RatesContainer = () => {
 
   useEffect(() => {
     const fetchRates = async () => {
-      try {
-        // Force use of static JSON file, never API endpoint
-        const jsonPath = '/static/data/current_rates.json';
-        console.log('Fetching rates from:', jsonPath);
-        
-        const response = await fetch(jsonPath, {
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch rates: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log('Received rates data:', data);
-
-        if (data.timestamp !== lastKnownTimestamp) {
-          setRatesData(data);
-          setLastKnownTimestamp(data.timestamp);
-
-          const lastUpdatedElement = document.getElementById("last-updated");
-          if (lastUpdatedElement && data.last_updated) {
-            const date = new Date(data.last_updated);
-            const formattedDate = date.toLocaleString("en-US", {
-              month: "numeric",
-              day: "numeric",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-              timeZone: "America/Argentina/Buenos_Aires",
+        try {
+            const jsonPath = '/static/data/current_rates.json';
+            const response = await fetch(jsonPath, {
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                }
             });
-            lastUpdatedElement.textContent = `Last Updated: ${formattedDate}`;
-          }
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch rates: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.timestamp !== lastKnownTimestamp) {
+                setRatesData(data);
+                setLastKnownTimestamp(data.timestamp);
+            }
+        } catch (error) {
+            console.error("Error loading rates:", error);
         }
-      } catch (error) {
-        console.error("Error loading rates:", error);
-      }
     };
 
     fetchRates();
-    const interval = setInterval(fetchRates, 30000);
+    const interval = setInterval(fetchRates, 15000); // Check every 15 seconds
     return () => clearInterval(interval);
   }, [lastKnownTimestamp]);
 
