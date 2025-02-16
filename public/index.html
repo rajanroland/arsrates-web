@@ -133,15 +133,14 @@
         }
 
         try {
-            const response = await fetch('https://api.arsrates.com/api/feedback', {
+            const response = await fetch(`${window.APP_CONFIG.API_URL}/api/feedback`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     email: email || null,
                     feedback_text: feedbackText
                 })
-            });
-
+            })
             if (response.ok) {
                 alert('Thank you for your feedback!');
                 document.getElementById('feedbackForm').reset();
