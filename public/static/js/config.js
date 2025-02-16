@@ -15,6 +15,7 @@
       }
   };
 
-  const isProd = window.location.hostname === "arsrates.com";
+  const isProd = window.location.hostname === "api.arsrates.com" || 
+  window.location.hostname === "arsrates.com";
   window.APP_CONFIG = isProd ? CONFIG.production : CONFIG.development;
 })();

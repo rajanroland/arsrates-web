@@ -1,4 +1,8 @@
 // auth.js - Simplified localStorage-only version
+const API_BASE_URL = window.location.hostname === "api.arsrates.com" 
+    ? "https://api.arsrates.com" 
+    : "http://localhost:8000";
+
 const AuthManager = {
     setToken(token) {
         localStorage.setItem('token', token);
