@@ -65,7 +65,27 @@ const RateDisplay = ({ rateInfo, label }) => {
   if (!rateInfo) return null;
 
   const displayRate = () => {
+    // Check if rate is a buy/sell pair
     if ("buy" in rateInfo && "sell" in rateInfo) {
+      // Handle null values in buy/sell rates
+      if (rateInfo.buy === null && rateInfo.sell === null) {
+        return React.createElement(
+          "div",
+          {
+            style: {
+              fontSize: "0.95rem",
+              whiteSpace: "nowrap",
+            },
+          },
+          "Not Available"
+        );
+      }
+
+      // Format the buy/sell display
+      const buyValue = rateInfo.buy !== null ? rateInfo.buy.toFixed(0) : "-";
+      const sellValue = rateInfo.sell !== null ? rateInfo.sell.toFixed(0) : "-";
+      const midValue = rateInfo.mid !== null ? rateInfo.mid.toFixed(1) : "-";
+
       return React.createElement("div", null, [
         React.createElement(
           "div",
@@ -76,7 +96,7 @@ const RateDisplay = ({ rateInfo, label }) => {
             },
             key: "values",
           },
-          `${rateInfo.buy.toFixed(0)}/${rateInfo.sell.toFixed(0)}`
+          `${buyValue}/${sellValue}`
         ),
         React.createElement(
           "div",
@@ -87,10 +107,24 @@ const RateDisplay = ({ rateInfo, label }) => {
             className: "text-muted",
             key: "mid",
           },
-          `Mid: ${rateInfo.mid.toFixed(1)}`
+          `Mid: ${midValue}`
         ),
       ]);
     } else {
+      // Handle single rate value
+      if (rateInfo.rate === null) {
+        return React.createElement(
+          "div",
+          {
+            style: {
+              fontSize: "0.95rem",
+              whiteSpace: "nowrap",
+            },
+          },
+          "Not Available"
+        );
+      }
+
       return React.createElement(
         "div",
         {
@@ -103,6 +137,8 @@ const RateDisplay = ({ rateInfo, label }) => {
       );
     }
   };
+
+  // Rest of the component code remains the same...
 
   const getRateUrl = () => {
     switch (label) {
@@ -195,6 +231,7 @@ const RateDisplay = ({ rateInfo, label }) => {
     )
   );
 };
+
 
 const RatesContainer = () => {
   const [ratesData, setRatesData] = useState(null);
@@ -360,5 +397,41 @@ const RatesContainer = () => {
   );
 };
 
-// Make RatesContainer available globally
-window.RatesContainer = RatesContainer;
+// Add ErrorBoundary class after RatesContainer
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Rate display error:', error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return React.createElement(
+        "div",
+        { className: "alert alert-warning" },
+        "Error displaying rates. Please refresh the page."
+      );
+    }
+    return this.props.children;
+  }
+}
+
+// Create App component that wraps RatesContainer with ErrorBoundary
+const App = () => {
+  return React.createElement(
+    ErrorBoundary,
+    null,
+    React.createElement(RatesContainer)
+  );
+};
+
+// Replace the original export with App
+window.RatesContainer = App;
