@@ -1,7 +1,8 @@
+
 {
   "name": "ARS Rates",
   "short_name": "ARS Rates",
-  "start_url": "https://arsrates.com/",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#75AADB",
   "theme_color": "#75AADB",
