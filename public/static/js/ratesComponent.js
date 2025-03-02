@@ -240,14 +240,13 @@ const RatesContainer = () => {
   useEffect(() => {
     const fetchRates = async () => {
       try {
-        const jsonPath = '/static/data/current_rates.json';
-        const response = await fetch(jsonPath, {
+        const response = await fetch('/api/rates', {
           headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',
             'Expires': '0'
           }
-        });
+      });
 
         if (!response.ok) {
           throw new Error(`Failed to fetch rates: ${response.status}`);
