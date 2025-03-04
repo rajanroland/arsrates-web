@@ -32,9 +32,9 @@
             "change_24h": 0.0
         },
         "CRYPTO": {
-            "buy": null,
-            "mid": null,
-            "sell": null,
+            "buy": 1240,
+            "mid": 1241.65,
+            "sell": 1243.29,
             "change_24h": 0.0
         },
         "TARJETA": {
@@ -59,6 +59,6 @@
         "TARJETA": "D\u00f3lar Tarjeta",
         "OFFICIAL": "D\u00f3lar Official"
     },
-    "timestamp": "2025-03-04T04:20:26.544819-03:00",
-    "last_updated": "2025-03-04T04:20:26.544819-03:00"
+    "timestamp": "2025-03-04T04:52:54.31892-03:00",
+    "last_updated": "2025-03-04T04:52:54.31892-03:00"
 }
