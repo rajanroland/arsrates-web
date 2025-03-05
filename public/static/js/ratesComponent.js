@@ -240,13 +240,27 @@ const RatesContainer = () => {
   useEffect(() => {
     const fetchRates = async () => {
       try {
-        const response = await fetch('/api/rates', {
+
+        const ratesSource = window.APP_CONFIG?.RATES_SOURCE || "api";
+        let url;
+        
+        if (ratesSource === "api") {
+          // For API server environments
+          url = `${window.APP_CONFIG.API_URL}/api/rates`;
+        } else {
+          // For GitHub Pages - direct file access
+          url = `/static/data/current_rates.json`;
+        }
+        
+        console.log(`Fetching rates from: ${url}`);
+
+        const response = await fetch(url, {
           headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',
             'Expires': '0'
           }
-      });
+        });        
 
         if (!response.ok) {
           throw new Error(`Failed to fetch rates: ${response.status}`);
