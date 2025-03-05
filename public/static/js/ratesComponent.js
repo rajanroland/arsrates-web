@@ -232,7 +232,6 @@ const RateDisplay = ({ rateInfo, label }) => {
   );
 };
 
-
 const RatesContainer = () => {
   const [ratesData, setRatesData] = useState(null);
   const [lastKnownTimestamp, setLastKnownTimestamp] = useState(null);
@@ -240,28 +239,28 @@ const RatesContainer = () => {
   useEffect(() => {
     const fetchRates = async () => {
       try {
-
-        const ratesSource = window.APP_CONFIG?.RATES_SOURCE || "api";
-        console.log("RATES_SOURCE from config:", ratesSource);
+        // First, determine which URL to use based on hostname
         let url;
-        
-        if (ratesSource === "api") {
-          // For API server environments
-          url = `${window.APP_CONFIG.API_URL}/api/rates`;
+        if (window.location.hostname === 'arsrates.com') {
+          // Special case for GitHub Pages
+          url = '/static/data/current_rates.json';
+          console.log('GitHub Pages detected, using static file path:', url);
         } else {
-          // For GitHub Pages - direct file access
-          url = `/static/data/current_rates.json`;
+          // For API server (both development and production)
+          const apiUrl = window.APP_CONFIG?.API_URL || 'https://api.arsrates.com';
+          url = `${apiUrl}/api/rates`;
+          console.log('API server detected, using API endpoint:', url);
         }
-        
+
         console.log(`Fetching rates from: ${url}`);
 
-    const response = await fetch(url, {
-      headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-      }
-    });        
+        const response = await fetch(url, {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        });
 
         console.log("Fetch response status:", response.status);
 
@@ -271,7 +270,7 @@ const RatesContainer = () => {
         console.log("Parsing response...");
         const data = await response.json();
         console.log("Response parsed successfully, contains data:", !!data);
-        
+
         // In the useEffect of RatesContainer:
         const updateLastUpdated = (timestamp) => {
           const lastUpdatedElement = document.getElementById('last-updated');
