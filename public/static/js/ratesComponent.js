@@ -195,10 +195,12 @@ const RateDisplay = ({ rateInfo, label }) => {
                   },
                   className: "text-muted",
                 },
-                "(Proj)"
+                "(Est.)"
               ),
           ]
-        ),
+        )
+
+        ,
         React.createElement(
           "div",
           {
@@ -386,7 +388,7 @@ const RatesContainer = () => {
               paddingLeft: "8px",
             },
           },
-          "24h Chg"
+          "24h"
         ),
       ]
     )
