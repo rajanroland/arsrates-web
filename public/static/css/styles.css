@@ -198,7 +198,11 @@ body {
     justify-content: space-between;
     gap: 10px;
 }
-
+/* Fix for 24h column width */
+.list-group-item > div > div:nth-child(3) {
+    min-width: 70px !important;
+    width: auto !important;
+  }
 /* Modal Styles */
 .modal-content {
     background-color: var(--background);
