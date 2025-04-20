@@ -24,7 +24,7 @@ const RateChangeDisplay = ({ change }) => {
             fontSize: "0.875rem",
             whiteSpace: "nowrap",
             display: "inline-block",
-            minWidth: "54px",
+            minWidth: "70px",
             textAlign: "left",
           },
           className: "text-muted",
