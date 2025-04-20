@@ -163,7 +163,7 @@ const RateDisplay = ({ rateInfo, label }) => {
       {
         style: {
           display: "grid",
-          gridTemplateColumns: "180px 140px 70px",
+          gridTemplateColumns: "150px 140px 70px",
           gap: "0",
           alignItems: "center",
         },
@@ -344,7 +344,7 @@ const RatesContainer = () => {
       {
         style: {
           display: "grid",
-          gridTemplateColumns: "180px 140px 70px",
+          gridTemplateColumns: "150px 140px 70px",
           gap: "0",
           alignItems: "center",
         },
