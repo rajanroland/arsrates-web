@@ -61,8 +61,25 @@ const RateChangeDisplay = ({ change }) => {
   );
 };
 
-const RateDisplay = ({ rateInfo, label }) => {
+// A rate updated on every run is flagged when it lags the latest run by more
+// than this (runs are 15 min apart by day, hourly at night)
+const STALE_AFTER_MS = 90 * 60 * 1000;
+
+const RateDisplay = ({ rateInfo, label, feedTimestamp }) => {
   if (!rateInfo) return null;
+
+  // Only today's values are sent; show the time of one that stopped updating
+  const staleAsOf =
+    rateInfo.as_of &&
+    feedTimestamp &&
+    new Date(feedTimestamp) - new Date(rateInfo.as_of) > STALE_AFTER_MS
+      ? new Date(rateInfo.as_of).toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+          timeZone: "America/Argentina/Buenos_Aires",
+        })
+      : null;
 
   const displayRate = () => {
     // Check if rate is a buy/sell pair
@@ -125,16 +142,34 @@ const RateDisplay = ({ rateInfo, label }) => {
         );
       }
 
-      return React.createElement(
+      const rateValue = React.createElement(
         "div",
         {
           style: {
             fontSize: "0.95rem",
             whiteSpace: "nowrap",
           },
+          key: "value",
         },
         rateInfo.rate.toFixed(1)
       );
+
+      if (!staleAsOf) return rateValue;
+
+      return React.createElement("div", null, [
+        rateValue,
+        React.createElement(
+          "div",
+          {
+            style: {
+              fontSize: "0.75rem",
+            },
+            className: "text-muted",
+            key: "asof",
+          },
+          `as of ${staleAsOf}`
+        ),
+      ]);
     }
   };
 
@@ -148,6 +183,16 @@ const RateDisplay = ({ rateInfo, label }) => {
         return "https://usa.visa.com/support/consumer/travel-support/exchange-rate-calculator.html";
       case "Western Union":
         return "https://www.westernunion.com/us/en/currency-converter/usd-to-ars-rate.html";
+      case "AMEX":
+        return "https://www.americanexpress.com.sa/content/exchange-rate-calculator";
+      case "Dólar Mayorista":
+        return "https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp";
+      case "Wise":
+        return "https://wise.com/us/currency-converter/usd-to-ars-rate";
+      case "Remitly":
+        return "https://www.remitly.com/us/en/argentina";
+      case "TapTap Send":
+        return "https://www.taptapsend.com/";
       default:
         return "https://dolarhoy.com";
     }
@@ -324,9 +369,14 @@ const RatesContainer = () => {
   const rateOrder = [
     "BLUE",
     "OFFICIAL",
+    "MAYORISTA",
     "WU",
+    "TAPTAP",
+    "REMITLY",
+    "WISE",
     "VISA",
     "MC",
+    "AMEX",
     "TARJETA",
     "CRYPTO",
     "CCL",
@@ -410,6 +460,7 @@ const RatesContainer = () => {
           key: rateType,
           rateInfo: ratesData.rates[rateType],
           label: ratesData.labels[rateType],
+          feedTimestamp: ratesData.timestamp,
         })
       ),
     ]
