@@ -21,7 +21,7 @@ const RateChangeDisplay = ({ change }) => {
         "span",
         {
           style: {
-            fontSize: "0.875rem",
+            fontSize: "0.8rem",
             whiteSpace: "nowrap",
             display: "inline-block",
             minWidth: "48px",
@@ -48,7 +48,7 @@ const RateChangeDisplay = ({ change }) => {
       "span",
       {
         style: {
-          fontSize: "0.875rem",
+          fontSize: "0.8rem",
           whiteSpace: "nowrap",
           display: "inline-block",
           minWidth: "48px",
@@ -65,10 +65,22 @@ const RateChangeDisplay = ({ change }) => {
 // than this (runs are 15 min apart by day, hourly at night)
 const STALE_AFTER_MS = 90 * 60 * 1000;
 
-// Columns shared by the header and every row: label, rate, 24h, vs Blue.
+// Show the "vs Blue" column (set to false to hide it)
+const SHOW_VS_BLUE = true;
+
+// Columns shared by the header and every row: label, rate, 24h[, vs Blue].
 // Proportional so the table fits a phone screen.
-const GRID_COLUMNS =
-  "minmax(0, 1.25fr) minmax(0, 1.4fr) minmax(0, 0.85fr) minmax(0, 0.85fr)";
+const GRID_COLUMNS = SHOW_VS_BLUE
+  ? "minmax(0, 1.2fr) minmax(0, 1.45fr) minmax(0, 0.8fr) minmax(0, 0.8fr)"
+  : "minmax(0, 1.3fr) minmax(0, 1.5fr) minmax(0, 0.9fr)";
+
+// Rows in display order; a thin band separates the groups
+const RATE_GROUPS = [
+  ["BLUE", "WU", "VISA", "MC", "AMEX"],
+  ["TAPTAP", "REMITLY", "WISE"],
+  ["CRYPTO"],
+  ["OFFICIAL", "MEP", "CCL", "TARJETA", "MAYORISTA"],
+];
 
 // Short labels for the table; the full name from the JSON is the tooltip
 const SHORT_LABELS = {
@@ -123,7 +135,7 @@ const VsBlueDisplay = ({ rateType, rateInfo, blueBuy }) => {
       style: {
         width: "100%",
         paddingLeft: "8px",
-        fontSize: "0.875rem",
+        fontSize: "0.8rem",
         whiteSpace: "nowrap",
         // An estimated rate (MC before it's published) gives an estimated comparison
         fontStyle: rateInfo.projected ? "italic" : "normal",
@@ -170,32 +182,18 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
       // Format the buy/sell display
       const buyValue = rateInfo.buy !== null ? rateInfo.buy.toFixed(0) : "-";
       const sellValue = rateInfo.sell !== null ? rateInfo.sell.toFixed(0) : "-";
-      const midValue = rateInfo.mid !== null ? rateInfo.mid.toFixed(1) : "-";
 
-      return React.createElement("div", null, [
-        React.createElement(
-          "div",
-          {
-            style: {
-              fontSize: "0.95rem",
-              whiteSpace: "nowrap",
-            },
-            key: "values",
+      return React.createElement(
+        "div",
+        {
+          style: {
+            fontSize: "1.1rem",
+            fontWeight: "600",
+            whiteSpace: "nowrap",
           },
-          `${buyValue}/${sellValue}`
-        ),
-        React.createElement(
-          "div",
-          {
-            style: {
-              fontSize: "0.75rem",
-            },
-            className: "text-muted",
-            key: "mid",
-          },
-          `Mid: ${midValue}`
-        ),
-      ]);
+        },
+        `${buyValue}/${sellValue}`
+      );
     } else {
       // Handle single rate value
       if (rateInfo.rate === null) {
@@ -215,12 +213,13 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
         "div",
         {
           style: {
-            fontSize: "0.95rem",
+            fontSize: "1.1rem",
+            fontWeight: "600",
             whiteSpace: "nowrap",
           },
           key: "value",
         },
-        rateInfo.rate.toFixed(1)
+        rateInfo.rate.toFixed(0)
       );
 
       if (!staleAsOf) return rateValue;
@@ -267,8 +266,9 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
             key: "label",
             style: {
               width: "100%",
-              fontSize: "0.875rem",
+              fontSize: "0.95rem",
               color: "#333",
+              fontWeight: "600",
               paddingLeft: "8px",
               display: "flex",
               alignItems: "center",
@@ -285,6 +285,7 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
                   key: "proj",
                   style: {
                     fontSize: "0.75rem",
+                    fontWeight: "normal",
                     marginLeft: "4px",
                   },
                   className: "text-muted",
@@ -323,12 +324,13 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
           key: "change",
           change: rateInfo.change_24h,
         }),
-        React.createElement(VsBlueDisplay, {
-          key: "vsblue",
-          rateType,
-          rateInfo,
-          blueBuy,
-        }),
+        SHOW_VS_BLUE &&
+          React.createElement(VsBlueDisplay, {
+            key: "vsblue",
+            rateType,
+            rateInfo,
+            blueBuy,
+          }),
       ]
     )
   );
@@ -421,22 +423,24 @@ const RatesContainer = () => {
     );
   }
 
-  const rateOrder = [
-    "BLUE",
-    "WU",
-    "VISA",
-    "MC",
-    "AMEX",
-    "TAPTAP",
-    "REMITLY",
-    "WISE",
-    "CRYPTO",
-    "OFFICIAL",
-    "MEP",
-    "CCL",
-    "TARJETA",
-    "MAYORISTA",
-  ];
+  const headerCell = (key, text, extraStyle = {}, title) =>
+    React.createElement(
+      "div",
+      {
+        key,
+        style: {
+          width: "100%",
+          fontSize: "0.7rem",
+          fontWeight: "600",
+          letterSpacing: "0.04em",
+          color: "#6c757d",
+          whiteSpace: "nowrap",
+          ...extraStyle,
+        },
+        title,
+      },
+      text
+    );
 
   const headers = React.createElement(
     "div",
@@ -456,64 +460,34 @@ const RatesContainer = () => {
         },
       },
       [
-        React.createElement(
-          "div",
-          {
-            key: "type",
-            style: {
-              width: "100%",
-              fontSize: "0.875rem",
-              fontWeight: "bold",
-              paddingLeft: "8px",
-            },
-          },
-          "Rate Type"
-        ),
-        React.createElement(
-          "div",
-          {
-            key: "value",
-            style: {
-              width: "100%",
-              textAlign: "right",
-              fontSize: "0.875rem",
-              fontWeight: "bold",
-              paddingRight: "8px",
-            },
-          },
-          "Buy/Sell"
-        ),
-        React.createElement(
-          "div",
-          {
-            key: "change",
-            style: {
-              width: "100%",
-              fontSize: "0.875rem",
-              fontWeight: "bold",
-              paddingLeft: "8px",
-            },
-          },
-          "24h"
-        ),
-        React.createElement(
-          "div",
-          {
-            key: "vsblue",
-            style: {
-              width: "100%",
-              fontSize: "0.875rem",
-              fontWeight: "bold",
-              paddingLeft: "8px",
-              whiteSpace: "nowrap",
-            },
-            title: "Compared with Dólar Blue buy (compra)",
-          },
-          "vs Blue"
-        ),
+        headerCell("type", "RATE TYPE", { paddingLeft: "8px" }),
+        headerCell("value", "BUY/SELL", { textAlign: "right", paddingRight: "8px" }),
+        headerCell("change", "VS 24H", { paddingLeft: "8px" }),
+        SHOW_VS_BLUE &&
+          headerCell("vsblue", "VS BLUE", { paddingLeft: "8px" },
+                     "Compared with Dólar Blue buy (compra)"),
       ]
     )
   );
+
+  const rowFor = (rateType) =>
+    React.createElement(RateDisplay, {
+      key: rateType,
+      rateType,
+      rateInfo: ratesData.rates[rateType],
+      label: ratesData.labels[rateType],
+      feedTimestamp: ratesData.timestamp,
+      blueBuy: ratesData.rates.BLUE && ratesData.rates.BLUE.buy,
+    });
+
+  const rows = RATE_GROUPS.flatMap((group, i) => [
+    i > 0 &&
+      React.createElement("div", {
+        key: `sep-${i}`,
+        style: { height: "8px", backgroundColor: "#f1f3f5" },
+      }),
+    ...group.map(rowFor),
+  ]);
 
   return React.createElement(
     "div",
@@ -526,16 +500,7 @@ const RatesContainer = () => {
     },
     [
       headers,
-      ...rateOrder.map((rateType) =>
-        React.createElement(RateDisplay, {
-          key: rateType,
-          rateType,
-          rateInfo: ratesData.rates[rateType],
-          label: ratesData.labels[rateType],
-          feedTimestamp: ratesData.timestamp,
-          blueBuy: ratesData.rates.BLUE && ratesData.rates.BLUE.buy,
-        })
-      ),
+      ...rows,
     ]
   );
 };
