@@ -208,11 +208,11 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
     } else {
       // Handle single rate value
       if (rateInfo.rate === null && rateInfo.last_rate != null) {
-        // Once-a-day rate (AMEX) not in yet today: last value, greyed, with its date
+        // Once-a-day rate (AMEX) not in yet today: "NA – <last value>", greyed,
+        // with its date, so it reads as missing today but still gives a guide
         const lastDate = new Date(rateInfo.last_as_of).toLocaleDateString("en-US", {
           month: "numeric",
           day: "numeric",
-          year: "2-digit",
           timeZone: "America/Argentina/Buenos_Aires",
         });
         return React.createElement("div", { className: "text-muted" }, [
@@ -227,7 +227,7 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
               },
               key: "value",
             },
-            rateInfo.last_rate.toFixed(0)
+            `NA – ${rateInfo.last_rate.toFixed(0)}`
           ),
           React.createElement(
             "div",
