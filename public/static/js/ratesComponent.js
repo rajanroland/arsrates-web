@@ -207,6 +207,36 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
       );
     } else {
       // Handle single rate value
+      if (rateInfo.rate === null && rateInfo.last_rate != null) {
+        // Once-a-day rate (AMEX) not in yet today: last value, greyed, with its date
+        const lastDate = new Date(rateInfo.last_as_of).toLocaleDateString("en-US", {
+          month: "numeric",
+          day: "numeric",
+          year: "2-digit",
+          timeZone: "America/Argentina/Buenos_Aires",
+        });
+        return React.createElement("div", { className: "text-muted" }, [
+          React.createElement(
+            "div",
+            {
+              style: {
+                fontSize: "1.1rem",
+                fontWeight: "600",
+                fontStyle: "italic",
+                whiteSpace: "nowrap",
+              },
+              key: "value",
+            },
+            rateInfo.last_rate.toFixed(0)
+          ),
+          React.createElement(
+            "div",
+            { style: { fontSize: "0.75rem" }, key: "asof" },
+            `as of ${lastDate}`
+          ),
+        ]);
+      }
+
       if (rateInfo.rate === null) {
         return React.createElement(
           "div",
