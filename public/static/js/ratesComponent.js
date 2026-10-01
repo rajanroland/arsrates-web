@@ -14,7 +14,7 @@ const RateChangeDisplay = ({ change }) => {
       {
         style: {
           width: "100%",
-          paddingLeft: "16px",
+          paddingLeft: "8px",
         },
       },
       React.createElement(
@@ -24,7 +24,7 @@ const RateChangeDisplay = ({ change }) => {
             fontSize: "0.875rem",
             whiteSpace: "nowrap",
             display: "inline-block",
-            minWidth: "54px",
+            minWidth: "48px",
             textAlign: "left",
           },
           className: "text-muted",
@@ -41,7 +41,7 @@ const RateChangeDisplay = ({ change }) => {
     {
       style: {
         width: "100%",
-        paddingLeft: "16px",
+        paddingLeft: "8px",
       },
     },
     React.createElement(
@@ -51,7 +51,7 @@ const RateChangeDisplay = ({ change }) => {
           fontSize: "0.875rem",
           whiteSpace: "nowrap",
           display: "inline-block",
-          minWidth: "54px",
+          minWidth: "48px",
           textAlign: "left",
         },
         className: isPositive ? "text-success" : "text-danger",
@@ -65,7 +65,76 @@ const RateChangeDisplay = ({ change }) => {
 // than this (runs are 15 min apart by day, hourly at night)
 const STALE_AFTER_MS = 90 * 60 * 1000;
 
-const RateDisplay = ({ rateInfo, label, feedTimestamp }) => {
+// Columns shared by the header and every row: label, rate, 24h, vs Blue.
+// Proportional so the table fits a phone screen.
+const GRID_COLUMNS =
+  "minmax(0, 1.25fr) minmax(0, 1.4fr) minmax(0, 0.85fr) minmax(0, 0.85fr)";
+
+// Short labels for the table; the full name from the JSON is the tooltip
+const SHORT_LABELS = {
+  BLUE: "D. Blue",
+  WU: "WU",
+  VISA: "Visa",
+  MC: "MC",
+  AMEX: "AMEX",
+  TAPTAP: "TapTap",
+  REMITLY: "Remitly",
+  WISE: "Wise",
+  CRYPTO: "USDC",
+  OFFICIAL: "D. Oficial",
+  MEP: "D. MEP",
+  CCL: "D. CCL",
+  TARJETA: "D. Tarjeta",
+  MAYORISTA: "D. Mayorista",
+};
+
+// Where each rate links to (DolarHoy for the rest)
+const RATE_URLS = {
+  MC: "https://www.mastercard.com/global/en/personal/get-support/currency-exchange-rate-converter.html",
+  VISA: "https://usa.visa.com/support/consumer/travel-support/exchange-rate-calculator.html",
+  WU: "https://www.westernunion.com/us/en/currency-converter/usd-to-ars-rate.html",
+  AMEX: "https://www.americanexpress.com.sa/content/exchange-rate-calculator",
+  MAYORISTA: "https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp",
+  WISE: "https://wise.com/us/currency-converter/usd-to-ars-rate",
+  REMITLY: "https://www.remitly.com/us/en/argentina",
+  TAPTAP: "https://www.taptapsend.com/",
+};
+
+// "vs Blue" compares each row with Blue buy (compra): what a cueva pays for a
+// dollar, the benchmark for someone turning dollars into pesos. Buy/sell rows
+// use their own buy price so both sides match. Not shown for Blue itself or for
+// Tarjeta (what card charges cost in pesos, not a rate you can sell dollars at).
+const NO_VS_BLUE = ["BLUE", "TARJETA"];
+
+const VsBlueDisplay = ({ rateType, rateInfo, blueBuy }) => {
+  const value = "buy" in rateInfo ? rateInfo.buy : rateInfo.rate;
+  let text = "−";
+  if (NO_VS_BLUE.includes(rateType)) {
+    text = "—";
+  } else if (value != null && blueBuy) {
+    const pct = ((value - blueBuy) / blueBuy) * 100;
+    const sign = pct >= 0.05 ? "+" : pct <= -0.05 ? "−" : "";
+    text = `${sign}${Math.abs(pct).toFixed(1)}%`;
+  }
+
+  return React.createElement(
+    "div",
+    {
+      style: {
+        width: "100%",
+        paddingLeft: "8px",
+        fontSize: "0.875rem",
+        whiteSpace: "nowrap",
+        // An estimated rate (MC before it's published) gives an estimated comparison
+        fontStyle: rateInfo.projected ? "italic" : "normal",
+      },
+      className: NO_VS_BLUE.includes(rateType) || value == null || rateInfo.projected ? "text-muted" : "",
+    },
+    text
+  );
+};
+
+const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
   if (!rateInfo) return null;
 
   // Only today's values are sent; show the time of one that stopped updating
@@ -173,30 +242,7 @@ const RateDisplay = ({ rateInfo, label, feedTimestamp }) => {
     }
   };
 
-  // Rest of the component code remains the same...
-
-  const getRateUrl = () => {
-    switch (label) {
-      case "Mastercard":
-        return "https://www.mastercard.us/en-us/personal/get-support/convert-currency.html";
-      case "Visa":
-        return "https://usa.visa.com/support/consumer/travel-support/exchange-rate-calculator.html";
-      case "Western Union":
-        return "https://www.westernunion.com/us/en/currency-converter/usd-to-ars-rate.html";
-      case "AMEX":
-        return "https://www.americanexpress.com.sa/content/exchange-rate-calculator";
-      case "Dólar Mayorista":
-        return "https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp";
-      case "Wise":
-        return "https://wise.com/us/currency-converter/usd-to-ars-rate";
-      case "Remitly":
-        return "https://www.remitly.com/us/en/argentina";
-      case "TapTap Send":
-        return "https://www.taptapsend.com/";
-      default:
-        return "https://dolarhoy.com";
-    }
-  };
+  const getRateUrl = () => RATE_URLS[rateType] || "https://dolarhoy.com";
 
   return React.createElement(
     "div",
@@ -208,7 +254,8 @@ const RateDisplay = ({ rateInfo, label, feedTimestamp }) => {
       {
         style: {
           display: "grid",
-          gridTemplateColumns: "150px 140px 70px",
+          width: "100%",
+          gridTemplateColumns: GRID_COLUMNS,
           gap: "0",
           alignItems: "center",
         },
@@ -225,10 +272,12 @@ const RateDisplay = ({ rateInfo, label, feedTimestamp }) => {
               paddingLeft: "8px",
               display: "flex",
               alignItems: "center",
+              whiteSpace: "nowrap",
             },
+            title: label,
           },
           [
-            label,
+            SHORT_LABELS[rateType] || label,
             rateInfo.projected &&
               React.createElement(
                 "span",
@@ -273,6 +322,12 @@ const RateDisplay = ({ rateInfo, label, feedTimestamp }) => {
         React.createElement(RateChangeDisplay, {
           key: "change",
           change: rateInfo.change_24h,
+        }),
+        React.createElement(VsBlueDisplay, {
+          key: "vsblue",
+          rateType,
+          rateInfo,
+          blueBuy,
         }),
       ]
     )
@@ -368,19 +423,19 @@ const RatesContainer = () => {
 
   const rateOrder = [
     "BLUE",
-    "OFFICIAL",
-    "MAYORISTA",
     "WU",
-    "TAPTAP",
-    "REMITLY",
-    "WISE",
     "VISA",
     "MC",
     "AMEX",
-    "TARJETA",
+    "TAPTAP",
+    "REMITLY",
+    "WISE",
     "CRYPTO",
-    "CCL",
+    "OFFICIAL",
     "MEP",
+    "CCL",
+    "TARJETA",
+    "MAYORISTA",
   ];
 
   const headers = React.createElement(
@@ -394,7 +449,8 @@ const RatesContainer = () => {
       {
         style: {
           display: "grid",
-          gridTemplateColumns: "150px 140px 70px",
+          width: "100%",
+          gridTemplateColumns: GRID_COLUMNS,
           gap: "0",
           alignItems: "center",
         },
@@ -425,7 +481,7 @@ const RatesContainer = () => {
               paddingRight: "8px",
             },
           },
-          "Buy/Sell (Mid)"
+          "Buy/Sell"
         ),
         React.createElement(
           "div",
@@ -439,6 +495,21 @@ const RatesContainer = () => {
             },
           },
           "24h"
+        ),
+        React.createElement(
+          "div",
+          {
+            key: "vsblue",
+            style: {
+              width: "100%",
+              fontSize: "0.875rem",
+              fontWeight: "bold",
+              paddingLeft: "8px",
+              whiteSpace: "nowrap",
+            },
+            title: "Compared with Dólar Blue buy (compra)",
+          },
+          "vs Blue"
         ),
       ]
     )
@@ -458,9 +529,11 @@ const RatesContainer = () => {
       ...rateOrder.map((rateType) =>
         React.createElement(RateDisplay, {
           key: rateType,
+          rateType,
           rateInfo: ratesData.rates[rateType],
           label: ratesData.labels[rateType],
           feedTimestamp: ratesData.timestamp,
+          blueBuy: ratesData.rates.BLUE && ratesData.rates.BLUE.buy,
         })
       ),
     ]
