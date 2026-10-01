@@ -118,15 +118,26 @@ const RATE_URLS = {
 // Tarjeta (what card charges cost in pesos, not a rate you can sell dollars at).
 const NO_VS_BLUE = ["BLUE", "TARJETA"];
 
+// Gaps smaller than this stay grey: too small to call better or worse
+const VS_BLUE_NEUTRAL_PCT = 0.5;
+
+// Colored by +/- sign only, no arrows: arrows in the 24h column mean the rate
+// moved; this column is a gap to Blue right now. Above Blue (green) is a better
+// deal for someone turning dollars into pesos.
 const VsBlueDisplay = ({ rateType, rateInfo, blueBuy }) => {
   const value = "buy" in rateInfo ? rateInfo.buy : rateInfo.rate;
   let text = "−";
+  let className = "text-muted";
   if (NO_VS_BLUE.includes(rateType)) {
     text = "—";
   } else if (value != null && blueBuy) {
     const pct = ((value - blueBuy) / blueBuy) * 100;
     const sign = pct >= 0.05 ? "+" : pct <= -0.05 ? "−" : "";
     text = `${sign}${Math.abs(pct).toFixed(1)}%`;
+    // An estimated rate (MC before it's published) stays grey
+    if (!rateInfo.projected && Math.abs(pct) >= VS_BLUE_NEUTRAL_PCT) {
+      className = pct > 0 ? "text-success" : "text-danger";
+    }
   }
 
   return React.createElement(
@@ -140,7 +151,7 @@ const VsBlueDisplay = ({ rateType, rateInfo, blueBuy }) => {
         // An estimated rate (MC before it's published) gives an estimated comparison
         fontStyle: rateInfo.projected ? "italic" : "normal",
       },
-      className: NO_VS_BLUE.includes(rateType) || value == null || rateInfo.projected ? "text-muted" : "",
+      className,
     },
     text
   );
