@@ -105,7 +105,8 @@ const RATE_URLS = {
   MC: "https://www.mastercard.com/global/en/personal/get-support/currency-exchange-rate-converter.html",
   VISA: "https://usa.visa.com/support/consumer/travel-support/exchange-rate-calculator.html",
   WU: "https://www.westernunion.com/us/en/currency-converter/usd-to-ars-rate.html",
-  AMEX: "https://www.americanexpress.com.sa/content/exchange-rate-calculator",
+  // AMEX converts at BCRA's A3500 (see getratescomparisonhours.sql)
+  AMEX: "https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp",
   MAYORISTA: "https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp",
   WISE: "https://wise.com/us/currency-converter/usd-to-ars-rate",
   REMITLY: "https://www.remitly.com/us/en/argentina",
@@ -134,7 +135,7 @@ const VsBlueDisplay = ({ rateType, rateInfo, blueBuy }) => {
     const pct = ((value - blueBuy) / blueBuy) * 100;
     const sign = pct >= 0.05 ? "+" : pct <= -0.05 ? "−" : "";
     text = `${sign}${Math.abs(pct).toFixed(1)}%`;
-    // An estimated rate (MC before it's published) stays grey
+    // An estimated rate (MC before it's published, AMEX) stays grey
     if (!rateInfo.projected && Math.abs(pct) >= VS_BLUE_NEUTRAL_PCT) {
       className = pct > 0 ? "text-success" : "text-danger";
     }
@@ -148,7 +149,7 @@ const VsBlueDisplay = ({ rateType, rateInfo, blueBuy }) => {
         paddingLeft: "8px",
         fontSize: "0.8rem",
         whiteSpace: "nowrap",
-        // An estimated rate (MC before it's published) gives an estimated comparison
+        // An estimated rate (MC before it's published, AMEX) gives an estimated comparison
         fontStyle: rateInfo.projected ? "italic" : "normal",
       },
       className,
@@ -207,36 +208,6 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
       );
     } else {
       // Handle single rate value
-      if (rateInfo.rate === null && rateInfo.last_rate != null) {
-        // Once-a-day rate (AMEX) not in yet today: "NA – <last value>", greyed,
-        // with its date, so it reads as missing today but still gives a guide
-        const lastDate = new Date(rateInfo.last_as_of).toLocaleDateString("en-US", {
-          month: "numeric",
-          day: "numeric",
-          timeZone: "America/Argentina/Buenos_Aires",
-        });
-        return React.createElement("div", { className: "text-muted" }, [
-          React.createElement(
-            "div",
-            {
-              style: {
-                fontSize: "1.1rem",
-                fontWeight: "600",
-                fontStyle: "italic",
-                whiteSpace: "nowrap",
-              },
-              key: "value",
-            },
-            `NA – ${rateInfo.last_rate.toFixed(0)}`
-          ),
-          React.createElement(
-            "div",
-            { style: { fontSize: "0.75rem" }, key: "asof" },
-            `as of ${lastDate}`
-          ),
-        ]);
-      }
-
       if (rateInfo.rate === null) {
         return React.createElement(
           "div",
