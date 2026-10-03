@@ -105,12 +105,29 @@ const RATE_URLS = {
   MC: "https://www.mastercard.com/global/en/personal/get-support/currency-exchange-rate-converter.html",
   VISA: "https://usa.visa.com/support/consumer/travel-support/exchange-rate-calculator.html",
   WU: "https://www.westernunion.com/us/en/currency-converter/usd-to-ars-rate.html",
-  // AMEX converts at BCRA's A3500 (see getratescomparisonhours.sql)
-  AMEX: "https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp",
+  AMEX: null, // estimate from BCRA's A3500 (see getratescomparisonhours.sql); no source page
   MAYORISTA: "https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp",
   WISE: "https://wise.com/us/currency-converter/usd-to-ars-rate",
   REMITLY: "https://www.remitly.com/us/en/argentina",
   TAPTAP: "https://www.taptapsend.com/",
+};
+
+// Shown when a rate name is hovered or tapped: full name and what the rate is
+const RATE_INFO = {
+  BLUE: ["Dólar Blue", "Informal (street) market rate: what cuevas pay (buy) and charge (sell) for cash dollars."],
+  WU: ["Western Union", "Rate for sending dollars to pesos with Western Union. Doesn't include WU's fees."],
+  VISA: ["Visa", "Visa's daily rate for card charges in pesos. Assumes no foreign transaction fee. Sunday and Monday use Saturday's rate. It moves with the previous day's MEP but runs about 6.5% below it."],
+  MC: ["Mastercard", "Mastercard's daily rate, published around 3 PM ET. Until then it's estimated (Est.) from Visa's rate, which MC matches on weekdays. Saturday and Sunday use Friday's rate. Assumes no foreign transaction fee."],
+  AMEX: ["American Express", "Uses the actual AMEX rate when we have one. Otherwise it's estimated (Est.) as BCRA's Mayorista (A3500) from 2 business days earlier, typically within 0.1% of real charges. Updated daily, like Visa and MC."],
+  TAPTAP: ["TapTap Send", "Rate for sending dollars to pesos with TapTap Send (US to Argentina). Doesn't include fees."],
+  REMITLY: ["Remitly", "Remitly's standard rate (not the first-transfer promo rate). Doesn't include fees."],
+  WISE: ["Wise", "Rate for sending dollars to pesos with Wise. Doesn't include fees."],
+  CRYPTO: ["USDC", "Price of the USDC dollar stablecoin in pesos on Argentine crypto exchanges."],
+  OFFICIAL: ["Dólar Oficial", "Official retail rate at banks."],
+  MEP: ["Dólar MEP (Bolsa)", "Legal rate for buying or selling dollars through bonds in a local brokerage account."],
+  CCL: ["Dólar CCL (Contado con liquidación)", "Rate for moving dollars into or out of Argentina through securities (bonds, CEDEARs) settled abroad."],
+  TARJETA: ["Dólar Tarjeta", "Oficial sell + 30%: roughly what a foreign-currency charge costs on an Argentine card paid in pesos."],
+  MAYORISTA: ["Dólar Mayorista (A3500)", "BCRA's wholesale reference rate, published on business days around 4 PM. Shows the latest published value."],
 };
 
 // "vs Blue" compares each row with Blue buy (compra): what a cueva pays for a
@@ -159,6 +176,8 @@ const VsBlueDisplay = ({ rateType, rateInfo, blueBuy }) => {
 };
 
 const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
+  // Rate-name tooltip: opens on hover, or on tap (phones have no hover)
+  const [showInfo, setShowInfo] = useState(false);
   if (!rateInfo) return null;
 
   // Only today's values are sent; show the time of one that stopped updating
@@ -253,12 +272,16 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
     }
   };
 
-  const getRateUrl = () => RATE_URLS[rateType] || "https://dolarhoy.com";
+  // null = no link (AMEX); missing = DolarHoy
+  const rateUrl = rateType in RATE_URLS ? RATE_URLS[rateType] : "https://dolarhoy.com";
+  const info = RATE_INFO[rateType];
 
   return React.createElement(
     "div",
     {
       className: "list-group-item py-1",
+      // Keep an open tooltip above the rows below it
+      style: showInfo ? { zIndex: 5 } : undefined,
     },
     React.createElement(
       "div",
@@ -286,10 +309,22 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
               alignItems: "center",
               whiteSpace: "nowrap",
             },
-            title: label,
+            className: info ? "rate-label" : undefined,
+            title: info ? undefined : label,
+            tabIndex: info ? 0 : undefined,
+            onMouseEnter: info ? () => setShowInfo(true) : undefined,
+            onMouseLeave: info ? () => setShowInfo(false) : undefined,
+            // Not a toggle: a tap fires mouseenter first, which already opened it.
+            // Tapping elsewhere (blur) or moving the mouse away closes it.
+            onClick: info ? () => setShowInfo(true) : undefined,
+            onBlur: info ? () => setShowInfo(false) : undefined,
           },
           [
-            SHORT_LABELS[rateType] || label,
+            React.createElement(
+              "span",
+              { key: "name", className: info ? "rate-label-name" : undefined },
+              SHORT_LABELS[rateType] || label
+            ),
             rateInfo.projected &&
               React.createElement(
                 "span",
@@ -303,6 +338,16 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
                   className: "text-muted",
                 },
                 "(Est.)"
+              ),
+            info &&
+              showInfo &&
+              React.createElement(
+                "div",
+                { key: "tip", className: "rate-tip", role: "tooltip" },
+                [
+                  React.createElement("strong", { key: "n" }, info[0]),
+                  React.createElement("div", { key: "d" }, info[1]),
+                ]
               ),
           ]
         )
@@ -318,19 +363,21 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
               paddingRight: "8px",
             },
           },
-          React.createElement(
-            "a",
-            {
-              href: getRateUrl(),
-              target: "_blank",
-              style: {
-                textDecoration: "none",
-                color: "inherit",
-              },
-              className: "rate-link",
-            },
-            displayRate()
-          )
+          rateUrl
+            ? React.createElement(
+                "a",
+                {
+                  href: rateUrl,
+                  target: "_blank",
+                  style: {
+                    textDecoration: "none",
+                    color: "inherit",
+                  },
+                  className: "rate-link",
+                },
+                displayRate()
+              )
+            : displayRate()
         ),
         React.createElement(RateChangeDisplay, {
           key: "change",

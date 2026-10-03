@@ -332,3 +332,38 @@ main.container {
         font-size: 16px !important;
     }
 }
+/* Rate-name tooltip (ratesComponent.js RATE_INFO): hover or tap a rate name */
+.rate-label {
+    position: relative;
+    cursor: help;
+    outline: none;
+}
+
+.rate-label-name {
+    border-bottom: 1px dotted #999;
+}
+
+.rate-tip {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 10;
+    width: 280px;
+    max-width: calc(100vw - 48px);
+    padding: 8px 10px;
+    background-color: var(--background);
+    color: var(--text-dark);
+    border: 1px solid #E5E5E5;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    font-size: 0.8rem;
+    font-weight: normal;
+    line-height: 1.35;
+    white-space: normal;
+    text-align: left;
+}
+
+.rate-tip strong {
+    display: block;
+    margin-bottom: 2px;
+}
