@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <!-- arsrates/app/templates/features.html -->
+    <!-- arsrates/app/templates/features.html (served at /features, "Rate Alerts" in the menu) -->
 
     <head>
         <!-- arsrates/app/templates/partials/head.html -->
@@ -20,13 +20,7 @@
 <link rel="manifest" href="/static/manifest.json">
 <link rel="apple-touch-icon" href="/static/images/icon-192x192.png">
 <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
-
-        <!-- React-specific scripts -->
-        <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
-        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
-        <script src="/static/js/ratesComponent.js"></script>
-
-        <title>ARS Rates Monitor</title>
+        <title>Rate Alerts and How to Use ARS Rates</title>
     </head>
 
     <body>
@@ -41,17 +35,19 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="https://api.arsrates.com/guide">Quick Guide</a>
+                    <a class="nav-link" href="https://api.arsrates.com/guide">Money Guide</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://api.arsrates.com/wu-guide">WU Guide</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://api.arsrates.com/wu-locations">Find WU Location</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="wuMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Western Union</a>
+                    <ul class="dropdown-menu" aria-labelledby="wuMenu">
+                        <li><a class="dropdown-item" href="https://api.arsrates.com/wu-guide">How to Get Pesos with WU</a></li>
+                        <li><a class="dropdown-item" href="https://api.arsrates.com/wu-locations">Find a WU Location</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="features-button" href="/features">
-                        <span class="features-icon">✨</span> Features
+                        <span class="features-icon">🔔</span> Rate Alerts
                     </a>
                 </li>
             </ul>
@@ -64,91 +60,99 @@
 
 
         <main class="container" style="max-width: 800px;">
-            <h1 class="h2 mb-4">ARS Rates Features Guide</h1>
+            <h1 class="h2 mb-1">Rate Alerts and How to Use ARS Rates</h1>
+            <p class="small text-muted mb-4">Last reviewed: October 2026</p>
 
-            <!-- Rate Monitoring -->
+            <!-- Alerts and emails first: this is where the "Rate Alerts" button lands -->
             <div class="feature-section mb-5">
-                <h2 class="h3 feature-title">📈 Real-Time Rate Monitoring</h2>
+                <h2 class="h3 feature-title">🔔 Rate alerts</h2>
+                <div class="feature-content">
+                    <p>Get an email when a rate reaches the level you're waiting for. Two kinds:</p>
+                    <ul class="feature-list">
+                        <li><strong>Price alert:</strong> a rate goes above or below a value you set. Example: email
+                            me when WU goes above 1,650.</li>
+                        <li><strong>Daily change alert:</strong> a rate moves more than a percentage you set compared
+                            with the previous day. Example: email me when Blue moves more than 2%.</li>
+                    </ul>
+                    <p>Alerts work for Blue, WU, Visa, Mastercard, MEP, CCL, USDC, Oficial and Tarjeta. One alert can
+                        watch several rates. An alert fires once, then resets when the rate moves back. You choose the
+                        most alerts you get per day.</p>
+                </div>
+            </div>
+
+            <div class="feature-section mb-5">
+                <h2 class="h3 feature-title">📨 Daily rate emails</h2>
+                <div class="feature-content">
+                    <p>Get all the rates and their 24-hour changes by email once a day, at the time you choose
+                        (Argentina time):</p>
+                    <ul class="feature-list">
+                        <li>Morning: 8 AM to noon</li>
+                        <li>Afternoon: 1 to 5 PM</li>
+                        <li>Evening: 7 to 11 PM</li>
+                    </ul>
+                    <p class="mb-0">Turn them on or off in your profile. Every email has an unsubscribe link.</p>
+                </div>
+            </div>
+
+            <div class="card mb-5">
+                <div class="card-body">
+                    <h2 class="h5 card-title">Getting started</h2>
+                    <ol class="mb-3">
+                        <li><a href="https://api.arsrates.com/register">Create a free account</a>.</li>
+                        <li>Confirm your email address using the link we send you. Emails and alerts only start after
+                            you confirm.</li>
+                        <li>Set up <a href="https://api.arsrates.com/alerts">alerts</a>, and choose daily emails in your
+                            <a href="https://api.arsrates.com/profile">profile</a>.</li>
+                    </ol>
+                    <a href="https://api.arsrates.com/register" class="btn btn-primary">Create a free account</a>
+                    <a href="https://api.arsrates.com/login" class="btn btn-outline-secondary ms-2">Log in</a>
+                </div>
+            </div>
+
+            <div class="feature-section mb-5">
+                <h2 class="h3 feature-title">📈 Reading the rates table</h2>
                 <div class="feature-content">
                     <ul class="feature-list">
-                        <li><strong>Comprehensive Coverage:</strong> Track multiple exchange rates including Blue Rate,
-                            Western Union, Visa/MC, Official, MEP, CCL, and Crypto rates</li>
-                        <li><strong>Auto-Refresh:</strong> Rates update every 15 minutes during business hours (07-21)
-                            and hourly overnight</li>
-                        <li><strong>Buy/Sell Ranges:</strong> View both buying and selling rates where applicable, with
-                            clear midpoint calculations</li>
+                        <li><strong>Rate names:</strong> tap or hover over any rate name for what it is and how it's
+                            calculated.</li>
+                        <li><strong>Buy/Sell:</strong> rates with two prices show buy (what you get selling dollars)
+                            and sell (what you pay buying dollars).</li>
+                        <li><strong>VS 24H:</strong> the change from about 24 hours earlier.</li>
+                        <li><strong>VS BLUE:</strong> how each rate compares with Blue buy. Green means more pesos per
+                            dollar than Blue, red means fewer.</li>
+                        <li><strong>(Est.):</strong> an estimate, shown until the real rate is out. Mastercard is
+                            estimated from Visa until it publishes around 3 PM ET. AMEX is estimated from BCRA's
+                            Mayorista rate.</li>
+                        <li><strong>"as of" time:</strong> that rate didn't update on the latest check, so it shows
+                            when it last did.</li>
+                        <li><strong>Updates:</strong> every 15 minutes from 7 AM to 9 PM Argentina time, and hourly
+                            overnight.</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Custom Alerts -->
             <div class="feature-section mb-5">
-                <h2 class="h3 feature-title">🔔 Custom Rate Alerts</h2>
+                <h2 class="h3 feature-title">📍 Western Union tools</h2>
                 <div class="feature-content">
-                    <h4 class="h5 mb-3">Two Types of Alerts:</h4>
-                    <div class="alert alert-light border">
-                        <p class="mb-2"><strong>1. Fixed Threshold Alerts</strong></p>
-                        <ul>
-                            <li>Set alerts for when rates go above or below specific peso values</li>
-                            <li>Example: Alert when WU rate exceeds 1200 pesos</li>
-                        </ul>
-                    </div>
-                    <div class="alert alert-light border mt-3">
-                        <p class="mb-2"><strong>2. Last 24 Hours Change Alerts</strong></p>
-                        <ul>
-                            <li>Get notified of significant daily percentage changes</li>
-                            <li>Example: Alert when Blue rate changes more than 2% from previous day</li>
-                        </ul>
-                    </div>
-                    <p class="mt-3"><strong>Alert Features:</strong></p>
                     <ul class="feature-list">
-                        <li>Monitor multiple rate types with a single alert</li>
-                        <li>Email notifications with detailed rate information</li>
-                        <li>Customizable daily alert limits</li>
-                        <li>Easy alert management through your profile</li>
+                        <li><a href="https://api.arsrates.com/wu-locations">Find a WU Location</a>: search by address or zip
+                            code, CABA neighborhood or province, filter by the day and time you want to go, and see
+                            the nearest first.</li>
+                        <li><a href="https://api.arsrates.com/wu-guide">How to Get Pesos with WU</a>: setup, keeping the cost
+                            down, and what to bring.</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Daily Updates -->
             <div class="feature-section mb-5">
-                <h2 class="h3 feature-title">📨 Daily Rate Updates</h2>
+                <h2 class="h3 feature-title">💬 Feedback</h2>
                 <div class="feature-content">
-                    <ul class="feature-list">
-                        <li><strong>Flexible Scheduling:</strong> Choose from morning (8:00 AM), afternoon (2:00 PM), or
-                            evening (8:00 PM) updates</li>
-                        <li><strong>Comprehensive Summaries:</strong> Get all current rates and day-over-day changes
-                        </li>
-                        <li><strong>Easy Subscription Management:</strong> Toggle updates on/off through your profile
-                        </li>
-                    </ul>
+                    <p>Spotted a wrong rate or have an idea? Let us know.</p>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                        data-bs-target="#feedbackModal">Provide Feedback</button>
                 </div>
             </div>
 
-            <!-- WU Features -->
-            <div class="feature-section mb-5">
-                <h2 class="h3 feature-title">🌎 Western Union Tools</h2>
-                <div class="feature-content">
-                    <ul class="feature-list">
-                        <li><strong>Location Finder:</strong> Search WU locations by:</li>
-                        <ul>
-                            <li>CABA neighborhoods</li>
-                            <li>Provinces</li>
-                            <li>Current location (GPS)</li>
-                        </ul>
-                        <li><strong>Location Details:</strong> View opening hours, address, and services offered</li>
-                        <li><strong>WU Guide:</strong> Comprehensive guide for using Western Union in Argentina,
-                            including:</li>
-                        <ul>
-                            <li>Step-by-step transfer instructions</li>
-                            <li>Tips for best rates and lowest fees</li>
-                            <li>Required documentation</li>
-                            <li>Best times to visit locations</li>
-                        </ul>
-                    </ul>
-                </div>
-            </div>
-            <!-- Feedback -->
             <!-- arsrates/app/templates/partials/feedback.html -->
 <div class="modal fade" id="feedbackModal" tabindex="-1">
     <div class="modal-dialog">
@@ -210,7 +214,6 @@
         }
     }
 </script>
-
         </main>
         <!-- arsrates/app/templates/partials/scripts.html -->
 <!-- Bootstrap Bundle JS -->
@@ -227,8 +230,6 @@
 <script>
 // Add any global utility functions that aren't auth-related here
 </script>
-
-        <!-- Page-specific initialization -->
     </body>
 
 </html>
