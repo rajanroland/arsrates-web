@@ -469,6 +469,18 @@ a:focus-visible {
     border-bottom-color: #D1D5DB !important;
 }
 
+/* Home page heading: one line on phones */
+@media (max-width: 575px) {
+    .home-title {
+        font-size: 1.25rem !important;
+    }
+}
+@media (max-width: 374px) {
+    .home-title {
+        font-size: 1.15rem !important;
+    }
+}
+
 /* Home page column: the table, 560px wide on larger screens */
 .rates-wrap {
     max-width: 400px;

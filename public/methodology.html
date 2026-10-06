@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- arsrates/app/templates/methodology.html (served at /methodology on arsrates.com) -->
+
+    <head>
+        <!-- arsrates/app/templates/partials/head.html -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ARS Rates">
+<meta name="theme-color" content="#FFFFFF">
+
+<!-- Link previews (WhatsApp, social media). Each page sets its own description
+     and canonical address after this include. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ARS Rates">
+<meta property="og:title" content="ARS Rates: dollar to peso rates today in Argentina">
+<meta property="og:description" content="Blue, MEP, Western Union, Visa, Mastercard and AMEX rates side by side, updated every 15 minutes.">
+<meta property="og:image" content="https://arsrates.com/static/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ARS Rates: dollar to peso rates in Argentina, with the Sol de Mayo and Argentine flag colors">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Stylesheets -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/styles.css">
+
+<!-- PWA/Icons -->
+<link rel="manifest" href="/static/manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+<link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="/static/images/icon-192x192.png">
+        <title>How We Get These Rates | ARS Rates</title>
+        <meta name="description" content="Where every ARS Rates number comes from: sources for the dólar blue, MEP, CCL, official, Western Union, Wise, Visa, Mastercard and AMEX rates, how often they update, and how estimates work.">
+        <link rel="canonical" href="https://arsrates.com/methodology">
+    </head>
+
+    <body>
+        <!-- arsrates/app/templates/partials/navbar.html -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="https://arsrates.com/">
+            <svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true"><g stroke="#F6B40E" stroke-width="1.6" stroke-linecap="round"><line x1="12.0" y1="4.8" x2="12.0" y2="0.8"/><line x1="14.8" y1="5.3" x2="15.7" y2="3.1"/><line x1="17.1" y1="6.9" x2="19.9" y2="4.1"/><line x1="18.7" y1="9.2" x2="20.9" y2="8.3"/><line x1="19.2" y1="12.0" x2="23.2" y2="12.0"/><line x1="18.7" y1="14.8" x2="20.9" y2="15.7"/><line x1="17.1" y1="17.1" x2="19.9" y2="19.9"/><line x1="14.8" y1="18.7" x2="15.7" y2="20.9"/><line x1="12.0" y1="19.2" x2="12.0" y2="23.2"/><line x1="9.2" y1="18.7" x2="8.3" y2="20.9"/><line x1="6.9" y1="17.1" x2="4.1" y2="19.9"/><line x1="5.3" y1="14.8" x2="3.1" y2="15.7"/><line x1="4.8" y1="12.0" x2="0.8" y2="12.0"/><line x1="5.3" y1="9.2" x2="3.1" y2="8.3"/><line x1="6.9" y1="6.9" x2="4.1" y2="4.1"/><line x1="9.2" y1="5.3" x2="8.3" y2="3.1"/></g><circle cx="12" cy="12" r="5.6" fill="#F6B40E" stroke="#C48A05" stroke-width="0.8"/></svg>
+            ARS Rates
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/guide">Money Guide</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="wuMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Western Union</a>
+                    <ul class="dropdown-menu" aria-labelledby="wuMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/wu-guide">How to Get Pesos with WU</a></li>
+                        <li><a class="dropdown-item" href="https://api.arsrates.com/wu-locations">Find a WU Location</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="features-button" href="https://arsrates.com/features">
+                        <span class="features-icon">🔔</span> Rate Alerts
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" id="authLinks">
+                <!-- Will be populated by JavaScript -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+        <main class="container" style="max-width: 800px;">
+            <h1 class="h2 mb-1">How We Get These Rates</h1>
+            <p class="small text-muted mb-4">Last reviewed: October 2026</p>
+
+            <p>Every rate on ARS Rates is in <strong>pesos per 1 US dollar</strong>. Market and money-transfer rates
+                are checked every 15 minutes from 7:00 to 21:00 Argentina time, and hourly overnight. Card networks
+                (Visa, Mastercard and AMEX) each set <strong>one rate per day</strong> for all charges that day, so
+                those change once a day rather than during the day.</p>
+
+            <h2 class="h4 mt-5">Sources</h2>
+            <div class="table-responsive">
+                <table class="table table-sm align-top">
+                    <thead>
+                        <tr>
+                            <th>Rate</th>
+                            <th>Source</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Dólar Blue</strong></td>
+                            <td><a href="https://dolarhoy.com" target="_blank" rel="noopener">DolarHoy</a></td>
+                            <td>The informal market rate for cash dollars, as quoted by street exchange houses (cuevas).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dólar Oficial, MEP, CCL</strong></td>
+                            <td><a href="https://dolarhoy.com" target="_blank" rel="noopener">DolarHoy</a></td>
+                            <td>Oficial is the banks' retail rate. MEP and CCL aren't set by a bank: they're market
+                                rates worked out from bond prices (bought in pesos, sold in dollars locally for MEP or
+                                abroad for CCL).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>USDC</strong></td>
+                            <td><a href="https://dolarhoy.com" target="_blank" rel="noopener">DolarHoy</a></td>
+                            <td>The USDC dollar stablecoin on Argentine crypto exchanges.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dólar Tarjeta</strong></td>
+                            <td>Calculated</td>
+                            <td>Oficial sell × 1.30.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dólar Mayorista</strong></td>
+                            <td><a href="https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp"
+                                    target="_blank" rel="noopener">BCRA</a> (Central Bank)</td>
+                            <td>The wholesale reference rate (Comunicación A 3500), from the Central Bank's public
+                                data. Published on business days around 4 PM; we show the latest one.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Western Union</strong></td>
+                            <td><a href="https://www.westernunion.com/us/en/currency-converter/usd-to-ars-rate.html"
+                                    target="_blank" rel="noopener">Western Union</a></td>
+                            <td>WU's rate for sending dollars to pesos, before fees.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Wise, Remitly, TapTap Send</strong></td>
+                            <td>Each company's public rate calculator</td>
+                            <td>Headline rates before fees. Remitly is its standard rate, not the first-transfer promo.
+                                TapTap Send is its US to Argentina rate.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Visa</strong></td>
+                            <td><a href="https://usa.visa.com/support/consumer/travel-support/exchange-rate-calculator.html"
+                                    target="_blank" rel="noopener">Visa</a></td>
+                            <td>One rate per day. Sunday and Monday use Saturday's rate.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mastercard</strong></td>
+                            <td><a href="https://www.mastercard.com/global/en/personal/get-support/currency-exchange-rate-converter.html"
+                                    target="_blank" rel="noopener">Mastercard</a></td>
+                            <td>One rate per day, published around 3 PM US Eastern time. Estimated until then (see
+                                below).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AMEX</strong></td>
+                            <td>Our estimate from the BCRA rate</td>
+                            <td>See below. Replaced by the actual rate when we have a real charge for that day.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="small text-muted">When DolarHoy is unavailable, the market rates come from
+                <a href="https://dolarapi.com" target="_blank" rel="noopener">dolarapi.com</a> instead (it doesn't
+                include USDC).</p>
+
+            <h2 class="h4 mt-5">Estimates</h2>
+            <p>A rate marked <strong>(Est.)</strong> is our estimate, shown until the real one is available.</p>
+            <ul>
+                <li><strong>Mastercard</strong> matches Visa on weekdays, so until Mastercard publishes its daily rate
+                    we show Visa's. On Saturday and Sunday, Mastercard keeps Friday's rate.</li>
+                <li><strong>American Express</strong> converts peso charges at the Central Bank's A3500 rate from two
+                    business days before the charge, with no markup. We checked this against about 200 real charges
+                    from October 2025 to October 2026: the median difference was 0.04%. The charge shows its final
+                    dollar amount right away; AMEX used to charge the official rate and refund the difference
+                    later, but no longer does.</li>
+            </ul>
+
+            <h2 class="h4 mt-5">Reading the table</h2>
+            <ul>
+                <li><strong>Buy / sell:</strong> buy is what you get when you sell a dollar; sell is what you pay to
+                    buy one.</li>
+                <li><strong>VS 24H:</strong> the change from about 24 hours earlier.</li>
+                <li><strong>VS BLUE:</strong> each rate compared with Blue buy. Green means more pesos per dollar than
+                    Blue.</li>
+                <li><strong>Blank or "as of" time:</strong> every number is checked when it arrives (sensible range,
+                    correct currencies, buy not above sell). If a source fails, we show a blank, or the time of its
+                    last good value, rather than an old number that looks current.</li>
+            </ul>
+
+            <h2 class="h4 mt-5">Using these rates</h2>
+            <p>The current rates are also available as plain text at
+                <a href="https://arsrates.com/rates.md">arsrates.com/rates.md</a> and as
+                <a href="https://arsrates.com/static/data/current_rates.json">JSON</a>. If you share them, please link back
+                to arsrates.com and to the original sources above.</p>
+
+            <h2 class="h4 mt-5">About ARS Rates</h2>
+            <p>Built by an expat in Buenos Aires who got tired of checking five sites before changing money.</p>
+            <p>ARS Rates is an independent, free site. It isn't affiliated with any bank, exchange house, card network
+                or money-transfer company, and there are no ads or paid placements. Rates are for information only and
+                may differ from what providers charge. Questions or a rate that looks wrong? Use the feedback
+                button below.</p>
+
+            <div class="text-center my-4">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                    data-bs-target="#feedbackModal">Provide Feedback</button>
+            </div>
+
+            <!-- arsrates/app/templates/partials/feedback.html -->
+<div class="modal fade" id="feedbackModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Provide Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="feedbackForm" action="https://api.arsrates.com/api/feedback" method="POST">
+                    <div class="mb-3">
+                        <label for="feedbackEmail" class="form-label">Email (optional)</label>
+                        <input type="email" class="form-control" id="feedbackEmail" placeholder="your@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="feedbackText" class="form-label">Your Feedback</label>
+                        <textarea class="form-control" id="feedbackText" rows="4" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary me-3" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="submitFeedback()">Submit
+                    Feedback</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function submitFeedback() {
+        const email = document.getElementById('feedbackEmail').value;
+        const feedbackText = document.getElementById('feedbackText').value;
+
+        if (!feedbackText.trim()) {
+            alert('Please enter your feedback');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${window.APP_CONFIG.API_URL}/api/feedback`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email || null,
+                    feedback_text: feedbackText
+                })
+            })
+            if (response.ok) {
+                alert('Thank you for your feedback!');
+                document.getElementById('feedbackForm').reset();
+                bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
+            } else {
+                throw new Error('Failed to submit feedback');
+            }
+        } catch (error) {
+            alert('Error submitting feedback. Please try again.');
+            console.error('Error:', error);
+        }
+    }
+</script>
+        </main>
+        <!-- arsrates/app/templates/partials/footer.html -->
+<footer class="site-footer text-center my-4 px-3">
+    <div>Rates are for information only and may differ from what providers charge. Not financial advice.</div>
+    <div class="mt-1">© 2026 ARS Rates · <a href="https://arsrates.com/methodology">How we get these rates</a> · <a href="https://arsrates.com/privacy">Privacy</a></div>
+</footer>
+
+        <!-- arsrates/app/templates/partials/scripts.html -->
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- App Configuration and Authentication -->
+<script src="/static/js/config.js"></script>
+<script src="/static/js/auth.js"></script>
+
+<!-- Page view counting (after config.js, which sets APP_CONFIG.API_URL) -->
+<script src="/static/js/pageview.js"></script>
+
+<!-- Add any other global utility functions after auth.js -->
+<script>
+// Add any global utility functions that aren't auth-related here
+</script>
+    </body>
+
+</html>
