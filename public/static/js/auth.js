@@ -97,10 +97,10 @@ const AuthManager = {
         const token = this.getToken();
 
         // Logged in, the "Rate Alerts" button goes to your alert settings
-        // instead of the page that explains alerts
+        // instead of the page that explains alerts (its href in the navbar)
         const alertsButton = document.querySelector('.features-button');
-        if (alertsButton) {
-            alertsButton.setAttribute('href', token ? '/alerts' : '/features');
+        if (alertsButton && token) {
+            alertsButton.setAttribute('href', '/alerts');
         }
 
         if (token) {

@@ -3,8 +3,8 @@
 :root {
     /* Argentine flag colors, adjusted so every text/background pair meets the
        4.5:1 contrast guideline */
-    --primary-blue: #75AADB;    /* celeste: navbar */
-    --navy: #0F2A47;            /* text on celeste (5.9:1), headings */
+    --primary-blue: #8DBCE5;    /* celeste, a little lighter than the flag's #75AADB: navbar */
+    --navy: #0F2A47;            /* text on the navbar (7.2:1), headings */
     --primary-dark: #2E6DA4;    /* buttons and links (5.5:1 with white) */
     --primary-darker: #255A88;  /* hover */
     --primary-tint: #EAF3FB;    /* light celeste: callouts, highlights */
