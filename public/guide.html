@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- arsrates/app/templates/quick_guide.html (served at /guide) -->
+
+    <head>
+        <!-- arsrates/app/templates/partials/head.html -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ARS Rates">
+<meta name="theme-color" content="#8DBCE5">
+
+<!-- Link previews (WhatsApp, social media). Each page sets its own description
+     and canonical address after this include. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ARS Rates">
+<meta property="og:title" content="ARS Rates: dollar to peso rates today in Argentina">
+<meta property="og:description" content="Blue, MEP, Western Union, Visa, Mastercard and AMEX rates side by side, updated every 15 minutes.">
+<meta property="og:image" content="https://arsrates.com/static/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ARS Rates: dollar to peso rates in Argentina, with the Sol de Mayo and Argentine flag colors">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Stylesheets -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/styles.css">
+
+<!-- PWA/Icons -->
+<link rel="manifest" href="/static/manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+<link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="/static/images/icon-192x192.png">
+        <title>Money Guide | ARS Rates</title>
+        <meta name="description" content="How to pay and get pesos in Argentina: why cash usually wins, which card gives the best rate (AMEX, then Visa and Mastercard), and the safest ways to get pesos.">
+        <link rel="canonical" href="https://arsrates.com/guide">
+        <!-- Update dateModified when the guide changes ("Last reviewed" on the page) -->
+        <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Money Guide: Paying and Getting Pesos in Argentina",
+  "url": "https://arsrates.com/guide",
+  "dateModified": "2026-10-05",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Organization",
+    "name": "ARS Rates",
+    "url": "https://arsrates.com/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ARS Rates",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://arsrates.com/static/images/icon-512x512.png"
+    }
+  }
+}
+        </script>
+    </head>
+
+    <body>
+        <!-- arsrates/app/templates/partials/navbar.html -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="https://arsrates.com/">
+            <svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true"><g stroke="#F6B40E" stroke-width="1.6" stroke-linecap="round"><line x1="12.0" y1="4.8" x2="12.0" y2="0.8"/><line x1="14.8" y1="5.3" x2="15.7" y2="3.1"/><line x1="17.1" y1="6.9" x2="19.9" y2="4.1"/><line x1="18.7" y1="9.2" x2="20.9" y2="8.3"/><line x1="19.2" y1="12.0" x2="23.2" y2="12.0"/><line x1="18.7" y1="14.8" x2="20.9" y2="15.7"/><line x1="17.1" y1="17.1" x2="19.9" y2="19.9"/><line x1="14.8" y1="18.7" x2="15.7" y2="20.9"/><line x1="12.0" y1="19.2" x2="12.0" y2="23.2"/><line x1="9.2" y1="18.7" x2="8.3" y2="20.9"/><line x1="6.9" y1="17.1" x2="4.1" y2="19.9"/><line x1="5.3" y1="14.8" x2="3.1" y2="15.7"/><line x1="4.8" y1="12.0" x2="0.8" y2="12.0"/><line x1="5.3" y1="9.2" x2="3.1" y2="8.3"/><line x1="6.9" y1="6.9" x2="4.1" y2="4.1"/><line x1="9.2" y1="5.3" x2="8.3" y2="3.1"/></g><circle cx="12" cy="12" r="5.6" fill="#F6B40E" stroke="#C48A05" stroke-width="0.8"/></svg>
+            ARS Rates
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/guide">Money Guide</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="wuMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Western Union</a>
+                    <ul class="dropdown-menu" aria-labelledby="wuMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/wu-guide">How to Get Pesos with WU</a></li>
+                        <li><a class="dropdown-item" href="https://api.arsrates.com/wu-locations">Find a WU Location</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="features-button" href="https://arsrates.com/features">
+                        <span class="features-icon">🔔</span> Rate Alerts
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" id="authLinks">
+                <!-- Will be populated by JavaScript -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+        <main class="container" style="max-width: 800px;">
+            <h1 class="h2 mb-1">Money Guide: Paying and Getting Pesos in Argentina</h1>
+            <p class="small text-muted mb-4">Last reviewed: October 2026</p>
+
+            <div class="alert alert-info">
+                <h2 class="h5 alert-heading">The short version</h2>
+                <ul class="mb-0">
+                    <li><strong>Pay in pesos (cash) when you can.</strong> Pesos from Western Union or exchanging
+                        dollars get a better rate than any card, and many places give a 10-20% cash discount on
+                        top.</li>
+                    <li><strong>Use AMEX over Visa or Mastercard</strong> for the best card rate (on a card with no
+                        foreign transaction fee). In Buenos Aires, AMEX is accepted almost everywhere Visa is.</li>
+                    <li><strong>Always pay card charges in pesos</strong>, never in US dollars.</li>
+                    <li><strong>Get pesos</strong> with Western Union or another transfer service, or by exchanging
+                        US dollar bills.</li>
+                    <li><strong>Avoid</strong> ATMs and the street changers on Florida Street unless you have no
+                        other option.</li>
+                </ul>
+            </div>
+
+            <h2 class="h3 mt-5">Why cash is usually better</h2>
+            <ul>
+                <li><strong>Better rate:</strong> pesos from Western Union or from exchanging dollars come in near
+                    or above the Blue rate. Card rates are lower (see the table below).</li>
+                <li><strong>Cash discounts:</strong> many businesses take 10-20% off for cash ("efectivo"). Ask
+                    "¿Hay descuento en efectivo?"</li>
+                <li><strong>Tips</strong> (about 10% at restaurants) are usually in cash.</li>
+                <li><strong>Taxis, small shops and markets</strong> often don't take cards.</li>
+            </ul>
+
+            <h2 class="h3 mt-5">Paying by card</h2>
+
+            <p>When you do use a card, the network converts your peso charge at its own daily rate. They differ
+                a lot, and AMEX comes out ahead:</p>
+
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th>Card</th>
+                            <th>Rate it uses</th>
+                            <th class="text-nowrap">vs Blue*</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>AMEX</strong></td>
+                            <td>BCRA's Mayorista (A3500) from 2 business days before the charge, with no markup</td>
+                            <td class="text-nowrap">about 1% below</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Visa</strong></td>
+                            <td>Visa's own daily rate. It moves with the previous day's MEP but runs about 6.5%
+                                below it.</td>
+                            <td class="text-nowrap">about 5% below</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mastercard</strong></td>
+                            <td>Same as Visa on weekdays</td>
+                            <td class="text-nowrap">about 5% below</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="small text-muted">* Compared with Blue buy, as of October 2026. The "vs Blue" column on the
+                <a href="https://arsrates.com/">rates page</a> shows today's numbers.</p>
+
+            <ul>
+                <li><strong>Use a card with no foreign transaction fee.</strong> Otherwise your bank adds its fee
+                    (often around 3%) on top of the network's rate.</li>
+                <li><strong>Always pay in pesos (ARS).</strong> If a card machine or ATM offers to charge you in US
+                    dollars, say no. That conversion uses the merchant's bank's rate, which is usually much worse.</li>
+                <li><strong>Use AMEX first.</strong> In Buenos Aires it's accepted almost everywhere Visa is. Keep a
+                    Visa or Mastercard as a backup for the few places that don't take it.</li>
+            </ul>
+
+            <div class="alert alert-secondary">
+                <strong>Is Visa the MEP rate?</strong> Not quite. Visa's rate follows the previous day's MEP closely,
+                which is why many articles say they're tied, but it has run about 6.5% below MEP throughout 2026.
+            </div>
+
+            <h2 class="h3 mt-5">Getting pesos</h2>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="h5 card-title">1. Western Union</h3>
+                    <p class="mb-2">Send money from your own US bank account to yourself, then pick up pesos at a WU
+                        location with your passport. You don't need to carry dollars or deal with street changers.</p>
+                    <p class="mb-2">WU's rate is usually above Blue. For senders in the US, the fee brings the
+                        overall cost back close to Blue. Senders from most other countries pay much lower fees, which
+                        makes WU an even better deal.</p>
+                    <p class="mb-0">See <a href="https://arsrates.com/wu-guide">How to Get Pesos with WU</a>.</p>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="h5 card-title">2. Other transfer services (TapTap Send, Remitly, Wise)</h3>
+                    <p class="mb-0">Their rates are on the rates page, before fees. Check how each one pays out in
+                        Argentina before you sign up: some only pay into an Argentine bank account or wallet, which
+                        most visitors don't have.</p>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="h5 card-title">3. Exchanging US dollar bills</h3>
+                    <ul class="mb-0">
+                        <li>Use an exchange house your hotel or host recommends. Expect a rate near Blue buy.</li>
+                        <li>Bring clean, undamaged US$100 bills. Small, old or marked bills often get a worse rate or
+                            are refused.</li>
+                        <li>Some small Western Union branches also buy dollars. Ask at the counter.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card mb-3 border-warning">
+                <div class="card-body">
+                    <h3 class="h5 card-title">Last resorts</h3>
+                    <ul class="mb-0">
+                        <li><strong>Florida Street changers:</strong> risk of fake bills and poor rates, and they often
+                            ask you to follow them to a second location.</li>
+                        <li><strong>ATMs:</strong> low limits per withdrawal and high fees per withdrawal.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 class="h3 mt-5">Which rate to watch</h2>
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <tbody>
+                        <tr>
+                            <td>Paying by card</td>
+                            <td><strong>AMEX</strong>, <strong>Visa</strong>, <strong>MC</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Picking up pesos with WU</td>
+                            <td><strong>WU</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Using another transfer service</td>
+                            <td><strong>TapTap</strong>, <strong>Remitly</strong>, <strong>Wise</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Exchanging dollar bills</td>
+                            <td><strong>D. Blue</strong> (buy)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>On the <a href="https://arsrates.com/">rates page</a>, tap any rate name for what it means. To get an email when
+                a rate moves, set up a <a href="https://arsrates.com/features">rate alert</a>.</p>
+        </main>
+        <!-- arsrates/app/templates/partials/footer.html -->
+<footer class="site-footer text-center my-4 px-3">
+    <div>Rates are for information only and may differ from what providers charge. Not financial advice.</div>
+    <div class="mt-1">© 2026 ARS Rates · <a href="https://arsrates.com/privacy">Privacy</a></div>
+</footer>
+
+        <!-- arsrates/app/templates/partials/scripts.html -->
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- App Configuration and Authentication -->
+<script src="/static/js/config.js"></script>
+<script src="/static/js/auth.js"></script>
+
+<!-- Page view counting (after config.js, which sets APP_CONFIG.API_URL) -->
+<script src="/static/js/pageview.js"></script>
+
+<!-- Add any other global utility functions after auth.js -->
+<script>
+// Add any global utility functions that aren't auth-related here
+</script>
+    </body>
+
+</html>

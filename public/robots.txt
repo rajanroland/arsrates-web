@@ -1,0 +1,5 @@
+# arsrates.com (GitHub Pages). Copied from site_root/ by the prod build.
+User-agent: *
+Allow: /
+
+Sitemap: https://arsrates.com/sitemap.xml

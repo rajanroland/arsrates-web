@@ -1,0 +1,24 @@
+# ARS Rates
+
+> Dollar to peso (USD to ARS) exchange rates in Argentina, updated every 15 minutes: dólar blue, MEP, CCL, official, wholesale (A3500), USDC, Western Union, Wise, Remitly, TapTap Send, Visa, Mastercard and American Express. Written in English for travelers and expats converting dollars to pesos.
+
+All rates are pesos per 1 US dollar. Remittance and card rates are headline rates before fees. Rates are for information only.
+
+## Current rates
+
+- [rates.md](https://arsrates.com/rates.md): today's rates as plain text, refreshed every 15 minutes
+- [current_rates.json](https://arsrates.com/static/data/current_rates.json): the same data as JSON
+
+## Guides
+
+- [Money Guide](https://arsrates.com/guide): paying by card vs. cash in Argentina, which card gets the best rate, and the safest ways to get pesos
+- [Getting pesos with Western Union](https://arsrates.com/wu-guide): account setup, keeping fees down, locations that have cash, what to bring
+- [Western Union location finder](https://api.arsrates.com/wu-locations): search pickup locations by neighborhood, province or address, including WU's own branches
+- [Rate alerts](https://arsrates.com/features): free email alerts when a rate reaches a target
+
+## Findings from our own data
+
+- American Express converts Argentine peso charges at the Central Bank's wholesale reference rate (Comunicación A 3500) from two business days before the charge, with no markup. Checked against about 200 real charges from October 2025 to October 2026: median difference 0.04%. That is typically 4-5% more pesos per dollar than Visa or Mastercard.
+- Visa's rate is not the MEP rate. Visa follows the previous day's dólar MEP but ran roughly 5-7% below it during 2026 (median 6.5%), and about 4% below the A3500 rate.
+- Mastercard's rate matches Visa's on weekdays.
+- Western Union's own branches ("Centros de Servicio") usually have cash; kioscos and payment agents often run out.

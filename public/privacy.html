@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- arsrates/app/templates/privacy.html (served at /privacy) -->
+
+    <head>
+        <!-- arsrates/app/templates/partials/head.html -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ARS Rates">
+<meta name="theme-color" content="#8DBCE5">
+
+<!-- Link previews (WhatsApp, social media). Each page sets its own description
+     and canonical address after this include. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ARS Rates">
+<meta property="og:title" content="ARS Rates: dollar to peso rates today in Argentina">
+<meta property="og:description" content="Blue, MEP, Western Union, Visa, Mastercard and AMEX rates side by side, updated every 15 minutes.">
+<meta property="og:image" content="https://arsrates.com/static/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ARS Rates: dollar to peso rates in Argentina, with the Sol de Mayo and Argentine flag colors">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Stylesheets -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/styles.css">
+
+<!-- PWA/Icons -->
+<link rel="manifest" href="/static/manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+<link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="/static/images/icon-192x192.png">
+        <title>Privacy | ARS Rates</title>
+        <meta name="description" content="What ARS Rates collects, why, which services receive data, how long it's kept, and how to delete your account.">
+        <link rel="canonical" href="https://arsrates.com/privacy">
+    </head>
+
+    <body>
+        <!-- arsrates/app/templates/partials/navbar.html -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="https://arsrates.com/">
+            <svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true"><g stroke="#F6B40E" stroke-width="1.6" stroke-linecap="round"><line x1="12.0" y1="4.8" x2="12.0" y2="0.8"/><line x1="14.8" y1="5.3" x2="15.7" y2="3.1"/><line x1="17.1" y1="6.9" x2="19.9" y2="4.1"/><line x1="18.7" y1="9.2" x2="20.9" y2="8.3"/><line x1="19.2" y1="12.0" x2="23.2" y2="12.0"/><line x1="18.7" y1="14.8" x2="20.9" y2="15.7"/><line x1="17.1" y1="17.1" x2="19.9" y2="19.9"/><line x1="14.8" y1="18.7" x2="15.7" y2="20.9"/><line x1="12.0" y1="19.2" x2="12.0" y2="23.2"/><line x1="9.2" y1="18.7" x2="8.3" y2="20.9"/><line x1="6.9" y1="17.1" x2="4.1" y2="19.9"/><line x1="5.3" y1="14.8" x2="3.1" y2="15.7"/><line x1="4.8" y1="12.0" x2="0.8" y2="12.0"/><line x1="5.3" y1="9.2" x2="3.1" y2="8.3"/><line x1="6.9" y1="6.9" x2="4.1" y2="4.1"/><line x1="9.2" y1="5.3" x2="8.3" y2="3.1"/></g><circle cx="12" cy="12" r="5.6" fill="#F6B40E" stroke="#C48A05" stroke-width="0.8"/></svg>
+            ARS Rates
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/guide">Money Guide</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="wuMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Western Union</a>
+                    <ul class="dropdown-menu" aria-labelledby="wuMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/wu-guide">How to Get Pesos with WU</a></li>
+                        <li><a class="dropdown-item" href="https://api.arsrates.com/wu-locations">Find a WU Location</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="features-button" href="https://arsrates.com/features">
+                        <span class="features-icon">🔔</span> Rate Alerts
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" id="authLinks">
+                <!-- Will be populated by JavaScript -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+        <main class="container" style="max-width: 800px;">
+            <h1 class="h2 mb-1">Privacy</h1>
+            <p class="small text-muted mb-4">Last updated: October 2026</p>
+
+            <p>ARS Rates (arsrates.com) shows exchange rates and sends optional rate emails and alerts. This page
+                explains what we collect, why, and how to remove it. In short: we collect as little as we can, we don't
+                use tracking cookies or ads, and we never sell your
+                data or share it for advertising.</p>
+
+            <h2 class="h4 mt-5">If you create an account</h2>
+            <ul>
+                <li><strong>Email address:</strong> to log in and to send the emails you ask for.</li>
+                <li><strong>Password:</strong> stored only as a one-way hash (bcrypt). We can't see your password.</li>
+                <li><strong>Your settings:</strong> your alerts, which daily rate emails you chose, and your daily alert
+                    limit.</li>
+                <li><strong>Records of emails sent:</strong> when an alert was sent and the rate that triggered it, so
+                    we don't send the same alert twice.</li>
+            </ul>
+            <p>We only send rate emails and alerts after you confirm your email address. Every one of them has an
+                unsubscribe link. We also send account emails you trigger: the confirmation link, password resets, and a
+                confirmation if you delete your account.</p>
+
+            <h2 class="h4 mt-5">If you just visit</h2>
+            <ul>
+                <li><strong>Page view counts:</strong> which page was viewed, the website that linked to us, your device
+                    type (phone, tablet or computer), and your browser's time zone and language. To tell new visitors
+                    from returning ones, your browser keeps a random ID in local storage. If storage is blocked, we use
+                    a one-way daily code instead. We don't store your IP address with page views, and we don't use
+                    cookies. To stop being counted, open any page with <code>?notrack=1</code> at the end of the
+                    address (<code>?notrack=0</code> turns counting back on).</li>
+                <li><strong>Feedback:</strong> what you write, and your email only if you add it.</li>
+                <li><strong>"Had cash here?" reports:</strong> your yes/no answer and optional note, stored with the
+                    same random browser ID and not linked to your account.</li>
+                <li><strong>Login:</strong> when you log in, your browser keeps a login token for up to 7 days.</li>
+                <li><strong>Server logs:</strong> like most websites, our server logs requests, including IP addresses,
+                    to keep the site secure and working. Logs are rotated and deleted automatically.</li>
+            </ul>
+
+            <h2 class="h4 mt-5">Services we use</h2>
+            <p>These services receive some data, such as your IP address, when you use the site:</p>
+            <ul>
+                <li><strong>Hetzner</strong> hosts our server and database, and <strong>GitHub Pages</strong> hosts
+                    the main rates page.</li>
+                <li><strong>SMTP2GO</strong> delivers our emails.</li>
+                <li><strong>OpenStreetMap (Nominatim)</strong> and <strong>Photon (Komoot)</strong>: when you search
+                    for WU locations by address, your browser sends the address you type to them to find its
+                    location.</li>
+                <li><strong>jsDelivr</strong>, <strong>unpkg</strong> and <strong>Google Fonts</strong> serve page
+                    code and fonts to your browser.</li>
+            </ul>
+
+            <h2 class="h4 mt-5">How long we keep it</h2>
+            <ul>
+                <li><strong>Account data:</strong> until you delete your account. Deleting it removes your account,
+                    alerts and email subscriptions right away. Feedback isn't linked to your account, so it isn't
+                    removed with it; ask us if you'd like it deleted.</li>
+                <li><strong>Backups:</strong> nightly database backups are kept for 14 days, so a deleted account can
+                    remain in a backup for up to 14 days before it's gone for good.</li>
+                <li><strong>Page view counts and "Had cash?" reports</strong> are anonymous and kept to understand how
+                    the site is used and which WU locations have cash.</li>
+            </ul>
+
+            <h2 class="h4 mt-5">Your choices</h2>
+            <ul>
+                <li><strong>Stop emails:</strong> use the unsubscribe link in any email, or change your settings on the
+                    profile page.</li>
+                <li><strong>Delete your account:</strong> on your <a href="https://api.arsrates.com/profile">profile page</a>, under
+                    "Delete Account".</li>
+                <li><strong>Ask a question, or request a copy or correction of your data:</strong> use the "Provide
+                    Feedback" button and include your email so we can reply.</li>
+            </ul>
+            <p>If you're in Argentina, you also have rights under the Personal Data Protection Law (Ley 25.326), and
+                you can contact the Agencia de Acceso a la Información Pública (AAIP).</p>
+
+            <div class="text-center my-4">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                    data-bs-target="#feedbackModal">Provide Feedback</button>
+            </div>
+
+            <!-- arsrates/app/templates/partials/feedback.html -->
+<div class="modal fade" id="feedbackModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Provide Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="feedbackForm" action="https://api.arsrates.com/api/feedback" method="POST">
+                    <div class="mb-3">
+                        <label for="feedbackEmail" class="form-label">Email (optional)</label>
+                        <input type="email" class="form-control" id="feedbackEmail" placeholder="your@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="feedbackText" class="form-label">Your Feedback</label>
+                        <textarea class="form-control" id="feedbackText" rows="4" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary me-3" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="submitFeedback()">Submit
+                    Feedback</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function submitFeedback() {
+        const email = document.getElementById('feedbackEmail').value;
+        const feedbackText = document.getElementById('feedbackText').value;
+
+        if (!feedbackText.trim()) {
+            alert('Please enter your feedback');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${window.APP_CONFIG.API_URL}/api/feedback`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email || null,
+                    feedback_text: feedbackText
+                })
+            })
+            if (response.ok) {
+                alert('Thank you for your feedback!');
+                document.getElementById('feedbackForm').reset();
+                bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
+            } else {
+                throw new Error('Failed to submit feedback');
+            }
+        } catch (error) {
+            alert('Error submitting feedback. Please try again.');
+            console.error('Error:', error);
+        }
+    }
+</script>
+        </main>
+        <!-- arsrates/app/templates/partials/footer.html -->
+<footer class="site-footer text-center my-4 px-3">
+    <div>Rates are for information only and may differ from what providers charge. Not financial advice.</div>
+    <div class="mt-1">© 2026 ARS Rates · <a href="https://arsrates.com/privacy">Privacy</a></div>
+</footer>
+
+        <!-- arsrates/app/templates/partials/scripts.html -->
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- App Configuration and Authentication -->
+<script src="/static/js/config.js"></script>
+<script src="/static/js/auth.js"></script>
+
+<!-- Page view counting (after config.js, which sets APP_CONFIG.API_URL) -->
+<script src="/static/js/pageview.js"></script>
+
+<!-- Add any other global utility functions after auth.js -->
+<script>
+// Add any global utility functions that aren't auth-related here
+</script>
+    </body>
+
+</html>
