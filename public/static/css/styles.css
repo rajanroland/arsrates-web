@@ -525,3 +525,11 @@ a:focus-visible {
 .site-footer a:hover {
     color: var(--ink);
 }
+
+/* "Source: ..." line at the bottom of a rate's tooltip */
+.rate-tip-source {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+}

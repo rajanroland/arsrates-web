@@ -35,6 +35,12 @@ NOTES = {
     "MC": "one rate per day, published around 3 PM ET",
     "AMEX": "one rate per day: A3500 from 2 business days before the charge",
 }
+SOURCES = {
+    "BLUE": "DolarHoy", "OFFICIAL": "DolarHoy", "MEP": "DolarHoy", "CCL": "DolarHoy",
+    "CRYPTO": "DolarHoy", "TARJETA": "calculated", "MAYORISTA": "BCRA",
+    "WU": "Western Union", "TAPTAP": "TapTap Send", "REMITLY": "Remitly", "WISE": "Wise",
+    "VISA": "Visa", "MC": "Mastercard", "AMEX": "estimated from BCRA A3500",
+}
 # What an estimate ("projected") is based on
 ESTIMATE_NOTES = {
     "MC": "estimated from Visa until Mastercard publishes today's rate",
@@ -66,7 +72,7 @@ def main(src, dst):
         "",
     ]
     for title, keys in GROUPS:
-        out += [f"## {title}", "", "| Rate | Pesos per USD | Change 24h | Notes |", "|---|---|---|---|"]
+        out += [f"## {title}", "", "| Rate | Pesos per USD | Change 24h | Source | Notes |", "|---|---|---|---|---|"]
         for key in keys:
             r = rates.get(key)
             if not r:
@@ -80,11 +86,12 @@ def main(src, dst):
                 value = f"{fmt(r.get('buy'))} buy / {fmt(r.get('sell'))} sell"
             else:
                 value = fmt(r.get("rate"))
-            out.append(f"| {labels.get(key, key)} | {value} | {change} | {note} |")
+            out.append(f"| {labels.get(key, key)} | {value} | {change} | {SOURCES.get(key, '')} | {note} |")
         out.append("")
     out += [
         "Buy = pesos you get when you sell 1 US dollar; sell = pesos you pay to buy 1 US dollar.",
-        "Guides: https://arsrates.com/guide",
+        "Sources and methods: https://arsrates.com/methodology (market rates fall back to dolarapi.com",
+        "when DolarHoy is down). Guides: https://arsrates.com/guide",
         "",
     ]
     with open(dst, "w") as f:

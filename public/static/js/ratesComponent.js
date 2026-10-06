@@ -102,16 +102,30 @@ const SHORT_LABELS = {
 };
 
 // Where each rate links to (DolarHoy for the rest)
-const RATE_URLS = {
-  MC: "https://www.mastercard.com/global/en/personal/get-support/currency-exchange-rate-converter.html",
-  VISA: "https://usa.visa.com/support/consumer/travel-support/exchange-rate-calculator.html",
-  WU: "https://www.westernunion.com/us/en/currency-converter/usd-to-ars-rate.html",
-  AMEX: null, // estimate from BCRA's A3500 (see getratescomparisonhours.sql); no source page
-  MAYORISTA: "https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp",
-  WISE: "https://wise.com/us/currency-converter/usd-to-ars-rate",
-  REMITLY: "https://www.remitly.com/us/en/argentina",
-  TAPTAP: "https://www.taptapsend.com/",
+// Where each rate comes from, shown in its tooltip as "Source: ...". A null URL
+// means we calculate it; those link to the "How we get these rates" page.
+// Market rates fall back to dolarapi.com when DolarHoy is down (see that page).
+const RATE_SOURCES = {
+  BLUE: ["DolarHoy", "https://dolarhoy.com"],
+  OFFICIAL: ["DolarHoy", "https://dolarhoy.com"],
+  MEP: ["DolarHoy", "https://dolarhoy.com"],
+  CCL: ["DolarHoy", "https://dolarhoy.com"],
+  CRYPTO: ["DolarHoy", "https://dolarhoy.com"],
+  TARJETA: ["Calculated: Oficial sell × 1.30", null],
+  MAYORISTA: ["BCRA (Central Bank of Argentina)", "https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp"],
+  WU: ["Western Union", "https://www.westernunion.com/us/en/currency-converter/usd-to-ars-rate.html"],
+  VISA: ["Visa", "https://usa.visa.com/support/consumer/travel-support/exchange-rate-calculator.html"],
+  MC: ["Mastercard", "https://www.mastercard.com/global/en/personal/get-support/currency-exchange-rate-converter.html"],
+  AMEX: ["Estimated from BCRA's A3500", null],
+  WISE: ["Wise", "https://wise.com/us/currency-converter/usd-to-ars-rate"],
+  REMITLY: ["Remitly", "https://www.remitly.com/us/en/argentina"],
+  TAPTAP: ["TapTap Send", "https://www.taptapsend.com/"],
 };
+
+// "How we get these rates" (static page on arsrates.com; local on dev). Read
+// when the tooltip opens: this file loads before config.js sets APP_CONFIG.
+const methodologyUrl = () =>
+  ((window.APP_CONFIG && window.APP_CONFIG.FRONTEND_URL) || "https://arsrates.com") + "/methodology";
 
 // Shown when a rate name is hovered or tapped: full name and what the rate is
 const RATE_INFO = {
@@ -274,7 +288,7 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
   };
 
   // null = no link (AMEX); missing = DolarHoy
-  const rateUrl = rateType in RATE_URLS ? RATE_URLS[rateType] : "https://dolarhoy.com";
+  const source = RATE_SOURCES[rateType];
   const info = RATE_INFO[rateType];
 
   return React.createElement(
@@ -318,7 +332,9 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
             // Not a toggle: a tap fires mouseenter first, which already opened it.
             // Tapping elsewhere (blur) or moving the mouse away closes it.
             onClick: info ? () => setShowInfo(true) : undefined,
-            onBlur: info ? () => setShowInfo(false) : undefined,
+            onBlur: info
+              ? (e) => { if (!e.currentTarget.contains(e.relatedTarget)) setShowInfo(false); }
+              : undefined,
           },
           [
             React.createElement(
@@ -348,6 +364,13 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
                 [
                   React.createElement("strong", { key: "n" }, info[0]),
                   React.createElement("div", { key: "d" }, info[1]),
+                  source &&
+                    React.createElement("div", { key: "s", className: "rate-tip-source" }, [
+                      "Source: ",
+                      source[1]
+                        ? React.createElement("a", { key: "a", href: source[1], target: "_blank", rel: "noopener" }, `${source[0]} ↗`)
+                        : React.createElement("a", { key: "a", href: methodologyUrl() }, source[0]),
+                    ]),
                 ]
               ),
           ]
@@ -364,21 +387,7 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
               paddingRight: "8px",
             },
           },
-          rateUrl
-            ? React.createElement(
-                "a",
-                {
-                  href: rateUrl,
-                  target: "_blank",
-                  style: {
-                    textDecoration: "none",
-                    color: "inherit",
-                  },
-                  className: "rate-link",
-                },
-                displayRate()
-              )
-            : displayRate()
+          React.createElement("div", { className: "rate-link" }, displayRate())
         ),
         React.createElement(RateChangeDisplay, {
           key: "change",
