@@ -9,11 +9,12 @@ permissions:
   pages: write
   id-token: write
 # One deploy at a time. The prod server pushes new rates every 15 minutes; a
-# newer push replaces any deploy still waiting to start, so slow GitHub days
-# don't pile up runs that end in timeouts.
+# newer push cancels any deploy still running or waiting, so one stuck run
+# (2026-10-06: stuck 2h waiting on the github-pages environment) can't block
+# every later deploy. Only the newest rates matter.
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   build-and-deploy:
     # Pinned rather than ubuntu-latest, which moves to Ubuntu 26 on 2026-10-19
