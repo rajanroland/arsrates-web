@@ -1,16 +1,26 @@
 /* arsrates/static/styles.css*/
 /* Theme Colors and Variables */
 :root {
-    --primary-blue: #75AADB;    /* Argentina light blue */
-    --text-dark: #333333;       /* Dark gray for text */
-    --text-muted: #666666;      /* Muted text */
-    --background: #FFFFFF;      /* White background */
+    /* Argentine flag colors, adjusted so every text/background pair meets the
+       4.5:1 contrast guideline */
+    --primary-blue: #75AADB;    /* celeste: navbar */
+    --navy: #0F2A47;            /* text on celeste (5.9:1), headings */
+    --primary-dark: #2E6DA4;    /* buttons and links (5.5:1 with white) */
+    --primary-darker: #255A88;  /* hover */
+    --primary-tint: #EAF3FB;    /* light celeste: callouts, highlights */
+    --sol: #F6B40E;             /* Sol de Mayo gold: accent, Rate Alerts button */
+    --sol-hover: #E2A40B;
+    --text-dark: #1F2937;       /* body text */
+    --text-muted: #5B6B7D;      /* secondary text (5.1:1 on the page background) */
+    --surface: #F5F8FB;         /* page background */
+    --border: #E3E9F0;
+    --background: #FFFFFF;      /* cards */
 }
 
 /* Base Styles */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: var(--background);
+    background-color: var(--surface);
     color: var(--text-dark);
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
@@ -49,7 +59,10 @@ body {
 }
 
 .navbar-brand {
-    color: #FFFFFF !important;
+    color: var(--navy) !important;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    gap: 0.5rem;
     padding: 0 1rem !important;
     margin: 0;
     height: 100%;
@@ -71,7 +84,8 @@ body {
 }
 
 .nav-link {
-    color: #FFFFFF !important;
+    color: var(--navy) !important;
+    font-weight: 500;
     height: 100%;
     display: flex;
     align-items: center;
@@ -79,8 +93,10 @@ body {
     line-height: 1.5 !important;
 }
 
-.nav-link:hover {
-    opacity: 0.9;
+.nav-link:hover,
+.nav-link:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 4px;
 }
 
 #authLinks {
@@ -98,16 +114,16 @@ body {
 }
 
 .btn-primary {
-    background-color: var(--primary-blue);
-    border-color: var(--primary-blue);
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
     color: #FFFFFF !important;
 }
 
 .btn-primary:hover, 
 .btn-primary:focus, 
 .btn-primary:active {
-    background-color: #5B8BB2 !important;
-    border-color: #5B8BB2 !important;
+    background-color: var(--primary-darker) !important;
+    border-color: var(--primary-darker) !important;
     color: #FFFFFF !important;
     transform: translateY(-1px);
 }
@@ -127,27 +143,27 @@ body {
 }
 
 .btn-link {
-    color: var(--primary-blue) !important;
+    color: var(--primary-dark) !important;
     text-decoration: none;
 }
 
 .btn-link:hover,
 .btn-link:focus {
-    color: #5B8BB2 !important;
+    color: var(--primary-darker) !important;
     text-decoration: underline;
 }
 
 .btn-outline-light {
-    color: var(--primary-blue) !important;
-    border-color: var(--primary-blue) !important;
+    color: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
     background-color: transparent;
     opacity: 1;
 }
 
 .btn-outline-light:hover {
     color: #FFFFFF !important;
-    background-color: var(--primary-blue) !important;
-    border-color: var(--primary-blue) !important;
+    background-color: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
 }
 
 .btn:disabled,
@@ -158,9 +174,9 @@ body {
 
 /* Features Button */
 .features-button {
-    background-color: #FCB514;
-    color: #FFFFFF !important;
-    font-weight: 500;
+    background-color: var(--sol);
+    color: var(--navy) !important;
+    font-weight: 600;
     padding: 0.375rem 0.75rem;
     border-radius: 6px;
     text-decoration: none;
@@ -171,25 +187,26 @@ body {
 }
 
 .features-button:hover {
-    background-color: #FFD700;
-    color: #FFFFFF !important;
+    background-color: var(--sol-hover);
+    color: var(--navy) !important;
     transform: translateY(-1px);
 }
 
 .features-icon {
-    margin-right: 0.25rem;
+    margin-right: 0.4rem;
 }
 
 /* Card and List Styles */
 .card {
     background-color: var(--background);
-    border: 1px solid #E5E5E5;
-    border-radius: 8px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(15, 42, 71, 0.05);
 }
 
 .list-group-item {
     background-color: var(--background);
-    border-color: #E5E5E5;
+    border-color: var(--border);
     color: var(--text-dark);
     padding: 0.5rem 0.75rem;
     border-left: none;
@@ -235,19 +252,19 @@ main.container {
 
 /* Feature Page Specific */
 .feature-section {
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 1.5rem;
-    background-color: #fff;
-    border: 1px solid #e5e5e5;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 2px rgba(15, 42, 71, 0.05);
     margin-bottom: 1.5rem;
 }
 
 .feature-title {
-    color: var(--primary-blue);
+    color: var(--primary-dark);
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid #FCB514;
+    border-bottom: 2px solid var(--sol);
 }
 
 .feature-list {
@@ -283,15 +300,15 @@ main.container {
     }
 
     .navbar-toggler {
-        border-color: rgba(255,255,255,0.7) !important;
+        border-color: rgba(15, 42, 71, 0.45) !important;
     }
 
     .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(15, 42, 71, 0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
     }
 
     .navbar-toggler:hover {
-        background-color: rgba(255,255,255,0.1);
+        background-color: rgba(255, 255, 255, 0.25);
     }    
 
     .nav-item {
@@ -317,7 +334,7 @@ main.container {
         width: 100%;
         margin-top: 0.5rem;
         padding-top: 0.5rem;
-        border-top: 1px solid rgba(255,255,255,0.1);
+        border-top: 1px solid rgba(15, 42, 71, 0.15);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -366,4 +383,104 @@ main.container {
 .rate-tip strong {
     display: block;
     margin-bottom: 2px;
+}
+
+/* ---------- Theme: Bootstrap defaults in the site's colors ---------- */
+h1, h2, h3, h4, h5, .h1, .h2, .h3, .h4, .h5 {
+    color: var(--navy);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+a {
+    color: var(--primary-dark);
+}
+a:hover {
+    color: var(--primary-darker);
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Callout boxes: light celeste instead of Bootstrap's cyan */
+.alert-info {
+    background-color: var(--primary-tint);
+    border-color: #CFE2F3;
+    color: var(--navy);
+}
+.alert-secondary {
+    background-color: #F1F4F8;
+    border-color: var(--border);
+    color: var(--text-dark);
+}
+.alert-success {
+    background-color: #EAF6EF;
+    border-color: #CDE9D8;
+    color: #14532D;
+}
+.alert-warning {
+    background-color: #FEF6E0;
+    border-color: #F8E3A6;
+    color: #5C4306;
+}
+.alert-heading {
+    color: inherit;
+}
+
+/* Badges and checked inputs in the site blue */
+.bg-primary {
+    background-color: var(--primary-dark) !important;
+}
+.form-check-input:checked {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+/* Focus: visible, in celeste, for keyboard users */
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.2rem rgba(117, 170, 219, 0.35);
+}
+.btn:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--primary-dark);
+    outline-offset: 2px;
+}
+
+/* Rates table: a card on the page background, numbers lined up */
+#rates-container {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(15, 42, 71, 0.05);
+}
+#rates-container .list-group-item:first-child {
+    border-top: none;
+}
+#rates-container,
+.rate-link {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Brand mark (Sol de Mayo) in the navbar */
+.brand-sun {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+/* Footer */
+.site-footer {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+.site-footer a {
+    color: var(--text-muted);
+}
+.site-footer a:hover {
+    color: var(--navy);
 }
