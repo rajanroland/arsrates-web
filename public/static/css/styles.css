@@ -454,7 +454,16 @@ a:focus-visible {
 #rates-container {
     border: 1px solid var(--border);
     border-radius: 10px;
-    overflow: hidden;
+}
+/* Rounded corners on the first and last rows instead of overflow: hidden on the
+   box, which would clip rate-name tooltips on the bottom rows (Mayorista) */
+#rates-container .rates-header {
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+}
+#rates-container .rates-container > :last-child {
+    border-bottom-left-radius: 9px;
+    border-bottom-right-radius: 9px;
 }
 /* Column labels: their own color so they don't read as a rate */
 .rates-header {
