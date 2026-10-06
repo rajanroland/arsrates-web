@@ -76,7 +76,8 @@ const GRID_COLUMNS = SHOW_VS_BLUE
 
 // Rows in display order; a thin band separates the groups
 const RATE_GROUPS = [
-  ["BLUE", "WU", "VISA", "MC", "AMEX"],
+  ["BLUE"], // the benchmark for "vs Blue", on its own
+  ["WU", "VISA", "MC", "AMEX"],
   ["TAPTAP", "REMITLY", "WISE"],
   ["CRYPTO"],
   ["OFFICIAL", "MEP", "CCL", "TARJETA", "MAYORISTA"],
@@ -116,9 +117,9 @@ const RATE_URLS = {
 const RATE_INFO = {
   BLUE: ["Dólar Blue", "Informal (street) market rate: what cuevas pay (buy) and charge (sell) for cash dollars."],
   WU: ["Western Union", "Rate for sending dollars to pesos with Western Union. Doesn't include WU's fees."],
-  VISA: ["Visa", "Visa's daily rate for card charges in pesos. Assumes no foreign transaction fee. Sunday and Monday use Saturday's rate. It moves with the previous day's MEP but runs about 6.5% below it."],
-  MC: ["Mastercard", "Mastercard's daily rate, published around 3 PM ET. Until then it's estimated (Est.) from Visa's rate, which MC matches on weekdays. Saturday and Sunday use Friday's rate. Assumes no foreign transaction fee."],
-  AMEX: ["American Express", "Uses the actual AMEX rate when we have one. Otherwise it's estimated (Est.) as BCRA's Mayorista (A3500) from 2 business days earlier, typically within 0.1% of real charges. Updated daily, like Visa and MC."],
+  VISA: ["Visa", "Visa sets one rate per day for all card charges in pesos, unlike market rates, which move during the day. Sunday and Monday use Saturday's rate. It follows the previous day's MEP but runs about 6.5% below it. Assumes no foreign transaction fee."],
+  MC: ["Mastercard", "Mastercard sets one rate per day, published around 3 PM ET. Until then it's estimated (Est.) from Visa's rate, which MC matches on weekdays. Saturday and Sunday use Friday's rate. Assumes no foreign transaction fee."],
+  AMEX: ["American Express", "AMEX uses one rate per day: BCRA's Mayorista (A3500) from 2 business days earlier, with no markup. The charge shows its final dollar amount right away (AMEX used to charge the official rate and refund the difference later). Shown as an estimate (Est.), typically within 0.1% of real charges, unless we have an actual charge for the day."],
   TAPTAP: ["TapTap Send", "Rate for sending dollars to pesos with TapTap Send (US to Argentina). Doesn't include fees."],
   REMITLY: ["Remitly", "Remitly's standard rate (not the first-transfer promo rate). Doesn't include fees."],
   WISE: ["Wise", "Rate for sending dollars to pesos with Wise. Doesn't include fees."],
@@ -218,7 +219,7 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
         "div",
         {
           style: {
-            fontSize: "1.1rem",
+            fontSize: "1.2rem",
             fontWeight: "600",
             whiteSpace: "nowrap",
           },
@@ -244,7 +245,7 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
         "div",
         {
           style: {
-            fontSize: "1.1rem",
+            fontSize: "1.2rem",
             fontWeight: "600",
             whiteSpace: "nowrap",
           },
@@ -302,8 +303,8 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
             style: {
               width: "100%",
               fontSize: "0.95rem",
-              color: "#333",
-              fontWeight: "600",
+              color: "#374151",
+              fontWeight: "500",
               paddingLeft: "8px",
               display: "flex",
               alignItems: "center",
@@ -395,6 +396,28 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
   );
 };
 
+// "● Updated 4 min ago · Oct 6, 8:00 AM ARG". The dot is green while the data
+// is fresh (runs are 15 min apart by day, hourly at night) and grey once stale.
+const STALE_DOT_AFTER_MIN = 90;
+function paintFreshness() {
+  const el = document.getElementById("last-updated");
+  const timestamp = window.__ratesTimestamp;
+  if (!el || !timestamp) return;
+  const when = new Date(timestamp);
+  const mins = Math.max(0, Math.round((Date.now() - when) / 60000));
+  const ago = mins < 1 ? "just now"
+    : mins < 60 ? `${mins} min ago`
+    : mins < 48 * 60 ? `${Math.round(mins / 60)} h ago`
+    : `${Math.round(mins / 1440)} days ago`;
+  const exact = when.toLocaleString("en-US", {
+    month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
+    timeZone: "America/Argentina/Buenos_Aires",
+  });
+  const dot = document.createElement("span");
+  dot.className = "live-dot" + (mins > STALE_DOT_AFTER_MIN ? " stale" : "");
+  el.replaceChildren(dot, `Updated ${ago} · ${exact} ARG`);
+}
+
 const RatesContainer = () => {
   const [ratesData, setRatesData] = useState(null);
   const [lastKnownTimestamp, setLastKnownTimestamp] = useState(null);
@@ -436,21 +459,11 @@ const RatesContainer = () => {
 
         // In the useEffect of RatesContainer:
         const updateLastUpdated = (timestamp) => {
-          const lastUpdatedElement = document.getElementById('last-updated');
-          if (lastUpdatedElement) {
-            const date = new Date(timestamp);
-            const dateString = date.toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric'
-            });
-            const timeString = date.toLocaleTimeString('en-US', {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: true,
-              timeZone: 'America/Argentina/Buenos_Aires'
-            });
-            lastUpdatedElement.textContent = `Last Updated: ${dateString}, ${timeString} ARG`;
+          window.__ratesTimestamp = timestamp;
+          paintFreshness();
+          // Keep "N min ago" current between updates
+          if (!window.__freshnessTimer) {
+            window.__freshnessTimer = setInterval(paintFreshness, 60 * 1000);
           }
         };
 
@@ -492,7 +505,7 @@ const RatesContainer = () => {
           fontSize: "0.7rem",
           fontWeight: "600",
           letterSpacing: "0.04em",
-          color: "#6c757d",
+          color: "inherit",
           whiteSpace: "nowrap",
           ...extraStyle,
         },
@@ -504,7 +517,7 @@ const RatesContainer = () => {
   const headers = React.createElement(
     "div",
     {
-      className: "list-group-item py-2 bg-light",
+      className: "list-group-item py-2 rates-header",
       style: { width: "100%" },
     },
     React.createElement(
@@ -543,7 +556,8 @@ const RatesContainer = () => {
     i > 0 &&
       React.createElement("div", {
         key: `sep-${i}`,
-        style: { height: "8px", backgroundColor: "#f1f3f5" },
+        className: "rates-band",
+        style: { height: "8px" },
       }),
     ...group.map(rowFor),
   ]);
@@ -551,9 +565,10 @@ const RatesContainer = () => {
   return React.createElement(
     "div",
     {
+      // Fill the column (.rates-wrap sets the width). Auto margins would shrink
+      // it to its content inside the list-group's flex layout.
       style: {
-        maxWidth: "400px",
-        margin: "0 auto",
+        width: "100%",
       },
       className: "rates-container",
     },

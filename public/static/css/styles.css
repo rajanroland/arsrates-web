@@ -1,19 +1,19 @@
 /* arsrates/static/styles.css*/
 /* Theme Colors and Variables */
 :root {
-    /* Argentine flag colors, adjusted so every text/background pair meets the
-       4.5:1 contrast guideline */
-    --primary-blue: #8DBCE5;    /* celeste, a little lighter than the flag's #75AADB: navbar */
-    --navy: #0F2A47;            /* text on the navbar (7.2:1), headings */
-    --primary-dark: #2E6DA4;    /* buttons and links (5.5:1 with white) */
-    --primary-darker: #255A88;  /* hover */
-    --primary-tint: #EAF3FB;    /* light celeste: callouts, highlights */
-    --sol: #F6B40E;             /* Sol de Mayo gold: accent, Rate Alerts button */
-    --sol-hover: #E2A40B;
-    --text-dark: #1F2937;       /* body text */
-    --text-muted: #5B6B7D;      /* secondary text (5.1:1 on the page background) */
-    --surface: #F5F8FB;         /* page background */
-    --border: #E3E9F0;
+    /* Neutral base with one accent, like most finance sites; the Sol de Mayo
+       logo is the Argentine touch. Every text/background pair meets the 4.5:1
+       contrast guideline. */
+    --header-bg: #FFFFFF;       /* navbar */
+    --ink: #111827;             /* headings, navbar text (17.7:1 on white) */
+    --primary-dark: #1D4ED8;    /* the one accent: buttons and links (6.7:1) */
+    --primary-darker: #1E40AF;  /* hover */
+    --primary-tint: #EFF4FF;    /* light accent: callouts */
+    --sol: #F6B40E;             /* Sol de Mayo gold: the logo only */
+    --text-dark: #111827;       /* body text */
+    --text-muted: #6B7280;      /* secondary text (4.8:1 on white) */
+    --surface: #FFFFFF;         /* page background */
+    --border: #E5E7EB;
     --background: #FFFFFF;      /* cards */
 }
 
@@ -28,8 +28,9 @@ body {
 
 /* Navigation Styles */
 .navbar {
-    background-color: var(--primary-blue) !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background-color: var(--header-bg) !important;
+    border-bottom: 1px solid var(--border);
+    box-shadow: none;
     padding: 0 !important;
     height: 56px !important;
     min-height: auto !important;
@@ -59,7 +60,7 @@ body {
 }
 
 .navbar-brand {
-    color: var(--navy) !important;
+    color: var(--ink) !important;
     font-weight: 700;
     letter-spacing: -0.01em;
     gap: 0.5rem;
@@ -84,7 +85,7 @@ body {
 }
 
 .nav-link {
-    color: var(--navy) !important;
+    color: #374151 !important;
     font-weight: 500;
     height: 100%;
     display: flex;
@@ -174,8 +175,8 @@ body {
 
 /* Features Button */
 .features-button {
-    background-color: var(--sol);
-    color: var(--navy) !important;
+    background-color: var(--primary-dark);
+    color: #FFFFFF !important;
     font-weight: 600;
     padding: 0.375rem 0.75rem;
     border-radius: 6px;
@@ -187,13 +188,14 @@ body {
 }
 
 .features-button:hover {
-    background-color: var(--sol-hover);
-    color: var(--navy) !important;
+    background-color: var(--primary-darker);
+    color: #FFFFFF !important;
     transform: translateY(-1px);
 }
 
 .features-icon {
     margin-right: 0.4rem;
+    filter: grayscale(1) brightness(10);   /* white bell on the blue button */
 }
 
 /* Card and List Styles */
@@ -201,7 +203,6 @@ body {
     background-color: var(--background);
     border: 1px solid var(--border);
     border-radius: 10px;
-    box-shadow: 0 1px 2px rgba(15, 42, 71, 0.05);
 }
 
 .list-group-item {
@@ -256,7 +257,6 @@ main.container {
     padding: 1.5rem;
     background-color: var(--background);
     border: 1px solid var(--border);
-    box-shadow: 0 1px 2px rgba(15, 42, 71, 0.05);
     margin-bottom: 1.5rem;
 }
 
@@ -264,7 +264,7 @@ main.container {
     color: var(--primary-dark);
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--sol);
+    border-bottom: 1px solid var(--border);
 }
 
 .feature-list {
@@ -300,15 +300,15 @@ main.container {
     }
 
     .navbar-toggler {
-        border-color: rgba(15, 42, 71, 0.45) !important;
+        border-color: var(--border) !important;
     }
 
     .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(15, 42, 71, 0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(17, 24, 39, 0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
     }
 
     .navbar-toggler:hover {
-        background-color: rgba(255, 255, 255, 0.25);
+        background-color: #F3F4F6;
     }    
 
     .nav-item {
@@ -334,7 +334,7 @@ main.container {
         width: 100%;
         margin-top: 0.5rem;
         padding-top: 0.5rem;
-        border-top: 1px solid rgba(15, 42, 71, 0.15);
+        border-top: 1px solid var(--border);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -387,7 +387,7 @@ main.container {
 
 /* ---------- Theme: Bootstrap defaults in the site's colors ---------- */
 h1, h2, h3, h4, h5, .h1, .h2, .h3, .h4, .h5 {
-    color: var(--navy);
+    color: var(--ink);
     font-weight: 600;
     letter-spacing: -0.01em;
 }
@@ -406,11 +406,11 @@ a:hover {
 /* Callout boxes: light celeste instead of Bootstrap's cyan */
 .alert-info {
     background-color: var(--primary-tint);
-    border-color: #CFE2F3;
-    color: var(--navy);
+    border-color: #DBE4FF;
+    color: var(--ink);
 }
 .alert-secondary {
-    background-color: #F1F4F8;
+    background-color: #F9FAFB;
     border-color: var(--border);
     color: var(--text-dark);
 }
@@ -441,8 +441,8 @@ a:hover {
 .form-control:focus,
 .form-select:focus,
 .form-check-input:focus {
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 0 0.2rem rgba(117, 170, 219, 0.35);
+    border-color: var(--primary-dark);
+    box-shadow: 0 0 0 0.2rem rgba(29, 78, 216, 0.2);
 }
 .btn:focus-visible,
 a:focus-visible {
@@ -455,7 +455,48 @@ a:focus-visible {
     border: 1px solid var(--border);
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 1px 2px rgba(15, 42, 71, 0.05);
+}
+/* Column labels: their own color so they don't read as a rate */
+.rates-header {
+    background-color: #F1F5F9 !important;
+    color: #334155;
+}
+/* Bands between rate groups */
+.rates-band {
+    background-color: #F3F4F6;
+}
+.rate-label-name {
+    border-bottom-color: #D1D5DB !important;
+}
+
+/* Home page column: the table, 560px wide on larger screens */
+.rates-wrap {
+    max-width: 400px;
+}
+@media (min-width: 768px) {
+    .rates-wrap {
+        max-width: 560px;
+    }
+}
+
+/* Freshness line: "Updated 4 min ago" with a live dot (ratesComponent.js) */
+#last-updated {
+    color: #374151;
+    font-weight: 500;
+}
+.live-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 6px;
+    border-radius: 50%;
+    background: #16A34A;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18);
+    vertical-align: 1px;
+}
+.live-dot.stale {
+    background: #9CA3AF;
+    box-shadow: none;
 }
 #rates-container .list-group-item:first-child {
     border-top: none;
@@ -482,5 +523,5 @@ a:focus-visible {
     color: var(--text-muted);
 }
 .site-footer a:hover {
-    color: var(--navy);
+    color: var(--ink);
 }

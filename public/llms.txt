@@ -18,7 +18,8 @@ All rates are pesos per 1 US dollar. Remittance and card rates are headline rate
 
 ## Findings from our own data
 
-- American Express converts Argentine peso charges at the Central Bank's wholesale reference rate (Comunicación A 3500) from two business days before the charge, with no markup. Checked against about 200 real charges from October 2025 to October 2026: median difference 0.04%. That is typically 4-5% more pesos per dollar than Visa or Mastercard.
+- American Express converts Argentine peso charges at the Central Bank's wholesale reference rate (Comunicación A 3500) from two business days before the charge, with no markup, and the charge shows its final dollar amount right away (AMEX used to charge the official rate and refund the difference later). Checked against about 200 real charges from October 2025 to October 2026: median difference 0.04%. That is typically 4-5% more pesos per dollar than Visa or Mastercard.
 - Visa's rate is not the MEP rate. Visa follows the previous day's dólar MEP but ran roughly 5-7% below it during 2026 (median 6.5%), and about 4% below the A3500 rate.
 - Mastercard's rate matches Visa's on weekdays.
+- Visa, Mastercard and AMEX each set one rate per day for all card charges that day; market and money-transfer rates move during the day.
 - Western Union's own branches ("Centros de Servicio") usually have cash; kioscos and payment agents often run out.

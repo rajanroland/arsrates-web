@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="ARS Rates">
-<meta name="theme-color" content="#8DBCE5">
+<meta name="theme-color" content="#FFFFFF">
 
 <!-- Link previews (WhatsApp, social media). Each page sets its own description
      and canonical address after this include. -->
@@ -75,7 +75,7 @@
         "name": "What is the best way to get pesos with US dollars?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Paying in cash pesos usually gets the best value: pesos from Western Union or from exchanging US dollar bills come in near or above the blue rate, and many shops give a 10-20% discount for cash. See the Money Guide for the options."
+          "text": "Exchange US dollar bills at a reputable exchange house (casa de cambio) that publishes its rates, such as Cambio Baires. Bring $100 bills in the current design (with the blue security ribbon): older designs get a lower rate. Smaller Western Union branches that buy dollars are the next option. Use ATMs or the street changers on Florida Street only as a last resort: ATMs have low limits and high fees, and street changers risk fake bills and poor rates. See the Money Guide for more."
         }
       },
       {
@@ -91,7 +91,7 @@
         "name": "What exchange rate does American Express use in Argentina?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "AMEX converts peso charges at the Central Bank's wholesale reference rate (Comunicación A 3500) from two business days before the charge, with no markup. In our checks against real charges it was typically within 0.1%, and it gives about 4-5% more pesos per dollar than Visa or Mastercard."
+          "text": "AMEX converts peso charges at the Central Bank's wholesale reference rate (Comunicación A 3500) from two business days before the charge, with no markup. The charge shows its final dollar amount right away; AMEX used to charge at the official rate and refund the difference later, but no longer does. In our checks against real charges it was typically within 0.1%, and it gives about 4-5% more pesos per dollar than Visa or Mastercard."
         }
       },
       {
@@ -99,7 +99,7 @@
         "name": "How often are the rates updated?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Every 15 minutes from 7:00 to 21:00 Argentina time, and hourly overnight. Card rates (Visa, Mastercard and AMEX) change once a day."
+          "text": "Market and money-transfer rates are checked every 15 minutes from 7:00 to 21:00 Argentina time, and hourly overnight. Visa, Mastercard and AMEX each set one rate per day that applies to all card charges that day, so those change once a day rather than during the day."
         }
       }
     ]
@@ -148,12 +148,12 @@
 
 
         <main class="container mt-4">
-            <div class="container" style="max-width: 400px;">
+            <div class="container rates-wrap">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h1 class="h2 mb-1">Dollar to Peso Rates Today in Argentina</h1>
-                        <p class="small text-muted mb-1">Pesos per US dollar: dólar blue, MEP, Western Union, Visa, Mastercard, AMEX and more</p>
-                        <p class="small mb-2 text-success fw-bold" id="last-updated"></p>
+                        <h1 class="h2 mb-1">Dollar to Peso Rates</h1>
+                        <p class="small text-muted mb-1">Today in Argentina · pesos per US dollar: dólar blue, MEP, Western Union, Visa, Mastercard, AMEX and more</p>
+                        <p class="small mb-2" id="last-updated"></p>
                     </div>
                 </div>
                 <div id="rates-container" class="list-group mb-2"></div>
@@ -183,7 +183,7 @@
                     </div>
                     <div class="mb-3">
                         <h3 class="h6 mb-1">What is the best way to get pesos with US dollars?</h3>
-                        <p class="mb-0">Paying in cash pesos usually gets the best value: pesos from Western Union or from exchanging US dollar bills come in near or above the blue rate, and many shops give a 10-20% discount for cash. See the <a href="https://arsrates.com/guide">Money Guide</a> for the options.</p>
+                        <p class="mb-0">Exchange US dollar bills at a reputable exchange house (casa de cambio) that publishes its rates, such as Cambio Baires. Bring $100 bills in the current design (with the blue security ribbon): older designs get a lower rate. Smaller Western Union branches that buy dollars are the next option. Use ATMs or the street changers on Florida Street only as a last resort: ATMs have low limits and high fees, and street changers risk fake bills and poor rates. See the <a href="https://arsrates.com/guide">Money Guide</a> for more.</p>
                     </div>
                     <div class="mb-3">
                         <h3 class="h6 mb-1">Is the Visa rate the same as the MEP rate?</h3>
@@ -191,11 +191,11 @@
                     </div>
                     <div class="mb-3">
                         <h3 class="h6 mb-1">What exchange rate does American Express use in Argentina?</h3>
-                        <p class="mb-0">AMEX converts peso charges at the Central Bank's wholesale reference rate (Comunicación A 3500) from two business days before the charge, with no markup. In our checks against real charges it was typically within 0.1%, and it gives about 4-5% more pesos per dollar than Visa or Mastercard.</p>
+                        <p class="mb-0">AMEX converts peso charges at the Central Bank's wholesale reference rate (Comunicación A 3500) from two business days before the charge, with no markup. The charge shows its final dollar amount right away; AMEX used to charge at the official rate and refund the difference later, but no longer does. In our checks against real charges it was typically within 0.1%, and it gives about 4-5% more pesos per dollar than Visa or Mastercard.</p>
                     </div>
                     <div class="mb-3">
                         <h3 class="h6 mb-1">How often are the rates updated?</h3>
-                        <p class="mb-0">Every 15 minutes from 7:00 to 21:00 Argentina time, and hourly overnight. Card rates (Visa, Mastercard and AMEX) change once a day.</p>
+                        <p class="mb-0">Market and money-transfer rates are checked every 15 minutes from 7:00 to 21:00 Argentina time, and hourly overnight. Visa, Mastercard and AMEX each set one rate per day that applies to all card charges that day, so those change once a day rather than during the day.</p>
                     </div>
                         <p class="small text-muted mb-0">Rates as plain text for tools and AI assistants:
                             <a href="https://arsrates.com/rates.md">rates.md</a></p>

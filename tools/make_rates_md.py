@@ -21,7 +21,7 @@ ARG = timezone(timedelta(hours=-3))   # Argentina, no daylight saving
 GROUPS = [
     ("Market", ["BLUE", "OFFICIAL", "MEP", "CCL", "MAYORISTA", "TARJETA", "CRYPTO"]),
     ("Sending money (headline rate, before fees)", ["WU", "TAPTAP", "REMITLY", "WISE"]),
-    ("Card charges in pesos (no foreign transaction fee)", ["VISA", "MC", "AMEX"]),
+    ("Card charges in pesos (one rate per day; no foreign transaction fee)", ["VISA", "MC", "AMEX"]),
 ]
 NOTES = {
     "BLUE": "informal market rate for cash dollars",
@@ -31,9 +31,9 @@ NOTES = {
     "MAYORISTA": "Central Bank wholesale reference rate (A3500)",
     "TARJETA": "official sell + 30%, cost of card charges paid in pesos with an Argentine card",
     "CRYPTO": "USDC stablecoin on Argentine exchanges",
-    "VISA": "Visa's daily rate",
-    "MC": "Mastercard's daily rate, published around 3 PM ET",
-    "AMEX": "A3500 from 2 business days before the charge",
+    "VISA": "one rate per day for all charges",
+    "MC": "one rate per day, published around 3 PM ET",
+    "AMEX": "one rate per day: A3500 from 2 business days before the charge",
 }
 # What an estimate ("projected") is based on
 ESTIMATE_NOTES = {
