@@ -28,6 +28,17 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
+      # Plain-text rates for AI tools (arsrates.com/rates.md), written from the
+      # rates file being published. The generator comes from the main repo's
+      # scripts/pages/ (copied by the prod build); skip until it's there.
+      - name: Write rates.md
+        run: |
+          if [ -f tools/make_rates_md.py ]; then
+            python3 tools/make_rates_md.py public/static/data/current_rates.json public/rates.md
+          else
+            echo "tools/make_rates_md.py not found yet; skipping rates.md"
+          fi
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
