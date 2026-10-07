@@ -45,6 +45,29 @@ jobs:
         with:
           path: './public'
 
+      # A Pages deployment can stay "in progress" on GitHub's side after the
+      # workflow run is gone (2026-10-07: a 500 from the Pages API at 18:45 UTC
+      # blocked the next two deploys with "in progress deployment, please
+      # cancel <sha> first"). cancel-in-progress above only cancels workflow
+      # runs, so cancel any unfinished Pages deployment from the last few
+      # commits here. Pages deployment ids accept the commit SHA. Never fails
+      # the job: if this can't help, the deploy step reports the real error.
+      - name: Cancel stuck Pages deployments
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for sha in $(gh api "repos/$GITHUB_REPOSITORY/commits?sha=main&per_page=10" --jq '.[].sha' || true); do
+            [ "$sha" = "$GITHUB_SHA" ] && continue
+            status=$(gh api "repos/$GITHUB_REPOSITORY/pages/deployments/$sha" --jq '.status' 2>/dev/null || true)
+            case "$status" in
+              ""|succeed|deployment_cancelled|deployment_failed|deployment_content_failed|deployment_attempt_error|deployment_lost) ;;
+              *)
+                echo "Cancelling Pages deployment $sha (status: $status)"
+                gh api -X POST "repos/$GITHUB_REPOSITORY/pages/deployments/$sha/cancel" || true
+                ;;
+            esac
+          done
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
