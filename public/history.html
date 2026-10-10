@@ -35,7 +35,7 @@
 <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
 <link rel="icon" type="image/png" sizes="192x192" href="/static/images/icon-192x192.png">
         <title>Dollar Rate History in Argentina | ARS Rates</title>
-        <meta name="description" content="Daily history of the dólar blue, MEP, CCL, official, Western Union, Visa and Mastercard rates in Argentina: compare rates on a chart or look up the rate on any date.">
+        <meta name="description" content="Daily history of the dólar blue, MEP, CCL, official, Western Union, Visa, Mastercard and AMEX rates in Argentina: compare rates on a chart or look up the rate on any date.">
         <link rel="canonical" href="https://arsrates.com/history">
         <style>
             .history-chart { position: relative; height: 320px; }
@@ -113,9 +113,9 @@
                         </div>
                         <div class="d-flex align-items-center gap-1 small">
                             <label for="rangeFrom" class="mb-0">From</label>
-                            <input type="date" class="form-control form-control-sm" id="rangeFrom" style="width: 9.5rem;">
+                            <input type="date" class="form-control form-control-sm" id="rangeFrom" style="width: 8rem;">
                             <label for="rangeTo" class="mb-0 ms-1">to</label>
-                            <input type="date" class="form-control form-control-sm" id="rangeTo" style="width: 9.5rem;">
+                            <input type="date" class="form-control form-control-sm" id="rangeTo" style="width: 8rem;">
                         </div>
                         <div class="form-check form-check-inline mb-0">
                             <input class="form-check-input" type="checkbox" id="logScale">
@@ -124,8 +124,8 @@
                     </div>
                     <div class="history-chart"><canvas id="historyChart" aria-label="Rate history chart" role="img"></canvas></div>
                     <div class="small mt-2" id="rangeChange" aria-live="polite"></div>
-                    <p class="small text-muted mt-2 mb-0">Buy/Sell applies to Blue, MEP, CCL and Oficial. WU, Visa and
-                        Mastercard have one rate. Log scale shows equal percentage moves as equal heights, which helps
+                    <p class="small text-muted mt-2 mb-0">Buy/Sell applies to Blue, MEP, CCL and Oficial. WU, Visa,
+                        Mastercard and AMEX have one rate. Log scale shows equal percentage moves as equal heights, which helps
                         over long periods.</p>
                 </div>
             </div>
@@ -162,6 +162,9 @@
                     official rate.</li>
                 <li><strong>Mastercard (est.):</strong> the same day's Visa on weekdays (they match); Saturday and Sunday
                     keep Friday's rate, as Mastercard does.</li>
+                <li><strong>AMEX (est.):</strong> from October 27, 2025, the Central Bank's A3500 rate from two business
+                    days before, which is how AMEX converts peso charges (on real charges, the median difference was
+                    0.05%). Days with a real charge show that rate as actual. Not shown before October 2025.</li>
                 <li>A reading far off the rest of its day or week (a bad scrape) is left out. See
                     <a href="https://arsrates.com/methodology">how we get these rates</a> for sources.</li>
             </ul>
@@ -262,12 +265,16 @@
                     { key: "WU", label: "WU", color: "#B45309", pair: false, on: false },
                     { key: "VISA", label: "Visa", color: "#B91C1C", pair: false, on: false },
                     { key: "MC", label: "Mastercard", color: "#C2410C", pair: false, on: false },
+                    { key: "AMEX", label: "AMEX", color: "#0F766E", pair: false, on: false },
                 ];
                 const DAY = 86400000;
                 let data = null, first = 0, count = 0, chart = null;
                 let rangeStart = 0, rangeEnd = 0;   // day indexes shown (inclusive)
                 const est = {};       // key -> Set of estimated day indexes
 
+                const shortDate = (iso) => { const [y, m, d] = iso.split("-"); return `${+m}/${+d}/${y.slice(2)}`; };
+                const longDate = (iso) => new Date(iso + "T12:00:00Z").toLocaleDateString("en-US",
+                    { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
                 const fmt = (v) => v == null ? "—" : v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 const isoDay = (i) => new Date(first + i * DAY).toISOString().slice(0, 10);
                 const dayIndex = (iso) => Math.round((Date.parse(iso + "T00:00:00Z") - first) / DAY);
@@ -359,7 +366,7 @@
                         const pctText = `${pct >= 0 ? "+" : ""}${pct.toLocaleString("en-US", { maximumFractionDigits: Math.abs(pct) < 10 ? 1 : 0 })}%`;
                         const times = ratio >= 3 ? ` (×${ratio.toLocaleString("en-US", { maximumFractionDigits: ratio < 100 ? 1 : 0 })})` : "";
                         return `<div><span class="rate-swatch" style="background:${ds.borderColor}"></span>${ds.label}: `
-                            + `${fmt(vals[a])} on ${labels[a]} → ${fmt(vals[b])} on ${labels[b]}, <strong>${pctText}</strong>${times}</div>`;
+                            + `${fmt(vals[a])} on ${shortDate(labels[a])} → ${fmt(vals[b])} on ${shortDate(labels[b])}, <strong>${pctText}</strong>${times}</div>`;
                     }).join("");
 
                     if (chart) chart.destroy();
@@ -374,12 +381,20 @@
                                 legend: { display: false },
                                 tooltip: {
                                     callbacks: {
+                                        title: (items) => items.length ? longDate(items[0].label) : "",
                                         label: (ctx) => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}${ctx.dataset.estFlags[ctx.dataIndex] ? " (est.)" : ""}`,
                                     },
                                 },
                             },
                             scales: {
-                                x: { ticks: { maxTicksLimit: 7, maxRotation: 0 } },
+                                x: {
+                                    ticks: {
+                                        // Short dates (3/14/26), fewer on phones so they don't overlap
+                                        maxTicksLimit: window.innerWidth < 576 ? 4 : 7,
+                                        maxRotation: 0,
+                                        callback: function (value) { return shortDate(this.getLabelForValue(value)); },
+                                    },
+                                },
                                 y: {
                                     type: document.getElementById("logScale").checked ? "logarithmic" : "linear",
                                     ticks: { callback: (v) => v.toLocaleString("en-US"), maxTicksLimit: 8 },
