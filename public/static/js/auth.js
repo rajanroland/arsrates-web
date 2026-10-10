@@ -96,11 +96,11 @@ const AuthManager = {
         // Normal auth check for app server
         const token = this.getToken();
 
-        // Logged in, the "Rate Alerts" button goes to your alert settings
+        // Logged in, the "Rate Alerts" link goes to your alert settings
         // instead of the page that explains alerts (its href in the navbar)
-        const alertsButton = document.querySelector('.features-button');
-        if (alertsButton && token) {
-            alertsButton.setAttribute('href', '/alerts');
+        const alertsLink = document.getElementById('alertsLink');
+        if (alertsLink && token) {
+            alertsLink.setAttribute('href', '/alerts');
         }
 
         if (token) {

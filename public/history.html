@@ -47,7 +47,7 @@
 
     <body>
         <!-- arsrates/app/templates/partials/navbar.html -->
-<nav class="navbar navbar-expand-xl">
+<nav class="navbar navbar-expand-lg">
     <div class="container">
         <a class="navbar-brand" href="https://arsrates.com/">
             <svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true"><g stroke="#F6B40E" stroke-width="1.6" stroke-linecap="round"><line x1="12.0" y1="4.8" x2="12.0" y2="0.8"/><line x1="14.8" y1="5.3" x2="15.7" y2="3.1"/><line x1="17.1" y1="6.9" x2="19.9" y2="4.1"/><line x1="18.7" y1="9.2" x2="20.9" y2="8.3"/><line x1="19.2" y1="12.0" x2="23.2" y2="12.0"/><line x1="18.7" y1="14.8" x2="20.9" y2="15.7"/><line x1="17.1" y1="17.1" x2="19.9" y2="19.9"/><line x1="14.8" y1="18.7" x2="15.7" y2="20.9"/><line x1="12.0" y1="19.2" x2="12.0" y2="23.2"/><line x1="9.2" y1="18.7" x2="8.3" y2="20.9"/><line x1="6.9" y1="17.1" x2="4.1" y2="19.9"/><line x1="5.3" y1="14.8" x2="3.1" y2="15.7"/><line x1="4.8" y1="12.0" x2="0.8" y2="12.0"/><line x1="5.3" y1="9.2" x2="3.1" y2="8.3"/><line x1="6.9" y1="6.9" x2="4.1" y2="4.1"/><line x1="9.2" y1="5.3" x2="8.3" y2="3.1"/></g><circle cx="12" cy="12" r="5.6" fill="#F6B40E" stroke="#C48A05" stroke-width="0.8"/></svg>
@@ -63,23 +63,21 @@
                     <a class="nav-link" href="https://arsrates.com/guide">Money Guide</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://arsrates.com/exchange-houses">Exchange Houses</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://arsrates.com/history">History</a>
+                    <a class="nav-link" href="https://arsrates.com/history">Charts</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="wuMenu" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">Western Union</a>
+                        data-bs-toggle="dropdown" aria-expanded="false" aria-label="Western Union">WU</a>
                     <ul class="dropdown-menu" aria-labelledby="wuMenu">
                         <li><a class="dropdown-item" href="https://arsrates.com/wu-guide">How to Get Pesos with WU</a></li>
                         <li><a class="dropdown-item" href="https://api.arsrates.com/wu-locations">Find a WU Location</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="features-button" href="https://arsrates.com/features">
-                        <span class="features-icon">🔔</span> Rate Alerts
-                    </a>
+                    <a class="nav-link" href="https://arsrates.com/exchange-houses">Exchange Houses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="alertsLink" href="https://arsrates.com/features">Rate Alerts</a>
                 </li>
             </ul>
             <ul class="navbar-nav" id="authLinks">
@@ -91,7 +89,7 @@
 
 
         <main class="container" style="max-width: 900px;">
-            <h1 class="h2 mb-1">Rate History</h1>
+            <h1 class="h2 mb-1">Rate Charts and History</h1>
             <p class="text-muted mb-4">Daily closing rates in pesos per US dollar since 2006: the last reading of each
                 day, Argentina time. A dashed line, or "est." in the table, marks an estimate (see below).</p>
 
@@ -109,8 +107,15 @@
                             <button type="button" class="btn btn-outline-secondary" data-days="30">1M</button>
                             <button type="button" class="btn btn-outline-secondary" data-days="91">3M</button>
                             <button type="button" class="btn btn-outline-secondary active" data-days="365">1Y</button>
+                            <button type="button" class="btn btn-outline-secondary" data-days="1096">3Y</button>
                             <button type="button" class="btn btn-outline-secondary" data-days="1826">5Y</button>
                             <button type="button" class="btn btn-outline-secondary" data-days="0">All</button>
+                        </div>
+                        <div class="d-flex align-items-center gap-1 small">
+                            <label for="rangeFrom" class="mb-0">From</label>
+                            <input type="date" class="form-control form-control-sm" id="rangeFrom" style="width: 9.5rem;">
+                            <label for="rangeTo" class="mb-0 ms-1">to</label>
+                            <input type="date" class="form-control form-control-sm" id="rangeTo" style="width: 9.5rem;">
                         </div>
                         <div class="form-check form-check-inline mb-0">
                             <input class="form-check-input" type="checkbox" id="logScale">
@@ -259,7 +264,8 @@
                     { key: "MC", label: "Mastercard", color: "#C2410C", pair: false, on: false },
                 ];
                 const DAY = 86400000;
-                let data = null, first = 0, count = 0, rangeDays = 365, chart = null;
+                let data = null, first = 0, count = 0, chart = null;
+                let rangeStart = 0, rangeEnd = 0;   // day indexes shown (inclusive)
                 const est = {};       // key -> Set of estimated day indexes
 
                 const fmt = (v) => v == null ? "—" : v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -287,21 +293,42 @@
 
                 document.querySelectorAll('input[name="side"]').forEach((el) => el.addEventListener("change", drawChart));
                 document.getElementById("logScale").addEventListener("change", drawChart);
+                // Range: the buttons fill From/To; editing a date makes a custom range
+                const fromInput = document.getElementById("rangeFrom");
+                const toInput = document.getElementById("rangeTo");
+                function setPreset(days) {
+                    rangeEnd = count - 1;
+                    rangeStart = days ? Math.max(0, count - days) : 0;
+                    fromInput.value = isoDay(rangeStart);
+                    toInput.value = isoDay(rangeEnd);
+                }
                 document.querySelectorAll("#rangeButtons button").forEach((b) => b.addEventListener("click", () => {
                     document.querySelectorAll("#rangeButtons button").forEach((x) => x.classList.remove("active"));
                     b.classList.add("active");
-                    rangeDays = Number(b.dataset.days);
+                    setPreset(Number(b.dataset.days));
                     drawChart();
                 }));
+                function customRange() {
+                    if (!fromInput.value || !toInput.value) return;
+                    let a = Math.min(count - 1, Math.max(0, dayIndex(fromInput.value)));
+                    let b = Math.min(count - 1, Math.max(0, dayIndex(toInput.value)));
+                    if (a > b) [a, b] = [b, a];
+                    rangeStart = a;
+                    rangeEnd = b;
+                    document.querySelectorAll("#rangeButtons button").forEach((x) => x.classList.remove("active"));
+                    drawChart();
+                }
+                fromInput.addEventListener("change", customRange);
+                toInput.addEventListener("change", customRange);
 
                 function drawChart() {
                     if (!data) return;
-                    const start = rangeDays ? Math.max(0, count - rangeDays) : 0;
+                    const start = rangeStart;
                     const labels = [];
-                    for (let i = start; i < count; i++) labels.push(isoDay(i));
+                    for (let i = start; i <= rangeEnd; i++) labels.push(isoDay(i));
                     const datasets = RATES.filter((r) => r.on).map((r) => {
                         const key = seriesKey(r);
-                        const values = data.series[key].slice(start);
+                        const values = data.series[key].slice(start, rangeEnd + 1);
                         const estSet = est[r.key] || new Set();
                         return {
                             label: r.label + (r.pair ? ` (${side().toLowerCase()})` : ""),
@@ -402,6 +429,9 @@
                         Object.entries(d.estimated).forEach(([k, idx]) => { est[k] = new Set(idx); });
                         dateInput.min = d.first;
                         dateInput.max = d.last;
+                        fromInput.min = toInput.min = d.first;
+                        fromInput.max = toInput.max = d.last;
+                        setPreset(365);
                         dateInput.value = d.last;
                         document.getElementById("historyUpdated").textContent = `History through ${d.last}.`;
                         drawChart();
