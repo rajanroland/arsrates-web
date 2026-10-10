@@ -2,7 +2,7 @@
 // Landmarks for the WU location finder (/wu-locations): pick one to list WU
 // locations by distance from it. The dropdown lists the "popular: true" ones
 // first, then Downtown / Centro (Monserrat, San Nicolás, Retiro and Puerto Madero;
-// DOWNTOWN_BARRIOS in wu_locations.html), then each other barrio in the order
+// DOWNTOWN_BARRIOS in setupLandmarkPicker below), then each other barrio in the order
 // below. Edit freely:
 // - name: shown in the list
 // - barrio: official CABA barrio, from the city's barrio boundaries
@@ -166,3 +166,69 @@ window.WU_LANDMARKS = [
   // Ezeiza (Buenos Aires province)
   { name: "Ezeiza airport (EZE)", barrio: "Ezeiza (Buenos Aires province)", lat: -34.81681, lon: -58.54742, also: ["international airport", "Pistarini"], popular: true },
 ];
+
+// Landmark indexes whose name or "also" words contain the text (ignoring case
+// and accents). Used for typing a name and for address suggestions.
+window.findLandmarks = function (query) {
+  const fold = (t) => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const q = fold(query);
+  return window.WU_LANDMARKS.map((lm, i) => i).filter((i) =>
+    [window.WU_LANDMARKS[i].name, ...(window.WU_LANDMARKS[i].also || [])].some((t) => fold(t).includes(q))
+  );
+};
+
+// Fills a landmark <select> (Popular first, then Downtown / Centro, then one
+// group per barrio, each A-Z) and wires a text box that lists matching names
+// as tappable rows. onPick(landmark) runs when one is chosen either way.
+// Used by the WU finder (wu_locations.html) and exchange houses (exchange_houses.html).
+window.setupLandmarkPicker = function ({ select, filter, matches, onPick }) {
+  const LANDMARKS = window.WU_LANDMARKS;
+  const DOWNTOWN = "Downtown / Centro";
+  const DOWNTOWN_BARRIOS = ["Monserrat", "San Nicolás", "Retiro", "Puerto Madero"];
+  const groups = new Map([["Popular", []], [DOWNTOWN, []]]);
+  LANDMARKS.forEach((lm, i) => {
+    if (lm.popular) groups.get("Popular").push([lm.name, i]);
+    const group = DOWNTOWN_BARRIOS.includes(lm.barrio) ? DOWNTOWN : lm.barrio;
+    if (!groups.has(group)) groups.set(group, []);
+    groups.get(group).push([lm.name, i]);
+  });
+  groups.forEach((items, label) => {
+    if (!items.length) return;
+    items.sort((a, b) => a[0].localeCompare(b[0], "es"));
+    const optgroup = document.createElement("optgroup");
+    optgroup.label = label;
+    items.forEach(([name, i]) => optgroup.appendChild(new Option(name, String(i))));
+    select.appendChild(optgroup);
+  });
+  select.addEventListener("change", () => {
+    if (select.value !== "") onPick(LANDMARKS[Number(select.value)]);
+  });
+
+  filter.addEventListener("input", () => {
+    matches.innerHTML = "";
+    const q = filter.value.trim();
+    if (q.length < 2) return;
+    const hits = window.findLandmarks(q).slice(0, 6);
+    if (!hits.length) {
+      matches.innerHTML = '<div class="list-group-item small text-muted">No landmark by that name. Try the address search.</div>';
+      return;
+    }
+    hits.forEach((i) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "list-group-item list-group-item-action";
+      btn.textContent = LANDMARKS[i].name;
+      const tag = document.createElement("small");
+      tag.className = "text-muted ms-2";
+      tag.textContent = LANDMARKS[i].barrio;
+      btn.appendChild(tag);
+      btn.addEventListener("click", () => {
+        filter.value = LANDMARKS[i].name;
+        matches.innerHTML = "";
+        select.value = String(i);
+        select.dispatchEvent(new Event("change"));
+      });
+      matches.appendChild(btn);
+    });
+  });
+};

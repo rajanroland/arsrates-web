@@ -94,6 +94,16 @@ body {
     line-height: 1.5 !important;
 }
 
+/* Small desktops: tighter links so the menu stays on one line */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .nav-link {
+        padding: 0 0.6rem !important;
+    }
+    .features-button {
+        margin-left: 0.5rem;
+    }
+}
+
 .nav-link:hover,
 .nav-link:focus-visible {
     text-decoration: underline;

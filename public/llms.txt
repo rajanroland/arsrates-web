@@ -14,6 +14,7 @@ All rates are pesos per 1 US dollar. Remittance and card rates are headline rate
 - [How we get these rates](https://arsrates.com/methodology): sources for every rate, update times, and how the Mastercard and AMEX estimates work
 - [Money Guide](https://arsrates.com/guide): paying by card vs. cash in Argentina, which card gets the best rate, and the safest ways to get pesos
 - [Getting pesos with Western Union](https://arsrates.com/wu-guide): account setup, keeping fees down, locations that have cash, what to bring
+- [Exchange houses and banks](https://arsrates.com/exchange-houses): where to change US dollars in greater Buenos Aires: exchange houses (casas and agencias de cambio) licensed by the Central Bank, updated weekly from the BCRA registry, and banks that change cash for non-customers (Banco Piano; Banco Nación at Ezeiza airport), with addresses, phones and hours
 - [Western Union location finder](https://api.arsrates.com/wu-locations): search pickup locations by neighborhood, province or address, including WU's own branches
 - [Rate alerts](https://arsrates.com/features): free email alerts when a rate reaches a target
 
