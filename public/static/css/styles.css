@@ -94,16 +94,6 @@ body {
     line-height: 1.5 !important;
 }
 
-/* Small desktops: tighter links so the menu stays on one line */
-@media (min-width: 992px) and (max-width: 1199.98px) {
-    .nav-link {
-        padding: 0 0.6rem !important;
-    }
-    .features-button {
-        margin-left: 0.5rem;
-    }
-}
-
 .nav-link:hover,
 .nav-link:focus-visible {
     text-decoration: underline;
@@ -287,8 +277,9 @@ main.container {
     line-height: 1.5;
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 991px) {
+/* Collapsed menu (the navbar expands at 1200px: navbar-expand-xl in the
+   navbar partial; below that the full menu doesn't fit on one line) */
+@media (max-width: 1199.98px) {
     .navbar {
         height: auto !important;
     }
