@@ -8,7 +8,7 @@ All rates are pesos per 1 US dollar. Remittance and card rates are headline rate
 
 - [rates.md](https://arsrates.com/rates.md): today's rates as plain text, refreshed every 15 minutes
 - [current_rates.json](https://arsrates.com/static/data/current_rates.json): the same data as JSON
-- [Rate history](https://arsrates.com/history): daily closing rates since 2006 (official), 2010 (CCL) and 2011 (Blue) for Blue, MEP, CCL, official, Western Union, Visa and Mastercard ([rate_history.json](https://arsrates.com/static/data/rate_history.json); estimated values are listed under "estimated")
+- [Rate history](https://arsrates.com/history): daily closing rates since 2006 (official), 2010 (CCL), 2011 (Blue) and 2018 (MEP) for Blue, MEP, CCL, official, Western Union, Visa and Mastercard ([rate_history.json](https://arsrates.com/static/data/rate_history.json); estimated values are listed under "estimated")
 
 ## Guides
 

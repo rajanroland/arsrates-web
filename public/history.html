@@ -140,15 +140,18 @@
             <ul class="small">
                 <li><strong>Close:</strong> the last reading of the day. Readings are every 15 minutes from 7:00 to 21:00
                     and hourly overnight. From November 2023 to November 2024 and from November 2025 to September 2026
-                    there's one value per day. Before November 2024 the values come from a daily history with Blue
-                    sell (from 2011), CCL as one price (from 2010) and the official sell (from 2006); Visa and Mastercard
-                    start in November 2023. Blank means no value that day.</li>
+                    there's one value per day. Before November 2024: Blue and official buy/sell (from 2011) and MEP (from
+                    October 2018) come from <a href="https://argentinadatos.com" target="_blank" rel="noopener">ArgentinaDatos</a>;
+                    CCL (one price, from 2010) and the official sell before 2011 from a daily history we downloaded;
+                    Visa and Mastercard start in November 2023. Blank means no value that day.</li>
                 <li><strong>Western Union (est.):</strong> since December 2021, on days without a WU rate we show CCL
                     buy, which WU tracks closely: within 0.2% at the median since November 2024, and within about 1%
                     on real transfers from December 2021 to October 2023 (shown as actual values). On days when CCL
                     jumps, WU can lag by a day, so the estimate runs high. Before December 2021 WU is blank.</li>
                 <li><strong>Visa (est.):</strong> the previous day's MEP sell × 0.935 (Visa has run about 6.5% below the
-                    previous day's MEP); Sunday and Monday keep Saturday's rate, as Visa does.</li>
+                    previous day's MEP in every half-year since late 2023); Sunday and Monday keep Saturday's rate, as
+                    Visa does. Not estimated before November 2023: earlier, foreign cards were charged nearer the
+                    official rate.</li>
                 <li><strong>Mastercard (est.):</strong> the same day's Visa on weekdays (they match); Saturday and Sunday
                     keep Friday's rate, as Mastercard does.</li>
                 <li>A reading far off the rest of its day or week (a bad scrape) is left out. See
