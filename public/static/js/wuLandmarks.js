@@ -1,7 +1,9 @@
 // arsrates/static/js/wuLandmarks.js
 // Landmarks for the WU location finder (/wu-locations): pick one to list WU
-// locations by distance from it. The dropdown groups them by barrio (in the
-// order below), with the "popular: true" ones first. Edit freely:
+// locations by distance from it. The dropdown lists the "popular: true" ones
+// first, then Downtown / Centro (Monserrat, San Nicolás and Retiro together;
+// DOWNTOWN_BARRIOS in wu_locations.html), then each other barrio in the order
+// below. Edit freely:
 // - name: shown in the list
 // - barrio: official CABA barrio, from the city's barrio boundaries
 //   (static/data/barrios.geojson), so "Palermo" also covers Soho, Hollywood,
