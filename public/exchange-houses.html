@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- arsrates/app/templates/exchange_houses.html (served at /exchange-houses on arsrates.com).
+         The list is static/data/exchange_houses.json, rebuilt weekly from the
+         BCRA registry by app/services/exchange_houses.py. -->
+
+    <head>
+        <!-- arsrates/app/templates/partials/head.html -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ARS Rates">
+<meta name="theme-color" content="#FFFFFF">
+
+<!-- Link previews (WhatsApp, social media). Each page sets its own description
+     and canonical address after this include. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ARS Rates">
+<meta property="og:title" content="ARS Rates: dollar to peso rates today in Argentina">
+<meta property="og:description" content="Blue, MEP, Western Union, Visa, Mastercard and AMEX rates side by side, updated every 15 minutes.">
+<meta property="og:image" content="https://arsrates.com/static/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ARS Rates: dollar to peso rates in Argentina, with the Sol de Mayo and Argentine flag colors">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Stylesheets -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/styles.css">
+
+<!-- PWA/Icons -->
+<link rel="manifest" href="/static/manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+<link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="/static/images/icon-192x192.png">
+        <title>Exchange Houses and Banks in Buenos Aires | ARS Rates</title>
+        <meta name="description" content="Where to change US dollars in Buenos Aires: exchange houses (casas de cambio) licensed by Argentina's Central Bank and banks that serve non-customers, nearest first, with addresses, phones and hours.">
+        <link rel="canonical" href="https://arsrates.com/exchange-houses">
+    </head>
+
+    <body>
+        <!-- arsrates/app/templates/partials/navbar.html -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="https://arsrates.com/">
+            <svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true"><g stroke="#F6B40E" stroke-width="1.6" stroke-linecap="round"><line x1="12.0" y1="4.8" x2="12.0" y2="0.8"/><line x1="14.8" y1="5.3" x2="15.7" y2="3.1"/><line x1="17.1" y1="6.9" x2="19.9" y2="4.1"/><line x1="18.7" y1="9.2" x2="20.9" y2="8.3"/><line x1="19.2" y1="12.0" x2="23.2" y2="12.0"/><line x1="18.7" y1="14.8" x2="20.9" y2="15.7"/><line x1="17.1" y1="17.1" x2="19.9" y2="19.9"/><line x1="14.8" y1="18.7" x2="15.7" y2="20.9"/><line x1="12.0" y1="19.2" x2="12.0" y2="23.2"/><line x1="9.2" y1="18.7" x2="8.3" y2="20.9"/><line x1="6.9" y1="17.1" x2="4.1" y2="19.9"/><line x1="5.3" y1="14.8" x2="3.1" y2="15.7"/><line x1="4.8" y1="12.0" x2="0.8" y2="12.0"/><line x1="5.3" y1="9.2" x2="3.1" y2="8.3"/><line x1="6.9" y1="6.9" x2="4.1" y2="4.1"/><line x1="9.2" y1="5.3" x2="8.3" y2="3.1"/></g><circle cx="12" cy="12" r="5.6" fill="#F6B40E" stroke="#C48A05" stroke-width="0.8"/></svg>
+            ARS Rates
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/guide">Money Guide</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/exchange-houses">Exchange Houses</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="wuMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Western Union</a>
+                    <ul class="dropdown-menu" aria-labelledby="wuMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/wu-guide">How to Get Pesos with WU</a></li>
+                        <li><a class="dropdown-item" href="https://api.arsrates.com/wu-locations">Find a WU Location</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="features-button" href="https://arsrates.com/features">
+                        <span class="features-icon">🔔</span> Rate Alerts
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" id="authLinks">
+                <!-- Will be populated by JavaScript -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+        <main class="container" style="max-width: 800px;">
+            <h1 class="h2 mb-1">Exchange Houses and Banks</h1>
+            <p class="text-muted mb-4">Where to change US dollars in greater Buenos Aires, nearest first: exchange
+                houses (casas and agencias de cambio) licensed by Argentina's Central Bank, and banks that change
+                cash for people who aren't their customers. Both give you a receipt, unlike street changers.
+                Banks are open weekdays only and usually pay a little less than exchange houses.</p>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Search near</h2>
+                    <div class="d-flex flex-wrap gap-2 mb-3" role="group" aria-label="Search near">
+                        <input type="radio" class="btn-check" name="nearType" id="nearLandmark" value="landmark" checked>
+                        <label class="btn btn-outline-primary btn-sm" for="nearLandmark">Landmark</label>
+                        <input type="radio" class="btn-check" name="nearType" id="nearAddress" value="address">
+                        <label class="btn btn-outline-primary btn-sm" for="nearAddress">Address</label>
+                        <input type="radio" class="btn-check" name="nearType" id="nearArea" value="area">
+                        <label class="btn btn-outline-primary btn-sm" for="nearArea">Neighborhood / city</label>
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="nearMe">📍 Near me</button>
+                    </div>
+
+                    <div id="landmarkBox" class="near-box">
+                        <label class="form-label" for="landmarkFilter">Landmark</label>
+                        <input type="text" class="form-control mb-1" id="landmarkFilter" autocomplete="off"
+                            placeholder="Type a name (e.g. Obelisco) or choose below">
+                        <div id="landmarkMatches" class="list-group mb-2"></div>
+                        <select class="form-select" id="landmarkSelect" aria-label="Choose a landmark">
+                            <option value="">Choose a landmark</option>
+                        </select>
+                    </div>
+
+                    <div id="addressBox" class="near-box" style="display: none;">
+                        <label class="form-label" for="addressSearch">Address in greater Buenos Aires</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="addressSearch"
+                                placeholder="Example: Av. Corrientes 1200">
+                            <button class="btn btn-outline-primary" type="button" id="searchAddressBtn">Search</button>
+                        </div>
+                        <small class="form-text text-muted">Address search © <a href="https://www.openstreetmap.org/copyright"
+                            target="_blank" rel="noopener">OpenStreetMap</a> contributors.</small>
+                    </div>
+
+                    <div id="areaBox" class="near-box" style="display: none;">
+                        <label class="form-label" for="areaSelect">Neighborhood (CABA) or city</label>
+                        <select class="form-select" id="areaSelect">
+                            <option value="">All areas</option>
+                        </select>
+                    </div>
+
+                    <div class="row g-2 mt-2 align-items-end">
+                        <div class="col-sm-6">
+                            <label class="form-label" for="kindSelect">Show</label>
+                            <select class="form-select" id="kindSelect">
+                                <option value="">Exchange houses and banks</option>
+                                <option value="house">Exchange houses only</option>
+                                <option value="banco">Banks only</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="daySelect">Open on <span class="text-muted">(optional)</span></label>
+                            <select class="form-select" id="daySelect">
+                                <option value="">Any day</option>
+                                <option value="sat">Saturday</option>
+                                <option value="sun">Sunday</option>
+                                <option value="holiday">Holidays</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p class="small mt-2 mb-0" id="searchStatus" role="status"></p>
+                </div>
+            </div>
+
+            <div id="housesList" class="mb-4">
+                <p class="text-muted">Loading the list…</p>
+            </div>
+
+            <div class="alert alert-secondary small">
+                <strong>Before you go</strong>
+                <ul class="mb-0 mt-1">
+                    <li>Bring your passport; exchange houses and banks ask for ID.</li>
+                    <li>Bring clean US$100 bills in the current design (blue 3D security ribbon). Older designs,
+                        marked or torn bills and small denominations get a lower rate.</li>
+                    <li>Compare their buy rate with Blue buy on the <a href="https://arsrates.com/">rates page</a>.
+                        Rates differ between houses and branches, so call or check their website first.</li>
+                    <li>Count the money at the counter and keep the receipt.</li>
+                </ul>
+            </div>
+
+            <p class="small text-muted">Exchange houses come from the Central Bank's
+                <a href="https://www.bcra.gob.ar/agencias-de-cambio-dependencias/" target="_blank" rel="noopener">registry
+                of exchange operators</a>, updated weekly; suspended licenses and upstairs offices are left out.
+                Banks are the ones whose websites say they change cash for non-customers (Banco Piano), plus Banco
+                Nación's counter at Ezeiza airport. Opening hours are from each company's website where we've
+                checked them. ARS Rates isn't affiliated with any of these companies. <span id="listUpdated"></span></p>
+
+            <div class="text-center my-4">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                    data-bs-target="#feedbackModal">Report a closed branch or wrong hours</button>
+            </div>
+
+            <!-- arsrates/app/templates/partials/feedback.html -->
+<div class="modal fade" id="feedbackModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Provide Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="feedbackForm" action="https://api.arsrates.com/api/feedback" method="POST">
+                    <div class="mb-3">
+                        <label for="feedbackEmail" class="form-label">Email (optional)</label>
+                        <input type="email" class="form-control" id="feedbackEmail" placeholder="your@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="feedbackText" class="form-label">Your Feedback</label>
+                        <textarea class="form-control" id="feedbackText" rows="4" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary me-3" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="submitFeedback()">Submit
+                    Feedback</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function submitFeedback() {
+        const email = document.getElementById('feedbackEmail').value;
+        const feedbackText = document.getElementById('feedbackText').value;
+
+        if (!feedbackText.trim()) {
+            alert('Please enter your feedback');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${window.APP_CONFIG.API_URL}/api/feedback`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email || null,
+                    feedback_text: feedbackText
+                })
+            })
+            if (response.ok) {
+                alert('Thank you for your feedback!');
+                document.getElementById('feedbackForm').reset();
+                bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
+            } else {
+                throw new Error('Failed to submit feedback');
+            }
+        } catch (error) {
+            alert('Error submitting feedback. Please try again.');
+            console.error('Error:', error);
+        }
+    }
+</script>
+        </main>
+        <!-- arsrates/app/templates/partials/footer.html -->
+<footer class="site-footer text-center my-4 px-3">
+    <div>Rates are for information only and may differ from what providers charge. Not financial advice.</div>
+    <div class="mt-1">© 2026 ARS Rates · <a href="https://arsrates.com/methodology">How we get these rates</a> · <a href="https://arsrates.com/privacy">Privacy</a></div>
+</footer>
+
+        <!-- arsrates/app/templates/partials/scripts.html -->
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- App Configuration and Authentication -->
+<script src="/static/js/config.js"></script>
+<script src="/static/js/auth.js"></script>
+
+<!-- Page view counting (after config.js, which sets APP_CONFIG.API_URL) -->
+<script src="/static/js/pageview.js"></script>
+
+<!-- Add any other global utility functions after auth.js -->
+<script>
+// Add any global utility functions that aren't auth-related here
+</script>
+        <script src="/static/js/wuLandmarks.js"></script>
+        <script>
+            (function () {
+                const DAY_LABELS = { mon_fri: "Mon-Fri", sat: "Sat", sun: "Sun", holiday: "Holidays" };
+                // Greater Buenos Aires, to keep address matches local (as on the WU finder)
+                const AMBA = { minLon: -59.2, minLat: -35.2, maxLon: -57.8, maxLat: -34.3 };
+                let branches = [];
+                let origin = null;          // { lat, lon, label } when searching near a point
+                let areaFilter = "";
+
+                const list = document.getElementById("housesList");
+                const status = document.getElementById("searchStatus");
+                const daySelect = document.getElementById("daySelect");
+                const areaSelect = document.getElementById("areaSelect");
+
+                const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) =>
+                    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+                function km(a, b) {
+                    const R = 6371, rad = (d) => d * Math.PI / 180;
+                    const dLat = rad(b.lat - a.lat), dLon = rad(b.lon - a.lon);
+                    const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLon / 2) ** 2;
+                    return 2 * R * Math.asin(Math.sqrt(h));
+                }
+                const distanceText = (d) => d < 1 ? `${Math.round(d * 1000 / 10) * 10} m` : `${d.toFixed(1)} km`;
+
+                function hoursHtml(h) {
+                    if (!h) return '<span class="text-muted">Call to confirm hours</span>';
+                    return Object.keys(DAY_LABELS)
+                        .map((d) => `${DAY_LABELS[d]}: ${h[d] ? esc(h[d].replace("-", "–")) : "closed"}`)
+                        .join(" · ");
+                }
+
+                function card(b) {
+                    const dist = origin ? `<span class="badge bg-light text-dark border ms-1">${distanceText(b.distance)}</span>` : "";
+                    const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.address + ", " + b.area + ", Argentina")}`;
+                    const phone = b.phone ? `<a href="tel:${esc(b.phone_tel)}">${esc(b.phone)}</a>` : "";
+                    const site = b.website ? `<a href="${esc(b.website)}" target="_blank" rel="noopener">Website ↗</a>` : "";
+                    return `
+                        <div class="card mb-2">
+                            <div class="card-body py-2">
+                                <h3 class="h6 mb-1">${esc(b.name)}${b.kind === "banco" ? ' <span class="badge bg-secondary align-middle">Bank</span>' : ""}${dist}</h3>
+                                <p class="mb-1">${esc(b.address)}, ${esc(b.area)}
+                                    · <a href="${maps}" target="_blank" rel="noopener">Map ↗</a>
+                                    ${b.approximate ? '<span class="small text-muted">(location approximate)</span>' : ""}</p>
+                                <p class="small mb-1">${hoursHtml(b.hours)}</p>
+                                <p class="small text-muted mb-0">${b.kind === "banco"
+                                    ? esc(b.note || "Bank")
+                                    : `Licensed by the BCRA (${b.kind === "casa" ? "casa" : "agencia"} de cambio #${esc(b.registry)})`}${phone ? " · " + phone : ""}${site ? " · " + site : ""}</p>
+                            </div>
+                        </div>`;
+                }
+
+                function render() {
+                    const day = daySelect.value;
+                    const kind = document.getElementById("kindSelect").value;
+                    let shown = branches.filter((b) => (!areaFilter || b.area === areaFilter)
+                        && (!kind || (kind === "banco") === (b.kind === "banco")));
+                    let unknownHours = 0;
+                    if (day) {
+                        unknownHours = shown.filter((b) => !b.hours).length;
+                        shown = shown.filter((b) => b.hours && b.hours[day]);
+                    }
+                    if (origin) {
+                        shown.forEach((b) => { b.distance = km(origin, b); });
+                        shown.sort((a, b) => a.distance - b.distance);
+                    } else {
+                        // CABA first by barrio, then the other cities, A-Z
+                        shown.sort((a, b) => (!!b.barrio - !!a.barrio) || a.area.localeCompare(b.area, "es")
+                            || a.name.localeCompare(b.name, "es"));
+                    }
+                    const near = origin ? ` nearest to ${esc(origin.label)}` : areaFilter ? ` in ${esc(areaFilter)}` : "";
+                    const dayNote = day && unknownHours
+                        ? ` ${unknownHours} branch${unknownHours === 1 ? "" : "es"} without known hours not shown.` : "";
+                    list.innerHTML = `<p class="small text-muted mb-2">${shown.length} branch${shown.length === 1 ? "" : "es"}${near}.${dayNote}</p>`
+                        + (shown.length ? shown.slice(0, origin ? 25 : shown.length).map(card).join("")
+                            : '<div class="alert alert-info">No branches match. Try another day or area.</div>')
+                        + (origin && shown.length > 25 ? `<p class="small text-muted">Showing the 25 nearest.</p>` : "");
+                }
+
+                function searchNear(lat, lon, label) {
+                    origin = { lat: Number(lat), lon: Number(lon), label };
+                    areaFilter = "";
+                    areaSelect.value = "";
+                    status.textContent = "";
+                    render();
+                }
+
+                // Search type buttons
+                document.querySelectorAll('input[name="nearType"]').forEach((r) => r.addEventListener("change", () => {
+                    document.querySelectorAll(".near-box").forEach((box) => { box.style.display = "none"; });
+                    document.getElementById(r.value + "Box").style.display = "";
+                }));
+
+                window.setupLandmarkPicker({
+                    select: document.getElementById("landmarkSelect"),
+                    filter: document.getElementById("landmarkFilter"),
+                    matches: document.getElementById("landmarkMatches"),
+                    onPick: (lm) => searchNear(lm.lat, lm.lon, lm.name),
+                });
+
+                // Address: OpenStreetMap Nominatim, one request per click (its usage
+                // policy), limited to greater Buenos Aires
+                const addressInput = document.getElementById("addressSearch");
+                const addressBtn = document.getElementById("searchAddressBtn");
+                async function searchAddress() {
+                    const q = addressInput.value.trim();
+                    if (!q) return;
+                    addressBtn.disabled = true;
+                    status.textContent = "Looking up the address…";
+                    try {
+                        const viewbox = [AMBA.minLon, AMBA.maxLat, AMBA.maxLon, AMBA.minLat].join(",");
+                        const r = await fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=ar"
+                            + `&viewbox=${viewbox}&bounded=1&q=${encodeURIComponent(q + ", Buenos Aires, Argentina")}`,
+                            { headers: { Accept: "application/json" } });
+                        const data = r.ok ? await r.json() : [];
+                        if (data.length) searchNear(data[0].lat, data[0].lon, q);
+                        else status.textContent = "Address not found. Try a street and number, or a landmark.";
+                    } catch (e) {
+                        status.textContent = "The address search isn't responding. Try a landmark instead.";
+                    } finally {
+                        addressBtn.disabled = false;
+                    }
+                }
+                addressBtn.addEventListener("click", searchAddress);
+                addressInput.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter") { e.preventDefault(); searchAddress(); }
+                });
+
+                // Near me: the browser asks for permission; the location never leaves the page
+                document.getElementById("nearMe").addEventListener("click", () => {
+                    if (!navigator.geolocation) {
+                        status.textContent = "This browser can't share your location. Try a landmark instead.";
+                        return;
+                    }
+                    status.textContent = "Getting your location…";
+                    navigator.geolocation.getCurrentPosition(
+                        (p) => searchNear(p.coords.latitude, p.coords.longitude, "you"),
+                        () => { status.textContent = "Location not available. Try a landmark or address instead."; },
+                        { timeout: 10000, maximumAge: 300000 }
+                    );
+                });
+
+                areaSelect.addEventListener("change", () => {
+                    areaFilter = areaSelect.value;
+                    origin = null;
+                    render();
+                });
+                daySelect.addEventListener("change", render);
+                document.getElementById("kindSelect").addEventListener("change", render);
+
+                fetch("/static/data/exchange_houses.json", { cache: "no-cache" })
+                    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+                    .then((data) => {
+                        branches = data.branches || [];
+                        // Area list: CABA barrios first, then cities, A-Z
+                        const areas = [...new Set(branches.map((b) => b.area))].sort((a, b) =>
+                            (b.endsWith(", CABA") - a.endsWith(", CABA")) || a.localeCompare(b, "es"));
+                        areas.forEach((a) => areaSelect.add(new Option(a, a)));
+                        if (data.updated) {
+                            document.getElementById("listUpdated").textContent =
+                                `Last updated ${new Date(data.updated).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}.`;
+                        }
+                        render();
+                    })
+                    .catch(() => {
+                        list.innerHTML = '<div class="alert alert-danger">The list couldn\'t be loaded. Please try again later.</div>';
+                    });
+            })();
+        </script>
+    </body>
+
+</html>
