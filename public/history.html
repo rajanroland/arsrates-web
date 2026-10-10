@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- arsrates/app/templates/history.html (served at /history on arsrates.com).
+         Data: static/data/rate_history.json, rebuilt daily by app/services/rate_history.py. -->
+
+    <head>
+        <!-- arsrates/app/templates/partials/head.html -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ARS Rates">
+<meta name="theme-color" content="#FFFFFF">
+
+<!-- Link previews (WhatsApp, social media). Each page sets its own description
+     and canonical address after this include. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ARS Rates">
+<meta property="og:title" content="ARS Rates: dollar to peso rates today in Argentina">
+<meta property="og:description" content="Blue, MEP, Western Union, Visa, Mastercard and AMEX rates side by side, updated every 15 minutes.">
+<meta property="og:image" content="https://arsrates.com/static/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ARS Rates: dollar to peso rates in Argentina, with the Sol de Mayo and Argentine flag colors">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Stylesheets -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/styles.css">
+
+<!-- PWA/Icons -->
+<link rel="manifest" href="/static/manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+<link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="/static/images/icon-192x192.png">
+        <title>Dollar Rate History in Argentina | ARS Rates</title>
+        <meta name="description" content="Daily history of the dólar blue, MEP, CCL, official, Western Union, Visa and Mastercard rates in Argentina: compare rates on a chart or look up the rate on any date.">
+        <link rel="canonical" href="https://arsrates.com/history">
+        <style>
+            .history-chart { position: relative; height: 320px; }
+            @media (min-width: 768px) { .history-chart { height: 420px; } }
+            .rate-toggle .btn { margin: 0 0.25rem 0.4rem 0; }
+            .rate-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: 0; }
+        </style>
+    </head>
+
+    <body>
+        <!-- arsrates/app/templates/partials/navbar.html -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="https://arsrates.com/">
+            <svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true"><g stroke="#F6B40E" stroke-width="1.6" stroke-linecap="round"><line x1="12.0" y1="4.8" x2="12.0" y2="0.8"/><line x1="14.8" y1="5.3" x2="15.7" y2="3.1"/><line x1="17.1" y1="6.9" x2="19.9" y2="4.1"/><line x1="18.7" y1="9.2" x2="20.9" y2="8.3"/><line x1="19.2" y1="12.0" x2="23.2" y2="12.0"/><line x1="18.7" y1="14.8" x2="20.9" y2="15.7"/><line x1="17.1" y1="17.1" x2="19.9" y2="19.9"/><line x1="14.8" y1="18.7" x2="15.7" y2="20.9"/><line x1="12.0" y1="19.2" x2="12.0" y2="23.2"/><line x1="9.2" y1="18.7" x2="8.3" y2="20.9"/><line x1="6.9" y1="17.1" x2="4.1" y2="19.9"/><line x1="5.3" y1="14.8" x2="3.1" y2="15.7"/><line x1="4.8" y1="12.0" x2="0.8" y2="12.0"/><line x1="5.3" y1="9.2" x2="3.1" y2="8.3"/><line x1="6.9" y1="6.9" x2="4.1" y2="4.1"/><line x1="9.2" y1="5.3" x2="8.3" y2="3.1"/></g><circle cx="12" cy="12" r="5.6" fill="#F6B40E" stroke="#C48A05" stroke-width="0.8"/></svg>
+            ARS Rates
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/guide">Money Guide</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/exchange-houses">Exchange Houses</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="wuMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Western Union</a>
+                    <ul class="dropdown-menu" aria-labelledby="wuMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/wu-guide">How to Get Pesos with WU</a></li>
+                        <li><a class="dropdown-item" href="https://api.arsrates.com/wu-locations">Find a WU Location</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="features-button" href="https://arsrates.com/features">
+                        <span class="features-icon">🔔</span> Rate Alerts
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" id="authLinks">
+                <!-- Will be populated by JavaScript -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+        <main class="container" style="max-width: 900px;">
+            <h1 class="h2 mb-1">Rate History</h1>
+            <p class="text-muted mb-4">Daily closing rates in pesos per US dollar: the last reading of each day,
+                Argentina time. A dashed line, or "est." in the table, marks an estimate (see below).</p>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="rate-toggle mb-2" id="rateToggles" aria-label="Rates to show"></div>
+                    <div class="d-flex flex-wrap gap-3 align-items-center mb-3">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Buy or sell">
+                            <input type="radio" class="btn-check" name="side" id="sideBuy" value="BUY" checked>
+                            <label class="btn btn-outline-secondary" for="sideBuy">Buy</label>
+                            <input type="radio" class="btn-check" name="side" id="sideSell" value="SELL">
+                            <label class="btn btn-outline-secondary" for="sideSell">Sell</label>
+                        </div>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Time range" id="rangeButtons">
+                            <button type="button" class="btn btn-outline-secondary" data-days="30">1M</button>
+                            <button type="button" class="btn btn-outline-secondary" data-days="91">3M</button>
+                            <button type="button" class="btn btn-outline-secondary" data-days="182">6M</button>
+                            <button type="button" class="btn btn-outline-secondary active" data-days="365">1Y</button>
+                            <button type="button" class="btn btn-outline-secondary" data-days="0">All</button>
+                        </div>
+                    </div>
+                    <div class="history-chart"><canvas id="historyChart" aria-label="Rate history chart" role="img"></canvas></div>
+                    <p class="small text-muted mt-2 mb-0">Buy/Sell applies to Blue, MEP, CCL and Oficial. WU, Visa and
+                        Mastercard have one rate.</p>
+                </div>
+            </div>
+
+            <h2 class="h4">Rates on a date</h2>
+            <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="prevDay" aria-label="Previous day">‹</button>
+                <input type="date" class="form-control form-control-sm" id="lookupDate" style="max-width: 11rem;" aria-label="Date">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="nextDay" aria-label="Next day">›</button>
+                <span class="small text-muted" id="lookupWeekday"></span>
+            </div>
+            <div class="table-responsive mb-4">
+                <table class="table table-sm align-middle" style="max-width: 32rem;">
+                    <thead><tr><th>Rate</th><th class="text-end">Buy</th><th class="text-end">Sell</th></tr></thead>
+                    <tbody id="lookupTable"><tr><td colspan="3" class="text-muted">Loading…</td></tr></tbody>
+                </table>
+            </div>
+
+            <h2 class="h5">About these numbers</h2>
+            <ul class="small">
+                <li><strong>Close:</strong> the last reading of the day. Readings are every 15 minutes from 7:00 to 21:00
+                    and hourly overnight; from November 2025 to September 2026 there's one value per day. Blank means no
+                    reading that day.</li>
+                <li><strong>Western Union (est.):</strong> on days without a WU reading, we show CCL buy, which WU tracks
+                    closely (on days with both, WU was within 0.2% of CCL buy at the median), though they can drift
+                    apart.</li>
+                <li><strong>Visa (est.):</strong> the previous day's MEP sell × 0.935 (Visa has run about 6.5% below the
+                    previous day's MEP); Sunday and Monday keep Saturday's rate, as Visa does.</li>
+                <li><strong>Mastercard (est.):</strong> the same day's Visa on weekdays (they match); Saturday and Sunday
+                    keep Friday's rate, as Mastercard does.</li>
+                <li>A reading far off the rest of its day or week (a bad scrape) is left out. See
+                    <a href="https://arsrates.com/methodology">how we get these rates</a> for sources.</li>
+            </ul>
+            <p class="small text-muted"><span id="historyUpdated"></span></p>
+
+            <!-- arsrates/app/templates/partials/feedback.html -->
+<div class="modal fade" id="feedbackModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Provide Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="feedbackForm" action="https://api.arsrates.com/api/feedback" method="POST">
+                    <div class="mb-3">
+                        <label for="feedbackEmail" class="form-label">Email (optional)</label>
+                        <input type="email" class="form-control" id="feedbackEmail" placeholder="your@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="feedbackText" class="form-label">Your Feedback</label>
+                        <textarea class="form-control" id="feedbackText" rows="4" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary me-3" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="submitFeedback()">Submit
+                    Feedback</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function submitFeedback() {
+        const email = document.getElementById('feedbackEmail').value;
+        const feedbackText = document.getElementById('feedbackText').value;
+
+        if (!feedbackText.trim()) {
+            alert('Please enter your feedback');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${window.APP_CONFIG.API_URL}/api/feedback`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email || null,
+                    feedback_text: feedbackText
+                })
+            })
+            if (response.ok) {
+                alert('Thank you for your feedback!');
+                document.getElementById('feedbackForm').reset();
+                bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
+            } else {
+                throw new Error('Failed to submit feedback');
+            }
+        } catch (error) {
+            alert('Error submitting feedback. Please try again.');
+            console.error('Error:', error);
+        }
+    }
+</script>
+        </main>
+        <!-- arsrates/app/templates/partials/footer.html -->
+<footer class="site-footer text-center my-4 px-3">
+    <div>Rates are for information only and may differ from what providers charge. Not financial advice.</div>
+    <div class="mt-1">© 2026 ARS Rates · <a href="https://arsrates.com/methodology">How we get these rates</a> · <a href="https://arsrates.com/history">Rate history</a> · <a href="https://arsrates.com/privacy">Privacy</a></div>
+</footer>
+
+        <!-- arsrates/app/templates/partials/scripts.html -->
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- App Configuration and Authentication -->
+<script src="/static/js/config.js"></script>
+<script src="/static/js/auth.js"></script>
+
+<!-- Page view counting (after config.js, which sets APP_CONFIG.API_URL) -->
+<script src="/static/js/pageview.js"></script>
+
+<!-- Add any other global utility functions after auth.js -->
+<script>
+// Add any global utility functions that aren't auth-related here
+</script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+        <script>
+            (function () {
+                // key: series prefix in rate_history.json; pair = has BUY/SELL
+                const RATES = [
+                    { key: "BLUE", label: "Blue", color: "#1D4ED8", pair: true, on: true },
+                    { key: "MEP", label: "MEP", color: "#15803D", pair: true, on: false },
+                    { key: "CCL", label: "CCL", color: "#7E22CE", pair: true, on: true },
+                    { key: "OFFICIAL", label: "Oficial", color: "#4B5563", pair: true, on: false },
+                    { key: "WU", label: "WU", color: "#B45309", pair: false, on: false },
+                    { key: "VISA", label: "Visa", color: "#B91C1C", pair: false, on: false },
+                    { key: "MC", label: "Mastercard", color: "#C2410C", pair: false, on: false },
+                ];
+                const DAY = 86400000;
+                let data = null, first = 0, count = 0, rangeDays = 365, chart = null;
+                const est = {};       // key -> Set of estimated day indexes
+
+                const fmt = (v) => v == null ? "—" : v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                const isoDay = (i) => new Date(first + i * DAY).toISOString().slice(0, 10);
+                const dayIndex = (iso) => Math.round((Date.parse(iso + "T00:00:00Z") - first) / DAY);
+                const side = () => document.querySelector('input[name="side"]:checked').value;
+                const seriesKey = (r) => r.pair ? `${r.key}_${side()}` : r.key;
+
+                // Rate buttons
+                const toggles = document.getElementById("rateToggles");
+                RATES.forEach((r) => {
+                    const b = document.createElement("button");
+                    b.type = "button";
+                    b.className = "btn btn-sm " + (r.on ? "btn-secondary" : "btn-outline-secondary");
+                    b.setAttribute("aria-pressed", r.on);
+                    b.innerHTML = `<span class="rate-swatch" style="background:${r.color}"></span>${r.label}`;
+                    b.addEventListener("click", () => {
+                        r.on = !r.on;
+                        b.className = "btn btn-sm " + (r.on ? "btn-secondary" : "btn-outline-secondary");
+                        b.setAttribute("aria-pressed", r.on);
+                        drawChart();
+                    });
+                    toggles.appendChild(b);
+                });
+
+                document.querySelectorAll('input[name="side"]').forEach((el) => el.addEventListener("change", drawChart));
+                document.querySelectorAll("#rangeButtons button").forEach((b) => b.addEventListener("click", () => {
+                    document.querySelectorAll("#rangeButtons button").forEach((x) => x.classList.remove("active"));
+                    b.classList.add("active");
+                    rangeDays = Number(b.dataset.days);
+                    drawChart();
+                }));
+
+                function drawChart() {
+                    if (!data) return;
+                    const start = rangeDays ? Math.max(0, count - rangeDays) : 0;
+                    const labels = [];
+                    for (let i = start; i < count; i++) labels.push(isoDay(i));
+                    const datasets = RATES.filter((r) => r.on).map((r) => {
+                        const key = seriesKey(r);
+                        const values = data.series[key].slice(start);
+                        const estSet = est[r.key] || new Set();
+                        return {
+                            label: r.label + (r.pair ? ` (${side().toLowerCase()})` : ""),
+                            data: values,
+                            borderColor: r.color,
+                            backgroundColor: r.color,
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            pointHitRadius: 6,
+                            spanGaps: false,
+                            tension: 0,
+                            estFlags: values.map((_, i) => estSet.has(start + i)),
+                            // Dashed where either end of a segment is an estimate
+                            segment: {
+                                borderDash: (ctx) => (estSet.has(start + ctx.p0DataIndex) || estSet.has(start + ctx.p1DataIndex)) ? [5, 4] : undefined,
+                            },
+                        };
+                    });
+                    if (chart) chart.destroy();
+                    chart = new Chart(document.getElementById("historyChart"), {
+                        type: "line",
+                        data: { labels, datasets },
+                        options: {
+                            maintainAspectRatio: false,
+                            animation: false,
+                            interaction: { mode: "index", intersect: false },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        label: (ctx) => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}${ctx.dataset.estFlags[ctx.dataIndex] ? " (est.)" : ""}`,
+                                    },
+                                },
+                            },
+                            scales: {
+                                x: { ticks: { maxTicksLimit: 7, maxRotation: 0 } },
+                                y: { ticks: { callback: (v) => v.toLocaleString("en-US") } },
+                            },
+                        },
+                    });
+                }
+
+                // Rates on a date
+                const dateInput = document.getElementById("lookupDate");
+                function showDay(iso) {
+                    const i = dayIndex(iso);
+                    const tbody = document.getElementById("lookupTable");
+                    document.getElementById("lookupWeekday").textContent =
+                        new Date(iso + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" });
+                    if (i < 0 || i >= count) {
+                        tbody.innerHTML = `<tr><td colspan="3" class="text-muted">No data for this date. History runs from ${data.first} to ${data.last}.</td></tr>`;
+                        return;
+                    }
+                    const cell = (key, r) => {
+                        const v = data.series[key][i];
+                        const e = v != null && (est[r.key] || new Set()).has(i);
+                        return `<td class="text-end">${fmt(v)}${e ? ' <span class="small text-muted">est.</span>' : ""}</td>`;
+                    };
+                    tbody.innerHTML = RATES.map((r) => r.pair
+                        ? `<tr><td>${r.label}</td>${cell(r.key + "_BUY", r)}${cell(r.key + "_SELL", r)}</tr>`
+                        : `<tr><td>${r.label}</td><td colspan="2" class="text-end">${fmt(data.series[r.key][i])}${
+                            data.series[r.key][i] != null && (est[r.key] || new Set()).has(i) ? ' <span class="small text-muted">est.</span>' : ""}</td></tr>`
+                    ).join("");
+                }
+                dateInput.addEventListener("change", () => dateInput.value && showDay(dateInput.value));
+                const step = (n) => {
+                    const i = Math.min(count - 1, Math.max(0, dayIndex(dateInput.value) + n));
+                    dateInput.value = isoDay(i);
+                    showDay(dateInput.value);
+                };
+                document.getElementById("prevDay").addEventListener("click", () => step(-1));
+                document.getElementById("nextDay").addEventListener("click", () => step(1));
+
+                fetch("/static/data/rate_history.json", { cache: "no-cache" })
+                    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+                    .then((d) => {
+                        data = d;
+                        first = Date.parse(d.first + "T00:00:00Z");
+                        count = d.series.BLUE_SELL.length;
+                        Object.entries(d.estimated).forEach(([k, idx]) => { est[k] = new Set(idx); });
+                        dateInput.min = d.first;
+                        dateInput.max = d.last;
+                        dateInput.value = d.last;
+                        document.getElementById("historyUpdated").textContent = `History through ${d.last}.`;
+                        drawChart();
+                        showDay(d.last);
+                    })
+                    .catch(() => {
+                        document.getElementById("lookupTable").innerHTML =
+                            '<tr><td colspan="3" class="text-danger">The history couldn\'t be loaded. Please try again later.</td></tr>';
+                    });
+            })();
+        </script>
+    </body>
+
+</html>
