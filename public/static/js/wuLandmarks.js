@@ -1,7 +1,7 @@
 // arsrates/static/js/wuLandmarks.js
 // Landmarks for the WU location finder (/wu-locations): pick one to list WU
 // locations by distance from it. The dropdown lists the "popular: true" ones
-// first, then Downtown / Centro (Monserrat, San Nicolás and Retiro together;
+// first, then Downtown / Centro (Monserrat, San Nicolás, Retiro and Puerto Madero;
 // DOWNTOWN_BARRIOS in wu_locations.html), then each other barrio in the order
 // below. Edit freely:
 // - name: shown in the list
