@@ -119,7 +119,9 @@
                                 placeholder="Example: Av. Corrientes 1200">
                             <button class="btn btn-outline-primary" type="button" id="searchAddressBtn">Search</button>
                         </div>
-                        <small class="form-text text-muted">Address search © <a href="https://www.openstreetmap.org/copyright"
+                        <div id="addressSuggestions" class="dropdown-menu"></div>
+                        <small class="form-text text-muted">Type a street and number, then press Search or pick a suggestion.
+                            Address search © <a href="https://www.openstreetmap.org/copyright"
                             target="_blank" rel="noopener">OpenStreetMap</a> contributors.</small>
                     </div>
 
@@ -265,6 +267,7 @@
 // Add any global utility functions that aren't auth-related here
 </script>
         <script src="/static/js/wuLandmarks.js"></script>
+        <script src="/static/js/addressSuggest.js"></script>
         <script>
             (function () {
                 const DAY_LABELS = { mon_fri: "Mon-Fri", sat: "Sat", sun: "Sun", holiday: "Holidays" };
@@ -372,6 +375,7 @@
                 async function searchAddress() {
                     const q = addressInput.value.trim();
                     if (!q) return;
+                    suggestions.hide();
                     addressBtn.disabled = true;
                     status.textContent = "Looking up the address…";
                     try {
@@ -389,6 +393,12 @@
                     }
                 }
                 addressBtn.addEventListener("click", searchAddress);
+                // Suggestions while typing: landmarks, then addresses (static/js/addressSuggest.js)
+                const suggestions = window.setupAddressSuggestions({
+                    input: addressInput,
+                    dropdown: document.getElementById("addressSuggestions"),
+                    onPick: (lat, lon, label) => searchNear(lat, lon, label),
+                });
                 addressInput.addEventListener("keydown", (e) => {
                     if (e.key === "Enter") { e.preventDefault(); searchAddress(); }
                 });
