@@ -1,6 +1,6 @@
 # ARS Rates
 
-> Dollar to peso (USD to ARS) exchange rates in Argentina, updated every 15 minutes: dólar blue, MEP, CCL, official, wholesale (A3500), USDC, Western Union, Wise, Remitly, TapTap Send, Visa, Mastercard and American Express. Written in English for travelers and expats converting dollars to pesos.
+> Dollar to peso (USD to ARS) exchange rates in Argentina, updated every 15 minutes: dólar blue, MEP, CCL, official, wholesale (A3500), the crypto dollar, Western Union, Wise, Remitly, TapTap Send, Visa, Mastercard and American Express. Written in English for travelers and expats converting dollars to pesos.
 
 All rates are pesos per 1 US dollar. Remittance and card rates are headline rates before fees. Rates are for information only.
 

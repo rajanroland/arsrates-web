@@ -30,14 +30,14 @@ NOTES = {
     "CCL": "rate for moving dollars in or out via securities",
     "MAYORISTA": "Central Bank wholesale reference rate (A3500)",
     "TARJETA": "official sell + 30%, cost of card charges paid in pesos with an Argentine card",
-    "CRYPTO": "USDC stablecoin on Argentine exchanges",
+    "CRYPTO": "crypto dollar: dollar stablecoins (like USDT) on Argentine exchanges",
     "VISA": "one rate per day for all charges",
     "MC": "one rate per day, published around 3 PM ET",
     "AMEX": "one rate per day: A3500 from 2 business days before the charge",
 }
 SOURCES = {
-    "BLUE": "DolarHoy", "OFFICIAL": "DolarHoy", "MEP": "DolarHoy", "CCL": "DolarHoy",
-    "CRYPTO": "DolarHoy", "TARJETA": "calculated", "MAYORISTA": "BCRA",
+    "BLUE": "DolarHoy", "OFFICIAL": "dolarapi.com", "MEP": "dolarapi.com", "CCL": "dolarapi.com",
+    "CRYPTO": "dolarapi.com", "TARJETA": "dolarapi.com", "MAYORISTA": "BCRA",
     "WU": "Western Union", "TAPTAP": "TapTap Send", "REMITLY": "Remitly", "WISE": "Wise",
     "VISA": "Visa", "MC": "Mastercard", "AMEX": "estimated from BCRA A3500",
 }

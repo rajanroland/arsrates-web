@@ -93,7 +93,7 @@ const SHORT_LABELS = {
   TAPTAP: "TapTap",
   REMITLY: "Remitly",
   WISE: "Wise",
-  CRYPTO: "USDC",
+  CRYPTO: "D. Cripto",
   OFFICIAL: "D. Oficial",
   MEP: "D. MEP",
   CCL: "D. CCL",
@@ -101,17 +101,16 @@ const SHORT_LABELS = {
   MAYORISTA: "D. Mayorista",
 };
 
-// Where each rate links to (DolarHoy for the rest)
 // Where each rate comes from, shown in its tooltip as "Source: ...". A null URL
 // means we calculate it; those link to the "How we get these rates" page.
-// Market rates fall back to dolarapi.com when DolarHoy is down (see that page).
+// Backups when a source is down are on that page (dh_scraper_manager.py).
 const RATE_SOURCES = {
-  BLUE: ["DolarHoy", "https://dolarhoy.com"],
-  OFFICIAL: ["DolarHoy", "https://dolarhoy.com"],
-  MEP: ["DolarHoy", "https://dolarhoy.com"],
-  CCL: ["DolarHoy", "https://dolarhoy.com"],
-  CRYPTO: ["DolarHoy", "https://dolarhoy.com"],
-  TARJETA: ["Calculated: Oficial sell × 1.30", null],
+  BLUE: ["DolarHoy", "https://dolarhoy.com/cotizaciondolarblue"],
+  OFFICIAL: ["dolarapi.com", "https://dolarapi.com"],
+  MEP: ["dolarapi.com", "https://dolarapi.com"],
+  CCL: ["dolarapi.com", "https://dolarapi.com"],
+  CRYPTO: ["dolarapi.com", "https://dolarapi.com"],
+  TARJETA: ["dolarapi.com (Oficial sell × 1.30)", "https://dolarapi.com"],
   MAYORISTA: ["BCRA (Central Bank of Argentina)", "https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp"],
   WU: ["Western Union", "https://www.westernunion.com/us/en/currency-converter/usd-to-ars-rate.html"],
   VISA: ["Visa", "https://usa.visa.com/support/consumer/travel-support/exchange-rate-calculator.html"],
@@ -137,7 +136,7 @@ const RATE_INFO = {
   TAPTAP: ["TapTap Send", "Rate for sending dollars to pesos with TapTap Send (US to Argentina). Doesn't include fees."],
   REMITLY: ["Remitly", "Remitly's standard rate (not the first-transfer promo rate). Doesn't include fees."],
   WISE: ["Wise", "Rate for sending dollars to pesos with Wise. Doesn't include fees."],
-  CRYPTO: ["USDC", "Price of the USDC dollar stablecoin in pesos on Argentine crypto exchanges."],
+  CRYPTO: ["Dólar Cripto", "The crypto dollar: what dollar stablecoins (like USDT) cost in pesos on Argentine crypto exchanges."],
   OFFICIAL: ["Dólar Oficial", "Official retail rate at banks."],
   MEP: ["Dólar MEP (Bolsa)", "Legal rate for buying or selling dollars through bonds in a local brokerage account."],
   CCL: ["Dólar CCL (Contado con liquidación)", "Rate for moving dollars into or out of Argentina through securities (bonds, CEDEARs) settled abroad."],

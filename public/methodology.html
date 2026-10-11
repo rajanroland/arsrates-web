@@ -103,25 +103,26 @@
                     <tbody>
                         <tr>
                             <td><strong>Dólar Blue</strong></td>
-                            <td><a href="https://dolarhoy.com" target="_blank" rel="noopener">DolarHoy</a></td>
+                            <td><a href="https://dolarhoy.com/cotizaciondolarblue" target="_blank" rel="noopener">DolarHoy</a></td>
                             <td>The informal market rate for cash dollars, as quoted by street exchange houses (cuevas).</td>
                         </tr>
                         <tr>
                             <td><strong>Dólar Oficial, MEP, CCL</strong></td>
-                            <td><a href="https://dolarhoy.com" target="_blank" rel="noopener">DolarHoy</a></td>
+                            <td><a href="https://dolarapi.com" target="_blank" rel="noopener">dolarapi.com</a></td>
                             <td>Oficial is the banks' retail rate. MEP and CCL aren't set by a bank: they're market
                                 rates worked out from bond prices (bought in pesos, sold in dollars locally for MEP or
                                 abroad for CCL).</td>
                         </tr>
                         <tr>
-                            <td><strong>USDC</strong></td>
-                            <td><a href="https://dolarhoy.com" target="_blank" rel="noopener">DolarHoy</a></td>
-                            <td>The USDC dollar stablecoin on Argentine crypto exchanges.</td>
+                            <td><strong>Dólar Cripto</strong></td>
+                            <td><a href="https://dolarapi.com" target="_blank" rel="noopener">dolarapi.com</a></td>
+                            <td>The crypto dollar: what dollar stablecoins (like USDT) cost in pesos on Argentine crypto
+                                exchanges. Before October 2026 this was DolarHoy's USDC quote.</td>
                         </tr>
                         <tr>
                             <td><strong>Dólar Tarjeta</strong></td>
-                            <td>Calculated</td>
-                            <td>Oficial sell × 1.30.</td>
+                            <td><a href="https://dolarapi.com" target="_blank" rel="noopener">dolarapi.com</a></td>
+                            <td>Oficial sell × 1.30 (we calculate it if dolarapi doesn't have it).</td>
                         </tr>
                         <tr>
                             <td><strong>Dólar Mayorista</strong></td>
@@ -163,9 +164,10 @@
                     </tbody>
                 </table>
             </div>
-            <p class="small text-muted">When DolarHoy is unavailable, the market rates come from
-                <a href="https://dolarapi.com" target="_blank" rel="noopener">dolarapi.com</a> instead (it doesn't
-                include USDC).</p>
+            <p class="small text-muted"><a href="https://dolarapi.com" target="_blank" rel="noopener">dolarapi.com</a>
+                is a free public API for Argentine exchange rates. When DolarHoy's Blue page is unavailable, Blue comes
+                from dolarapi.com too; when dolarapi.com is missing Oficial, MEP or CCL, we read them from DolarHoy's
+                home page instead.</p>
 
             <h2 class="h4 mt-5">Estimates</h2>
             <p>A rate marked <strong>(Est.)</strong> is our estimate, shown until the real one is available.</p>
