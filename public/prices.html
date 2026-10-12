@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- arsrates/app/templates/prices.html (served at /prices on arsrates.com).
+         Data: static/data/prices_wages.json (app/services/prices_wages.py), converted with the
+         monthly average Blue from rate_history.json and ECB rates from fx_rates.json. -->
+
+    <head>
+        <!-- arsrates/app/templates/partials/head.html -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ARS Rates">
+<meta name="theme-color" content="#FFFFFF">
+
+<!-- Link previews (WhatsApp, social media). Each page sets its own description
+     and canonical address after this include. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ARS Rates">
+<meta property="og:title" content="ARS Rates: dollar to peso rates today in Argentina">
+<meta property="og:description" content="Blue, MEP, Western Union, Visa, Mastercard and AMEX rates side by side, updated every 15 minutes.">
+<meta property="og:image" content="https://arsrates.com/static/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ARS Rates: dollar to peso rates in Argentina, with the Sol de Mayo and Argentine flag colors">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Stylesheets -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/styles.css">
+
+<!-- PWA/Icons -->
+<link rel="manifest" href="/static/manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+<link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="/static/images/icon-192x192.png">
+        <title>Prices and Wages in Argentina in Dollars | ARS Rates</title>
+        <meta name="description" content="How prices and wages in Argentina have changed since 2016, in pesos, US dollars, euros, pounds, Canadian, Australian and New Zealand dollars: inflation, food, transport, housing, beef, bread, milk, and average and minimum wages.">
+        <link rel="canonical" href="https://arsrates.com/prices">
+        <style>
+            .history-chart { position: relative; height: 320px; }
+            @media (min-width: 768px) { .history-chart { height: 420px; } }
+            .series-toggle .btn { margin: 0 0.25rem 0.4rem 0; }
+            .rate-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: 0; }
+            .group-label { font-size: 0.75rem; color: var(--text-muted, #6B7280); margin: 0.25rem 0 0.2rem; }
+        </style>
+    </head>
+
+    <body>
+        <!-- arsrates/app/templates/partials/navbar.html -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="https://arsrates.com/">
+            <svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true"><g stroke="#F6B40E" stroke-width="1.6" stroke-linecap="round"><line x1="12.0" y1="4.8" x2="12.0" y2="0.8"/><line x1="14.8" y1="5.3" x2="15.7" y2="3.1"/><line x1="17.1" y1="6.9" x2="19.9" y2="4.1"/><line x1="18.7" y1="9.2" x2="20.9" y2="8.3"/><line x1="19.2" y1="12.0" x2="23.2" y2="12.0"/><line x1="18.7" y1="14.8" x2="20.9" y2="15.7"/><line x1="17.1" y1="17.1" x2="19.9" y2="19.9"/><line x1="14.8" y1="18.7" x2="15.7" y2="20.9"/><line x1="12.0" y1="19.2" x2="12.0" y2="23.2"/><line x1="9.2" y1="18.7" x2="8.3" y2="20.9"/><line x1="6.9" y1="17.1" x2="4.1" y2="19.9"/><line x1="5.3" y1="14.8" x2="3.1" y2="15.7"/><line x1="4.8" y1="12.0" x2="0.8" y2="12.0"/><line x1="5.3" y1="9.2" x2="3.1" y2="8.3"/><line x1="6.9" y1="6.9" x2="4.1" y2="4.1"/><line x1="9.2" y1="5.3" x2="8.3" y2="3.1"/></g><circle cx="12" cy="12" r="5.6" fill="#F6B40E" stroke="#C48A05" stroke-width="0.8"/></svg>
+            ARS Rates
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/guide">Money Guide</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="chartsMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Charts</a>
+                    <ul class="dropdown-menu" aria-labelledby="chartsMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/history">Exchange rates</a></li>
+                        <li><a class="dropdown-item" href="https://arsrates.com/prices">Prices &amp; wages</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="wuMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false" aria-label="Western Union">WU</a>
+                    <ul class="dropdown-menu" aria-labelledby="wuMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/wu-guide">How to Get Pesos with WU</a></li>
+                        <li><a class="dropdown-item" href="https://api.arsrates.com/wu-locations">Find a WU Location</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/exchange-houses">Exchange Houses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="alertsLink" href="https://arsrates.com/features">Rate Alerts</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" id="authLinks">
+                <!-- Will be populated by JavaScript -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+        <main class="container" style="max-width: 900px;">
+            <h1 class="h2 mb-1">Prices and Wages</h1>
+            <p class="text-muted mb-4">How costs and wages in Argentina have changed since December 2016, in pesos or
+                converted to dollars, euros and more at each month's average Blue rate.</p>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="btn-group btn-group-sm flex-wrap mb-3" role="group" aria-label="View">
+                        <input type="radio" class="btn-check" name="view" id="viewChange" value="change" checked>
+                        <label class="btn btn-outline-primary" for="viewChange">Change (start = 100)</label>
+                        <input type="radio" class="btn-check" name="view" id="viewAmount" value="amount">
+                        <label class="btn btn-outline-primary" for="viewAmount">Prices</label>
+                        <input type="radio" class="btn-check" name="view" id="viewWages" value="wages">
+                        <label class="btn btn-outline-primary" for="viewWages">Compared with wages</label>
+                    </div>
+                    <p class="small text-muted mb-2" id="viewHelp"></p>
+
+                    <div id="seriesToggles" class="series-toggle" aria-label="Lines to show"></div>
+
+                    <div class="d-flex flex-wrap align-items-center gap-1 mt-1 mb-2 small" id="currencyRow">
+                        <span class="me-1">In</span>
+                        <div class="btn-group btn-group-sm flex-wrap" role="group" aria-label="Currency" id="currencyToggles"></div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 align-items-center mb-3">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Time range" id="rangeButtons">
+                            <button type="button" class="btn btn-outline-secondary" data-months="12">1Y</button>
+                            <button type="button" class="btn btn-outline-secondary" data-months="36">3Y</button>
+                            <button type="button" class="btn btn-outline-secondary" data-months="60">5Y</button>
+                            <button type="button" class="btn btn-outline-secondary active" data-months="0">All</button>
+                        </div>
+                        <div class="d-flex align-items-center gap-1 small">
+                            <label for="rangeFrom" class="mb-0">From</label>
+                            <input type="month" class="form-control form-control-sm" id="rangeFrom" style="width: 8.5rem;">
+                            <label for="rangeTo" class="mb-0 ms-1">to</label>
+                            <input type="month" class="form-control form-control-sm" id="rangeTo" style="width: 8.5rem;">
+                        </div>
+                        <div class="form-check form-check-inline mb-0">
+                            <input class="form-check-input" type="checkbox" id="logScale">
+                            <label class="form-check-label small" for="logScale">Log scale</label>
+                        </div>
+                    </div>
+                    <div class="history-chart"><canvas id="pricesChart" aria-label="Prices and wages chart" role="img"></canvas></div>
+                    <div class="small mt-2" id="rangeChange" aria-live="polite"></div>
+                </div>
+            </div>
+
+            <h2 class="h5">About these numbers</h2>
+            <ul class="small">
+                <li><strong>Sources:</strong> INDEC (Argentina's statistics institute) for inflation and prices, and the
+                    Labor Ministry for wages, through the government's
+                    <a href="https://datos.gob.ar" target="_blank" rel="noopener">open data</a>. Monthly, from December 2016,
+                    when INDEC's current price index starts (its 2007-2015 figures were widely discredited).
+                    <span id="latestNote"></span></li>
+                <li><strong>Inflation lines</strong> are INDEC's national consumer price index, overall and by category.
+                    "Housing & utilities" is mostly utilities (electricity, gas, water) plus some rent.</li>
+                <li><strong>Prices</strong> are INDEC's average prices in Greater Buenos Aires.</li>
+                <li><strong>Big Mac:</strong> its price in pesos from The Economist's
+                    <a href="https://github.com/TheEconomist/big-mac-data" target="_blank" rel="noopener">Big Mac Index</a>
+                    (surveyed each January and July), converted at the Blue rate like everything here. The Economist
+                    itself converts at the official rate, which made Argentina look pricier in dollars when Blue was far
+                    above official. Around 2011-2013 there were reports that Argentina's Big Mac price was being held
+                    down, so treat older figures with care.</li>
+                <li><strong>World prices (FAO):</strong> the UN Food and Agriculture Organization's
+                    <a href="https://www.fao.org/worldfoodsituation/foodpricesindex/en/" target="_blank" rel="noopener">Food Price Index</a>
+                    and its meat index: international prices of traded food, in US dollars. Compare "Food" with "World
+                    food prices" in USD to see whether food got pricier in Argentina or everywhere.</li>
+                <li><strong>Average wage</strong> is RIPTE, the average taxable salary of registered (formal) workers.
+                    Informal workers, about 40% of the workforce, usually earn less. <strong>Minimum wage</strong> is the
+                    national salario mínimo, vital y móvil.</li>
+                <li><strong>Other currencies:</strong> each month's peso amount divided by that month's average Blue buy
+                    rate (what you get when you sell dollars), and for euros, pounds etc. by the European Central Bank's
+                    rate for the US dollar. Rates on the <a href="https://arsrates.com/history">exchange-rate charts</a>.</li>
+                <li><strong>Compared with wages:</strong> each line divided by the average wage, so 100 = as affordable
+                    as at the start; above 100 means it takes a bigger share of a wage. Hours of work assume 176 hours a
+                    month.</li>
+            </ul>
+
+            <!-- arsrates/app/templates/partials/feedback.html -->
+<div class="modal fade" id="feedbackModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Provide Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="feedbackForm" action="https://api.arsrates.com/api/feedback" method="POST">
+                    <div class="mb-3">
+                        <label for="feedbackEmail" class="form-label">Email (optional)</label>
+                        <input type="email" class="form-control" id="feedbackEmail" placeholder="your@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="feedbackText" class="form-label">Your Feedback</label>
+                        <textarea class="form-control" id="feedbackText" rows="4" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary me-3" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="submitFeedback()">Submit
+                    Feedback</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function submitFeedback() {
+        const email = document.getElementById('feedbackEmail').value;
+        const feedbackText = document.getElementById('feedbackText').value;
+
+        if (!feedbackText.trim()) {
+            alert('Please enter your feedback');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${window.APP_CONFIG.API_URL}/api/feedback`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email || null,
+                    feedback_text: feedbackText
+                })
+            })
+            if (response.ok) {
+                alert('Thank you for your feedback!');
+                document.getElementById('feedbackForm').reset();
+                bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
+            } else {
+                throw new Error('Failed to submit feedback');
+            }
+        } catch (error) {
+            alert('Error submitting feedback. Please try again.');
+            console.error('Error:', error);
+        }
+    }
+</script>
+        </main>
+        <!-- arsrates/app/templates/partials/footer.html -->
+<footer class="site-footer text-center my-4 px-3">
+    <div>Rates are for information only and may differ from what providers charge. Not financial advice.</div>
+    <div class="mt-1">© 2026 ARS Rates · <a href="https://arsrates.com/methodology">How we get these rates</a> · <a href="https://arsrates.com/history">Rate history</a> · <a href="https://arsrates.com/privacy">Privacy</a></div>
+</footer>
+
+        <!-- arsrates/app/templates/partials/scripts.html -->
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- App Configuration and Authentication -->
+<script src="/static/js/config.js"></script>
+<script src="/static/js/auth.js"></script>
+
+<!-- Page view counting (after config.js, which sets APP_CONFIG.API_URL) -->
+<script src="/static/js/pageview.js"></script>
+
+<!-- Add any other global utility functions after auth.js -->
+<script>
+// Add any global utility functions that aren't auth-related here
+</script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+        <script>
+            (function () {
+                const SERIES = [
+                    { key: "CPI", color: "#111827", group: "Inflation", on: true },
+                    { key: "FOOD", color: "#15803D", group: "Inflation", on: true },
+                    { key: "TRANSPORT", color: "#1D4ED8", group: "Inflation", on: false },
+                    { key: "HOUSING", color: "#7E22CE", group: "Inflation", on: false },
+                    { key: "ASADO", color: "#B91C1C", group: "Prices", on: false },
+                    { key: "TOMATO", color: "#C2410C", group: "Prices", on: false },
+                    { key: "MILK", color: "#0E7490", group: "Prices", on: false },
+                    { key: "BREAD", color: "#A16207", group: "Prices", on: false },
+                    { key: "BIGMAC", color: "#DB2777", group: "Prices", on: false },
+                    { key: "FAO_FOOD", color: "#65A30D", group: "World prices (FAO, in US dollars)", on: false },
+                    { key: "FAO_MEAT", color: "#9F1239", group: "World prices (FAO, in US dollars)", on: false },
+                    { key: "WAGE", color: "#0F766E", group: "Wages", on: true },
+                    { key: "MIN_WAGE", color: "#6B7280", group: "Wages", on: false },
+                ];
+                const CURRENCIES = ["ARS", "USD", "EUR", "GBP", "CAD", "AUD", "NZD"];
+                const HOURS_PER_MONTH = 176;
+                const HELP = {
+                    change: "Each line starts at 100. In dollars, a line above 100 means it costs more dollars than at the start.",
+                    amount: "Actual prices and wages in the chosen currency. Inflation lines are indexes with no price, so they're off here.",
+                    wages: "Each cost divided by the average wage (100 = as affordable as at the start; higher = takes a bigger share of a wage). Same in any currency.",
+                };
+                let pw = null, blueByMonth = {}, fx = null, fxByMonth = {};
+                let currency = "USD", view = "change", chart = null;
+                let rangeStart = 0, rangeEnd = 0;
+
+                const $ = (id) => document.getElementById(id);
+                const meta = (k) => pw.meta[k];
+                const monthLabel = (ym, long) => {
+                    const [y, m] = ym.split("-");
+                    return new Date(Date.UTC(+y, +m - 1, 15)).toLocaleDateString("en-US",
+                        { month: "short", year: long ? "numeric" : "2-digit", timeZone: "UTC" });
+                };
+                const money = (v, c) => {
+                    if (v == null) return "—";
+                    const d = Math.abs(v) >= 1000 ? 0 : Math.abs(v) >= 10 ? 1 : 2;
+                    return (c === "ARS" ? "$" : c + " ") + v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+                };
+
+                // Pesos per 1 unit of the currency in a month (ARS = 1)
+                function perUnit(c, ym) {
+                    if (c === "ARS") return 1;
+                    const blue = blueByMonth[ym];
+                    if (!blue) return null;
+                    if (c === "USD") return blue;
+                    const f = fxByMonth[c] && fxByMonth[c][ym];
+                    return f ? blue / f : null;
+                }
+
+                function monthlyAverages(first, values) {
+                    const sums = {};
+                    const start = Date.parse(first + "T00:00:00Z");
+                    values.forEach((v, i) => {
+                        if (v == null) return;
+                        const ym = new Date(start + i * 86400000).toISOString().slice(0, 7);
+                        (sums[ym] = sums[ym] || [0, 0])[0] += v;
+                        sums[ym][1] += 1;
+                    });
+                    const out = {};
+                    Object.entries(sums).forEach(([ym, [s, n]]) => { out[ym] = s / n; });
+                    return out;
+                }
+
+                function isUsable(s) {
+                    return !(view === "amount" && ["index", "usd_index"].includes(meta(s.key).kind)) &&
+                        !(view === "wages" && s.key === "WAGE");
+                }
+
+                // Toggles
+                const box = $("seriesToggles");
+                function buildToggles() {
+                    box.innerHTML = "";
+                    let group = null;
+                    SERIES.forEach((s) => {
+                        if (s.group !== group) {
+                            group = s.group;
+                            const g = document.createElement("div");
+                            g.className = "group-label";
+                            g.textContent = group;
+                            box.appendChild(g);
+                        }
+                        const b = document.createElement("button");
+                        b.type = "button";
+                        const usable = isUsable(s);
+                        b.disabled = !usable;
+                        b.className = "btn btn-sm " + (s.on && usable ? "btn-secondary" : "btn-outline-secondary");
+                        b.setAttribute("aria-pressed", s.on && usable);
+                        const unit = meta(s.key).unit;
+                        b.innerHTML = `<span class="rate-swatch" style="background:${s.color}"></span>${meta(s.key).label}`
+                            + (unit && meta(s.key).kind === "price" ? ` <span class="text-muted">/${unit}</span>` : "");
+                        b.addEventListener("click", () => { s.on = !s.on; buildToggles(); draw(); });
+                        box.appendChild(b);
+                    });
+                }
+
+                const cbox = $("currencyToggles");
+                CURRENCIES.forEach((c) => {
+                    const b = document.createElement("button");
+                    b.type = "button";
+                    b.textContent = c === "ARS" ? "Pesos" : c;
+                    b.dataset.c = c;
+                    b.addEventListener("click", async () => {
+                        if (!["ARS", "USD"].includes(c) && !fx) {
+                            try {
+                                fx = await fetch("/static/data/fx_rates.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
+                                fx.currencies.forEach((k) => { fxByMonth[k] = monthlyAverages(fx.first, fx.series[k]); });
+                            } catch (e) {
+                                $("rangeChange").textContent = "Couldn't load exchange rates for other currencies.";
+                                return;
+                            }
+                        }
+                        currency = c;
+                        paintCurrencies();
+                        draw();
+                    });
+                    cbox.appendChild(b);
+                });
+                function paintCurrencies() {
+                    cbox.querySelectorAll("button").forEach((b) => {
+                        b.className = "btn " + (b.dataset.c === currency ? "btn-secondary" : "btn-outline-secondary");
+                        b.disabled = view === "wages";
+                    });
+                }
+
+                document.querySelectorAll('input[name="view"]').forEach((el) => el.addEventListener("change", () => {
+                    view = el.value;
+                    $("viewHelp").textContent = HELP[view];
+                    buildToggles();
+                    paintCurrencies();
+                    draw();
+                }));
+                $("logScale").addEventListener("change", draw);
+
+                // Range
+                const fromInput = $("rangeFrom"), toInput = $("rangeTo");
+                function setPreset(n) {
+                    const count = pw.months.length;
+                    rangeEnd = count - 1;
+                    rangeStart = n ? Math.max(0, count - n - 1) : 0;
+                    fromInput.value = pw.months[rangeStart];
+                    toInput.value = pw.months[rangeEnd];
+                }
+                document.querySelectorAll("#rangeButtons button").forEach((b) => b.addEventListener("click", () => {
+                    document.querySelectorAll("#rangeButtons button").forEach((x) => x.classList.remove("active"));
+                    b.classList.add("active");
+                    setPreset(Number(b.dataset.months));
+                    draw();
+                }));
+                function customRange() {
+                    const a = pw.months.indexOf(fromInput.value), b = pw.months.indexOf(toInput.value);
+                    if (a < 0 || b < 0) return;
+                    [rangeStart, rangeEnd] = a <= b ? [a, b] : [b, a];
+                    document.querySelectorAll("#rangeButtons button").forEach((x) => x.classList.remove("active"));
+                    draw();
+                }
+                fromInput.addEventListener("change", customRange);
+                toInput.addEventListener("change", customRange);
+
+                function draw() {
+                    if (!pw) return;
+                    const months = pw.months.slice(rangeStart, rangeEnd + 1);
+                    const wage = pw.series.WAGE.slice(rangeStart, rangeEnd + 1);
+                    const shown = SERIES.filter((s) => s.on && isUsable(s));
+                    const datasets = shown.map((s) => {
+                        // FAO's index is in US dollars: price it in pesos at the month's Blue,
+                        // so it converts to every currency like the peso series
+                        const pesos = pw.series[s.key].slice(rangeStart, rangeEnd + 1).map((v, i) =>
+                            meta(s.key).kind === "usd_index" ? (v != null && blueByMonth[months[i]] ? v * blueByMonth[months[i]] : null) : v);
+                        let values;
+                        if (view === "wages") {
+                            values = pesos.map((v, i) => (v != null && wage[i] ? v / wage[i] : null));
+                        } else {
+                            values = pesos.map((v, i) => {
+                                const u = perUnit(currency, months[i]);
+                                return v != null && u ? v / u : null;
+                            });
+                        }
+                        const base = values.find((v) => v != null);
+                        const y = view === "amount" ? values.map((v) => (v == null ? null : Math.round(v * 100) / 100))
+                            : values.map((v) => (v == null || !base ? null : Math.round(v / base * 1000) / 10));
+                        return {
+                            label: meta(s.key).label + (meta(s.key).kind === "price" && meta(s.key).unit ? ` (${meta(s.key).unit})` : ""),
+                            key: s.key, raw: values, pesos, data: y,
+                            borderColor: s.color, backgroundColor: s.color,
+                            borderWidth: 2, tension: 0,
+                            // Twice-a-year series (Big Mac): dots joined across the months between
+                            spanGaps: !!meta(s.key).sparse,
+                            pointRadius: meta(s.key).sparse ? 3 : 0,
+                            pointHitRadius: 6,
+                        };
+                    });
+
+                    // First vs last in the range
+                    $("rangeChange").innerHTML = datasets.map((ds) => {
+                        const a = ds.raw.findIndex((v) => v != null);
+                        let b = ds.raw.length - 1;
+                        while (b >= 0 && ds.raw[b] == null) b--;
+                        if (a < 0 || b <= a) return "";
+                        const pct = (ds.raw[b] / ds.raw[a] - 1) * 100;
+                        const pctText = `${pct >= 0 ? "+" : ""}${pct.toLocaleString("en-US", { maximumFractionDigits: Math.abs(pct) < 10 ? 1 : 0 })}%`;
+                        const k = meta(ds.key).kind;
+                        let detail;
+                        if (view === "wages") {
+                            detail = k === "price"
+                                ? `${(ds.raw[a] * HOURS_PER_MONTH).toFixed(1)} → ${(ds.raw[b] * HOURS_PER_MONTH).toFixed(1)} hours of average-wage work`
+                                : "relative to the average wage";
+                        } else if (k === "index" || k === "usd_index") {
+                            detail = currency === "ARS" ? "in pesos" : `in ${currency}`;
+                        } else {
+                            detail = `${money(ds.raw[a], currency)} → ${money(ds.raw[b], currency)}`;
+                        }
+                        return `<div><span class="rate-swatch" style="background:${ds.borderColor}"></span>${ds.label}: `
+                            + `${monthLabel(months[a])} → ${monthLabel(months[b])}, ${detail}, <strong>${pctText}</strong></div>`;
+                    }).join("") || '<span class="text-muted">Pick a line above.</span>';
+
+                    if (chart) chart.destroy();
+                    const pctAxis = view !== "amount";
+                    chart = new Chart($("pricesChart"), {
+                        type: "line",
+                        data: { labels: months, datasets },
+                        options: {
+                            maintainAspectRatio: false,
+                            animation: false,
+                            interaction: { mode: "index", intersect: false },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        title: (items) => items.length ? monthLabel(items[0].label, true) : "",
+                                        label: (ctx) => {
+                                            const ds = ctx.dataset, i = ctx.dataIndex, v = ds.raw[i];
+                                            if (view === "amount") return `${ds.label}: ${money(v, currency)}`;
+                                            if (view === "wages" && meta(ds.key).kind === "price")
+                                                return `${ds.label}: ${ctx.parsed.y} (${(v * HOURS_PER_MONTH).toFixed(1)} h of work)`;
+                                            const amount = !["index", "usd_index"].includes(meta(ds.key).kind) ? ` · ${money(view === "wages" ? ds.pesos[i] : v, view === "wages" ? "ARS" : currency)}` : "";
+                                            return `${ds.label}: ${ctx.parsed.y}${amount}`;
+                                        },
+                                    },
+                                },
+                            },
+                            scales: {
+                                x: {
+                                    ticks: {
+                                        maxTicksLimit: window.innerWidth < 576 ? 4 : 8,
+                                        maxRotation: 0,
+                                        callback: function (value) { return monthLabel(this.getLabelForValue(value)); },
+                                    },
+                                },
+                                y: {
+                                    type: $("logScale").checked ? "logarithmic" : "linear",
+                                    ticks: {
+                                        maxTicksLimit: 8,
+                                        callback: (v) => pctAxis ? v.toLocaleString("en-US") : money(v, currency),
+                                    },
+                                },
+                            },
+                        },
+                    });
+                }
+
+                Promise.all([
+                    fetch("/static/data/prices_wages.json", { cache: "no-cache" }).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }),
+                    fetch("/static/data/rate_history.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }),
+                ]).then(([p, h]) => {
+                    pw = p;
+                    // Monthly average Blue buy (Blue sell where buy is missing)
+                    const buy = h.series.BLUE_BUY, sell = h.series.BLUE_SELL;
+                    blueByMonth = monthlyAverages(h.first, buy.map((v, i) => (v != null ? v : sell[i])));
+                    fromInput.min = toInput.min = pw.months[0];
+                    fromInput.max = toInput.max = pw.months[pw.months.length - 1];
+                    $("latestNote").textContent = `Latest data: ${monthLabel(pw.meta.CPI.latest, true)} for prices, `
+                        + `${monthLabel(pw.meta.WAGE.latest, true)} for the average wage.`;
+                    $("viewHelp").textContent = HELP[view];
+                    setPreset(0);
+                    buildToggles();
+                    paintCurrencies();
+                    draw();
+                }).catch(() => {
+                    $("rangeChange").innerHTML = '<span class="text-danger">The data couldn\'t be loaded. Please try again later.</span>';
+                });
+            })();
+        </script>
+    </body>
+
+</html>
