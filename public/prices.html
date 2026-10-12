@@ -36,7 +36,7 @@
 <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
 <link rel="icon" type="image/png" sizes="192x192" href="/static/images/icon-192x192.png">
         <title>Prices and Wages in Argentina in Dollars | ARS Rates</title>
-        <meta name="description" content="How prices and wages in Argentina have changed since 2016, in pesos, US dollars, euros, pounds, Canadian, Australian and New Zealand dollars: inflation, food, transport, housing, beef, bread, milk, and average and minimum wages.">
+        <meta name="description" content="How prices and wages in Argentina have changed since 2016, in US dollars, euros and other currencies, or in hours of work: inflation, food, restaurants, transport, housing, beef, wine, beer, bread, milk, the Big Mac, and average and minimum wages.">
         <link rel="canonical" href="https://arsrates.com/prices">
         <style>
             .history-chart { position: relative; height: 320px; }
@@ -97,8 +97,9 @@
 
         <main class="container" style="max-width: 900px;">
             <h1 class="h2 mb-1">Prices and Wages</h1>
-            <p class="text-muted mb-4">How costs and wages in Argentina have changed since December 2016, in pesos or
-                converted to dollars, euros and more at each month's average Blue rate.</p>
+            <p class="text-muted mb-4">How costs and wages in Argentina have changed since December 2016: in dollars,
+                euros and more at each month's average Blue rate (the expat's view), or in hours of work at the average
+                wage (the local's view). Pick both to compare.</p>
 
             <div class="card mb-4">
                 <div class="card-body">
@@ -107,8 +108,6 @@
                         <label class="btn btn-outline-primary" for="viewChange">Change (start = 100)</label>
                         <input type="radio" class="btn-check" name="view" id="viewAmount" value="amount">
                         <label class="btn btn-outline-primary" for="viewAmount">Prices</label>
-                        <input type="radio" class="btn-check" name="view" id="viewWages" value="wages">
-                        <label class="btn btn-outline-primary" for="viewWages">Compared with wages</label>
                     </div>
                     <p class="small text-muted mb-2" id="viewHelp"></p>
 
@@ -116,7 +115,7 @@
 
                     <div class="d-flex flex-wrap align-items-center gap-1 mt-1 mb-2 small" id="currencyRow">
                         <span class="me-1">In</span>
-                        <div class="btn-group btn-group-sm flex-wrap" role="group" aria-label="Currency" id="currencyToggles"></div>
+                        <div class="btn-group btn-group-sm flex-wrap" role="group" aria-label="Currency or hours of work" id="currencyToggles"></div>
                     </div>
 
                     <div class="d-flex flex-wrap gap-3 align-items-center mb-3">
@@ -150,8 +149,10 @@
                     when INDEC's current price index starts (its 2007-2015 figures were widely discredited).
                     <span id="latestNote"></span></li>
                 <li><strong>Inflation lines</strong> are INDEC's national consumer price index, overall and by category.
-                    "Housing & utilities" is mostly utilities (electricity, gas, water) plus some rent.</li>
-                <li><strong>Prices</strong> are INDEC's average prices in Greater Buenos Aires.</li>
+                    "Housing & utilities" is mostly utilities (electricity, gas, water) plus some rent. "Restaurants &
+                    hotels" is mostly eating out.</li>
+                <li><strong>Prices</strong> are INDEC's average prices in Greater Buenos Aires. Table wine is basic
+                    vino común, not the bottled Malbec most visitors buy.</li>
                 <li><strong>Big Mac:</strong> its price in pesos from The Economist's
                     <a href="https://github.com/TheEconomist/big-mac-data" target="_blank" rel="noopener">Big Mac Index</a>
                     (surveyed each January and July), converted at the Blue rate like everything here. The Economist
@@ -168,9 +169,10 @@
                 <li><strong>Other currencies:</strong> each month's peso amount divided by that month's average Blue buy
                     rate (what you get when you sell dollars), and for euros, pounds etc. by the European Central Bank's
                     rate for the US dollar. Rates on the <a href="https://arsrates.com/history">exchange-rate charts</a>.</li>
-                <li><strong>Compared with wages:</strong> each line divided by the average wage, so 100 = as affordable
-                    as at the start; above 100 means it takes a bigger share of a wage. Hours of work assume 176 hours a
-                    month.</li>
+                <li><strong>Hours of work:</strong> the peso price divided by the average wage (RIPTE) for that month,
+                    at 176 working hours a month: how long someone on the average formal wage works to pay for it. No
+                    currency conversion is involved (the FAO world prices are priced in pesos at that month's Blue rate
+                    first).</li>
             </ul>
 
             <!-- arsrates/app/templates/partials/feedback.html -->
@@ -261,50 +263,59 @@
             (function () {
                 const SERIES = [
                     { key: "CPI", color: "#111827", group: "Inflation", on: true },
-                    { key: "FOOD", color: "#15803D", group: "Inflation", on: true },
+                    { key: "FOOD", color: "#15803D", group: "Inflation", on: false },
+                    { key: "RESTAURANTS", color: "#BE185D", group: "Inflation", on: true },
                     { key: "TRANSPORT", color: "#1D4ED8", group: "Inflation", on: false },
                     { key: "HOUSING", color: "#7E22CE", group: "Inflation", on: false },
                     { key: "ASADO", color: "#B91C1C", group: "Prices", on: false },
                     { key: "TOMATO", color: "#C2410C", group: "Prices", on: false },
                     { key: "MILK", color: "#0E7490", group: "Prices", on: false },
                     { key: "BREAD", color: "#A16207", group: "Prices", on: false },
+                    { key: "WINE", color: "#7F1D1D", group: "Prices", on: false },
+                    { key: "BEER", color: "#CA8A04", group: "Prices", on: false },
                     { key: "BIGMAC", color: "#DB2777", group: "Prices", on: false },
                     { key: "FAO_FOOD", color: "#65A30D", group: "World prices (FAO, in US dollars)", on: false },
                     { key: "FAO_MEAT", color: "#9F1239", group: "World prices (FAO, in US dollars)", on: false },
-                    { key: "WAGE", color: "#0F766E", group: "Wages", on: true },
+                    { key: "WAGE", color: "#0F766E", group: "Wages", on: false },
                     { key: "MIN_WAGE", color: "#6B7280", group: "Wages", on: false },
                 ];
-                const CURRENCIES = ["ARS", "USD", "EUR", "GBP", "CAD", "AUD", "NZD"];
+                // Units: pesos, currencies (at the month's average Blue), or hours of work
+                // at the average wage (RIPTE / 176). Several can be picked at once.
+                const UNITS = ["ARS", "USD", "EUR", "GBP", "CAD", "AUD", "NZD", "HOURS"];
+                const UNIT_NAME = { ARS: "Pesos", HOURS: "Hours of work" };
                 const HOURS_PER_MONTH = 176;
                 const HELP = {
-                    change: "Each line starts at 100. In dollars, a line above 100 means it costs more dollars than at the start.",
-                    amount: "Actual prices and wages in the chosen currency. Inflation lines are indexes with no price, so they're off here.",
-                    wages: "Each cost divided by the average wage (100 = as affordable as at the start; higher = takes a bigger share of a wage). Same in any currency.",
+                    change: "Each line starts at 100. Pick a currency (the expat's view) and Hours of work (the local's view) to compare.",
+                    amount: "Actual prices and wages. Inflation and world-price lines are indexes with no price, so they're off here.",
                 };
                 let pw = null, blueByMonth = {}, fx = null, fxByMonth = {};
-                let currency = "USD", view = "change", chart = null;
+                const units = new Set(["USD", "HOURS"]);
+                let view = "change", chart = null;
                 let rangeStart = 0, rangeEnd = 0;
 
                 const $ = (id) => document.getElementById(id);
                 const meta = (k) => pw.meta[k];
+                const unitLabel = (u) => (u === "HOURS" ? "hours of work" : u === "ARS" ? "pesos" : u);
                 const monthLabel = (ym, long) => {
                     const [y, m] = ym.split("-");
                     return new Date(Date.UTC(+y, +m - 1, 15)).toLocaleDateString("en-US",
                         { month: "short", year: long ? "numeric" : "2-digit", timeZone: "UTC" });
                 };
-                const money = (v, c) => {
+                const amount = (v, u) => {
                     if (v == null) return "—";
+                    if (u === "HOURS") return `${v.toLocaleString("en-US", { maximumFractionDigits: v < 10 ? 1 : 0 })} h`;
                     const d = Math.abs(v) >= 1000 ? 0 : Math.abs(v) >= 10 ? 1 : 2;
-                    return (c === "ARS" ? "$" : c + " ") + v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+                    return (u === "ARS" ? "$" : u + " ") + v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
                 };
 
-                // Pesos per 1 unit of the currency in a month (ARS = 1)
-                function perUnit(c, ym) {
-                    if (c === "ARS") return 1;
+                // Pesos per 1 unit in a month (index into pw.months for hours of work)
+                function pesosPer(u, ym, i) {
+                    if (u === "ARS") return 1;
+                    if (u === "HOURS") { const w = pw.series.WAGE[i]; return w ? w / HOURS_PER_MONTH : null; }
                     const blue = blueByMonth[ym];
                     if (!blue) return null;
-                    if (c === "USD") return blue;
-                    const f = fxByMonth[c] && fxByMonth[c][ym];
+                    if (u === "USD") return blue;
+                    const f = fxByMonth[u] && fxByMonth[u][ym];
                     return f ? blue / f : null;
                 }
 
@@ -322,12 +333,18 @@
                     return out;
                 }
 
-                function isUsable(s) {
-                    return !(view === "amount" && ["index", "usd_index"].includes(meta(s.key).kind)) &&
-                        !(view === "wages" && s.key === "WAGE");
-                }
+                const isIndex = (k) => ["index", "usd_index"].includes(meta(k).kind);
+                const usable = (s) => !(view === "amount" && isIndex(s.key));
 
-                // Toggles
+                // Lighter shades of a line's color for its 2nd, 3rd... unit
+                const shade = (hex, k) => {
+                    if (!k) return hex;
+                    const mix = Math.min(0.7, 0.3 * k);
+                    const n = parseInt(hex.slice(1), 16);
+                    const ch = (v) => Math.round(v + (255 - v) * mix).toString(16).padStart(2, "0");
+                    return "#" + ch(n >> 16) + ch((n >> 8) & 255) + ch(n & 255);
+                };
+
                 const box = $("seriesToggles");
                 function buildToggles() {
                     box.innerHTML = "";
@@ -342,10 +359,10 @@
                         }
                         const b = document.createElement("button");
                         b.type = "button";
-                        const usable = isUsable(s);
-                        b.disabled = !usable;
-                        b.className = "btn btn-sm " + (s.on && usable ? "btn-secondary" : "btn-outline-secondary");
-                        b.setAttribute("aria-pressed", s.on && usable);
+                        const ok = usable(s);
+                        b.disabled = !ok;
+                        b.className = "btn btn-sm " + (s.on && ok ? "btn-secondary" : "btn-outline-secondary");
+                        b.setAttribute("aria-pressed", s.on && ok);
                         const unit = meta(s.key).unit;
                         b.innerHTML = `<span class="rate-swatch" style="background:${s.color}"></span>${meta(s.key).label}`
                             + (unit && meta(s.key).kind === "price" ? ` <span class="text-muted">/${unit}</span>` : "");
@@ -354,32 +371,38 @@
                     });
                 }
 
-                const cbox = $("currencyToggles");
-                CURRENCIES.forEach((c) => {
+                const ubox = $("currencyToggles");
+                UNITS.forEach((u) => {
                     const b = document.createElement("button");
                     b.type = "button";
-                    b.textContent = c === "ARS" ? "Pesos" : c;
-                    b.dataset.c = c;
+                    b.textContent = UNIT_NAME[u] || u;
+                    b.dataset.u = u;
                     b.addEventListener("click", async () => {
-                        if (!["ARS", "USD"].includes(c) && !fx) {
-                            try {
-                                fx = await fetch("/static/data/fx_rates.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
-                                fx.currencies.forEach((k) => { fxByMonth[k] = monthlyAverages(fx.first, fx.series[k]); });
-                            } catch (e) {
-                                $("rangeChange").textContent = "Couldn't load exchange rates for other currencies.";
-                                return;
+                        if (units.has(u)) {
+                            if (units.size === 1) return;          // keep at least one
+                            units.delete(u);
+                        } else {
+                            if (!["ARS", "USD", "HOURS"].includes(u) && !fx) {
+                                try {
+                                    fx = await fetch("/static/data/fx_rates.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
+                                    fx.currencies.forEach((k) => { fxByMonth[k] = monthlyAverages(fx.first, fx.series[k]); });
+                                } catch (e) {
+                                    $("rangeChange").textContent = "Couldn't load exchange rates for other currencies.";
+                                    return;
+                                }
                             }
+                            units.add(u);
                         }
-                        currency = c;
-                        paintCurrencies();
+                        paintUnits();
                         draw();
                     });
-                    cbox.appendChild(b);
+                    ubox.appendChild(b);
                 });
-                function paintCurrencies() {
-                    cbox.querySelectorAll("button").forEach((b) => {
-                        b.className = "btn " + (b.dataset.c === currency ? "btn-secondary" : "btn-outline-secondary");
-                        b.disabled = view === "wages";
+                function paintUnits() {
+                    ubox.querySelectorAll("button").forEach((b) => {
+                        const on = units.has(b.dataset.u);
+                        b.className = "btn " + (on ? "btn-secondary" : "btn-outline-secondary");
+                        b.setAttribute("aria-pressed", on);
                     });
                 }
 
@@ -387,7 +410,6 @@
                     view = el.value;
                     $("viewHelp").textContent = HELP[view];
                     buildToggles();
-                    paintCurrencies();
                     draw();
                 }));
                 $("logScale").addEventListener("change", draw);
@@ -420,36 +442,35 @@
                 function draw() {
                     if (!pw) return;
                     const months = pw.months.slice(rangeStart, rangeEnd + 1);
-                    const wage = pw.series.WAGE.slice(rangeStart, rangeEnd + 1);
-                    const shown = SERIES.filter((s) => s.on && isUsable(s));
-                    const datasets = shown.map((s) => {
-                        // FAO's index is in US dollars: price it in pesos at the month's Blue,
-                        // so it converts to every currency like the peso series
+                    const unitList = UNITS.filter((u) => units.has(u));
+                    const multi = unitList.length > 1;
+                    const datasets = SERIES.filter((s) => s.on && usable(s)).flatMap((s) => unitList
+                        // The average wage in hours of work is always 176: leave it out
+                        .filter((u) => !(u === "HOURS" && s.key === "WAGE"))
+                        .map((u, k) => {
+                        // FAO's index is in US dollars: price it in pesos at the month's Blue first
                         const pesos = pw.series[s.key].slice(rangeStart, rangeEnd + 1).map((v, i) =>
                             meta(s.key).kind === "usd_index" ? (v != null && blueByMonth[months[i]] ? v * blueByMonth[months[i]] : null) : v);
-                        let values;
-                        if (view === "wages") {
-                            values = pesos.map((v, i) => (v != null && wage[i] ? v / wage[i] : null));
-                        } else {
-                            values = pesos.map((v, i) => {
-                                const u = perUnit(currency, months[i]);
-                                return v != null && u ? v / u : null;
-                            });
-                        }
+                        const values = pesos.map((v, i) => {
+                            const per = pesosPer(u, months[i], rangeStart + i);
+                            return v != null && per ? v / per : null;
+                        });
                         const base = values.find((v) => v != null);
                         const y = view === "amount" ? values.map((v) => (v == null ? null : Math.round(v * 100) / 100))
                             : values.map((v) => (v == null || !base ? null : Math.round(v / base * 1000) / 10));
+                        const color = shade(s.color, multi ? k : 0);
+                        const unitSuffix = meta(s.key).kind === "price" && meta(s.key).unit ? ` (${meta(s.key).unit})` : "";
                         return {
-                            label: meta(s.key).label + (meta(s.key).kind === "price" && meta(s.key).unit ? ` (${meta(s.key).unit})` : ""),
-                            key: s.key, raw: values, pesos, data: y,
-                            borderColor: s.color, backgroundColor: s.color,
+                            label: meta(s.key).label + unitSuffix + (multi ? ` · ${unitLabel(u)}` : ""),
+                            key: s.key, unit: u, raw: values, data: y,
+                            borderColor: color, backgroundColor: color,
                             borderWidth: 2, tension: 0,
                             // Twice-a-year series (Big Mac): dots joined across the months between
                             spanGaps: !!meta(s.key).sparse,
                             pointRadius: meta(s.key).sparse ? 3 : 0,
                             pointHitRadius: 6,
                         };
-                    });
+                    }));
 
                     // First vs last in the range
                     $("rangeChange").innerHTML = datasets.map((ds) => {
@@ -459,23 +480,14 @@
                         if (a < 0 || b <= a) return "";
                         const pct = (ds.raw[b] / ds.raw[a] - 1) * 100;
                         const pctText = `${pct >= 0 ? "+" : ""}${pct.toLocaleString("en-US", { maximumFractionDigits: Math.abs(pct) < 10 ? 1 : 0 })}%`;
-                        const k = meta(ds.key).kind;
-                        let detail;
-                        if (view === "wages") {
-                            detail = k === "price"
-                                ? `${(ds.raw[a] * HOURS_PER_MONTH).toFixed(1)} → ${(ds.raw[b] * HOURS_PER_MONTH).toFixed(1)} hours of average-wage work`
-                                : "relative to the average wage";
-                        } else if (k === "index" || k === "usd_index") {
-                            detail = currency === "ARS" ? "in pesos" : `in ${currency}`;
-                        } else {
-                            detail = `${money(ds.raw[a], currency)} → ${money(ds.raw[b], currency)}`;
-                        }
+                        const detail = isIndex(ds.key) ? `in ${unitLabel(ds.unit)}`
+                            : `${amount(ds.raw[a], ds.unit)} → ${amount(ds.raw[b], ds.unit)}`;
                         return `<div><span class="rate-swatch" style="background:${ds.borderColor}"></span>${ds.label}: `
                             + `${monthLabel(months[a])} → ${monthLabel(months[b])}, ${detail}, <strong>${pctText}</strong></div>`;
                     }).join("") || '<span class="text-muted">Pick a line above.</span>';
 
                     if (chart) chart.destroy();
-                    const pctAxis = view !== "amount";
+                    const oneUnit = unitList.length === 1 ? unitList[0] : null;
                     chart = new Chart($("pricesChart"), {
                         type: "line",
                         data: { labels: months, datasets },
@@ -484,17 +496,14 @@
                             animation: false,
                             interaction: { mode: "index", intersect: false },
                             plugins: {
-                                legend: { display: false },
+                                legend: { display: multi, labels: { boxWidth: 12, font: { size: 11 } } },
                                 tooltip: {
                                     callbacks: {
                                         title: (items) => items.length ? monthLabel(items[0].label, true) : "",
                                         label: (ctx) => {
-                                            const ds = ctx.dataset, i = ctx.dataIndex, v = ds.raw[i];
-                                            if (view === "amount") return `${ds.label}: ${money(v, currency)}`;
-                                            if (view === "wages" && meta(ds.key).kind === "price")
-                                                return `${ds.label}: ${ctx.parsed.y} (${(v * HOURS_PER_MONTH).toFixed(1)} h of work)`;
-                                            const amount = !["index", "usd_index"].includes(meta(ds.key).kind) ? ` · ${money(view === "wages" ? ds.pesos[i] : v, view === "wages" ? "ARS" : currency)}` : "";
-                                            return `${ds.label}: ${ctx.parsed.y}${amount}`;
+                                            const ds = ctx.dataset, v = ds.raw[ctx.dataIndex];
+                                            if (view === "amount") return `${ds.label}: ${amount(v, ds.unit)}`;
+                                            return `${ds.label}: ${ctx.parsed.y}` + (isIndex(ds.key) ? "" : ` · ${amount(v, ds.unit)}`);
                                         },
                                     },
                                 },
@@ -511,7 +520,7 @@
                                     type: $("logScale").checked ? "logarithmic" : "linear",
                                     ticks: {
                                         maxTicksLimit: 8,
-                                        callback: (v) => pctAxis ? v.toLocaleString("en-US") : money(v, currency),
+                                        callback: (v) => (view === "amount" && oneUnit ? amount(v, oneUnit) : v.toLocaleString("en-US")),
                                     },
                                 },
                             },
@@ -530,11 +539,11 @@
                     fromInput.min = toInput.min = pw.months[0];
                     fromInput.max = toInput.max = pw.months[pw.months.length - 1];
                     $("latestNote").textContent = `Latest data: ${monthLabel(pw.meta.CPI.latest, true)} for prices, `
-                        + `${monthLabel(pw.meta.WAGE.latest, true)} for the average wage.`;
+                        + `${monthLabel(pw.meta.WAGE.latest, true)} for the average wage (so hours of work end there).`;
                     $("viewHelp").textContent = HELP[view];
                     setPreset(0);
                     buildToggles();
-                    paintCurrencies();
+                    paintUnits();
                     draw();
                 }).catch(() => {
                     $("rangeChange").innerHTML = '<span class="text-danger">The data couldn\'t be loaded. Please try again later.</span>';
