@@ -8,6 +8,7 @@ All rates are pesos per 1 US dollar. Remittance and card rates are headline rate
 
 - [rates.md](https://arsrates.com/rates.md): today's rates as plain text, refreshed every 15 minutes
 - [current_rates.json](https://arsrates.com/static/data/current_rates.json): the same data as JSON
+- [Prices and wages](https://arsrates.com/prices): monthly inflation (overall, food, transport, housing & utilities), average prices of beef, tomatoes, milk and bread in Greater Buenos Aires, average and minimum wages since Dec 2016 (INDEC, datos.gob.ar), the Big Mac (The Economist) and world food and meat prices (FAO Food Price Index), in pesos or converted to USD, EUR, GBP, CAD, AUD and NZD at the monthly average Blue rate ([prices_wages.json](https://arsrates.com/static/data/prices_wages.json))
 - [fx_rates.json](https://arsrates.com/static/data/fx_rates.json): daily EUR, GBP, CAD, AUD and NZD per US dollar since 2006 (ECB reference rates), used to show rates per other currencies
 - [Rate history](https://arsrates.com/history): daily closing rates since 2006 (official), 2010 (CCL), 2011 (Blue) and 2018 (MEP) for Blue, MEP, CCL, official, Western Union, Visa, Mastercard and AMEX (from Aug 2025) ([rate_history.json](https://arsrates.com/static/data/rate_history.json); estimated values are listed under "estimated")
 
