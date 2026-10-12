@@ -433,7 +433,7 @@ a:focus-visible {
 }
 /* Rounded corners on the first and last rows instead of overflow: hidden on the
    box, which would clip rate-name tooltips on the bottom rows (Mayorista) */
-#rates-container .rates-header {
+#rates-container .rates-container > :first-child {
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
 }

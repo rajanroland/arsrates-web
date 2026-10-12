@@ -83,6 +83,48 @@ const RATE_GROUPS = [
   ["OFFICIAL", "MEP", "CCL", "TARJETA", "MAYORISTA"],
 ];
 
+// Currency selector: pesos per 1 USD (as scraped) or per 1 EUR/GBP/CAD/AUD/NZD,
+// converted at the ECB's daily reference rate (static/data/fx_rates.json, from
+// app/services/fx_rates.py). Card and money-transfer rates are hidden in other
+// currencies: those are quoted for US dollars (a euro card or a transfer from
+// Europe gets a different rate). The choice is remembered in localStorage.
+const CURRENCIES = ["USD", "EUR", "GBP", "CAD", "AUD", "NZD"];
+const CONVERTIBLE = ["BLUE", "CRYPTO", "OFFICIAL", "MEP", "CCL", "TARJETA", "MAYORISTA"];
+const CURRENCY_KEY = "arsrates_currency";
+const readCurrency = () => {
+  try {
+    const c = localStorage.getItem(CURRENCY_KEY);
+    return CURRENCIES.includes(c) ? c : "USD";
+  } catch (e) {
+    return "USD";
+  }
+};
+let fxPromise = null;   // fx_rates.json, fetched once, only when needed
+const loadFx = () => {
+  if (!fxPromise) {
+    fxPromise = fetch("/static/data/fx_rates.json")
+      .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .catch((e) => { fxPromise = null; throw e; });
+  }
+  return fxPromise;
+};
+
+// Pesos per 1 `currency`: divide pesos per USD by (currency per USD)
+function convertRates(ratesData, currency, fx) {
+  if (currency === "USD" || !fx || !fx.latest[currency]) return ratesData;
+  const perUsd = fx.latest[currency];
+  const div = (v) => (v == null ? v : v / perUsd);
+  const rates = {};
+  CONVERTIBLE.forEach((key) => {
+    const r = ratesData.rates[key];
+    if (!r) return;
+    const converted = { ...r };
+    ["buy", "sell", "mid", "rate"].forEach((f) => { if (f in r) converted[f] = div(r[f]); });
+    rates[key] = converted;
+  });
+  return { ...ratesData, rates };
+}
+
 // Short labels for the table; the full name from the JSON is the tooltip
 const SHORT_LABELS = {
   BLUE: "D. Blue",
@@ -110,7 +152,7 @@ const RATE_SOURCES = {
   MEP: ["dolarapi.com", "https://dolarapi.com"],
   CCL: ["dolarapi.com", "https://dolarapi.com"],
   CRYPTO: ["dolarapi.com", "https://dolarapi.com"],
-  TARJETA: ["dolarapi.com (Oficial sell × 1.30)", "https://dolarapi.com"],
+  TARJETA: ["dolarapi.com", "https://dolarapi.com"],
   MAYORISTA: ["BCRA (Central Bank of Argentina)", "https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp"],
   WU: ["Western Union", "https://www.westernunion.com/us/en/currency-converter/usd-to-ars-rate.html"],
   VISA: ["Visa", "https://usa.visa.com/support/consumer/travel-support/exchange-rate-calculator.html"],
@@ -140,7 +182,7 @@ const RATE_INFO = {
   OFFICIAL: ["Dólar Oficial", "Official retail rate at banks."],
   MEP: ["Dólar MEP (Bolsa)", "Legal rate for buying or selling dollars through bonds in a local brokerage account."],
   CCL: ["Dólar CCL (Contado con liquidación)", "Rate for moving dollars into or out of Argentina through securities (bonds, CEDEARs) settled abroad."],
-  TARJETA: ["Dólar Tarjeta", "Oficial sell + 30%: roughly what a foreign-currency charge costs on an Argentine card paid in pesos."],
+  TARJETA: ["Dólar Tarjeta", "The official rate plus the 30% tax on card spending abroad: roughly what a foreign-currency charge costs on an Argentine card paid in pesos."],
   MAYORISTA: ["Dólar Mayorista (A3500)", "BCRA's wholesale reference rate, published on business days around 4 PM. Shows the latest published value."],
 };
 
@@ -429,6 +471,15 @@ function paintFreshness() {
 const RatesContainer = () => {
   const [ratesData, setRatesData] = useState(null);
   const [lastKnownTimestamp, setLastKnownTimestamp] = useState(null);
+  const [currency, setCurrency] = useState(readCurrency);
+  const [fx, setFx] = useState(null);
+  const [fxError, setFxError] = useState(false);
+
+  useEffect(() => {
+    try { localStorage.setItem(CURRENCY_KEY, currency); } catch (e) { /* storage blocked */ }
+    if (currency === "USD" || fx) return;
+    loadFx().then((data) => { setFx(data); setFxError(false); }).catch(() => setFxError(true));
+  }, [currency]);
 
   useEffect(() => {
     const fetchRates = async () => {
@@ -550,17 +601,58 @@ const RatesContainer = () => {
     )
   );
 
+  // Converted copy for another currency (until fx loads, USD stays shown)
+  const converting = currency !== "USD" && fx && fx.latest[currency];
+  const shown = converting ? convertRates(ratesData, currency, fx) : ratesData;
+  const groups = converting
+    ? RATE_GROUPS.map((g) => g.filter((k) => CONVERTIBLE.includes(k))).filter((g) => g.length)
+    : RATE_GROUPS;
+
+  const fxDate = converting
+    ? new Date(fx.date + "T12:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" })
+    : null;
+  const currencyRow = React.createElement(
+    "div",
+    { className: "list-group-item py-2 small", key: "currency", style: { width: "100%" } },
+    React.createElement("div", { className: "d-flex flex-wrap align-items-center gap-2" }, [
+      React.createElement("label", { htmlFor: "currencySelect", key: "l", className: "mb-0" }, "Pesos per 1"),
+      React.createElement(
+        "select",
+        {
+          id: "currencySelect",
+          key: "s",
+          className: "form-select form-select-sm",
+          style: { width: "auto" },
+          value: currency,
+          onChange: (e) => setCurrency(e.target.value),
+        },
+        CURRENCIES.map((c) => React.createElement("option", { key: c, value: c }, c))
+      ),
+      React.createElement(
+        "span",
+        { key: "n", className: "text-muted" },
+        currency === "USD"
+          ? ""
+          : fxError
+          ? "Couldn't load exchange rates; showing USD."
+          : converting
+          ? `USD rates converted at the ECB rate of ${fxDate} (1 ${currency} = ${(1 / fx.latest[currency]).toFixed(4)} USD). Card and transfer rates are for US dollars, so they're hidden. 24h change is in USD terms.`
+          : "Loading exchange rates…"
+      ),
+    ])
+  );
+
   const rowFor = (rateType) =>
     React.createElement(RateDisplay, {
       key: rateType,
       rateType,
-      rateInfo: ratesData.rates[rateType],
+      rateInfo: shown.rates[rateType],
       label: ratesData.labels[rateType],
       feedTimestamp: ratesData.timestamp,
-      blueBuy: ratesData.rates.BLUE && ratesData.rates.BLUE.buy,
+      blueBuy: shown.rates.BLUE && shown.rates.BLUE.buy,
     });
 
-  const rows = RATE_GROUPS.flatMap((group, i) => [
+  const rows = groups.flatMap((group, i) => [
     i > 0 &&
       React.createElement("div", {
         key: `sep-${i}`,
@@ -581,6 +673,7 @@ const RatesContainer = () => {
       className: "rates-container",
     },
     [
+      currencyRow,
       headers,
       ...rows,
     ]

@@ -29,7 +29,7 @@ NOTES = {
     "MEP": "legal rate via bonds in a local brokerage account",
     "CCL": "rate for moving dollars in or out via securities",
     "MAYORISTA": "Central Bank wholesale reference rate (A3500)",
-    "TARJETA": "official sell + 30%, cost of card charges paid in pesos with an Argentine card",
+    "TARJETA": "official rate plus the 30% tax on card spending abroad: cost of card charges paid in pesos with an Argentine card",
     "CRYPTO": "crypto dollar: dollar stablecoins (like USDT) on Argentine exchanges",
     "VISA": "one rate per day for all charges",
     "MC": "one rate per day, published around 3 PM ET",
