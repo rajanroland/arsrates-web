@@ -99,7 +99,8 @@
             <h1 class="h2 mb-1">Prices and Wages</h1>
             <p class="text-muted mb-4">How costs and wages in Argentina have changed since December 2016: in dollars,
                 euros and more at each month's average Blue rate (the expat's view), or in hours of work at the average
-                wage (the local's view). Pick both to compare.</p>
+                wage (the local's view). Pick both to compare. All peso prices are converted to US dollars at that
+                month's average Blue rate.</p>
 
             <div class="card mb-4">
                 <div class="card-body">
@@ -148,6 +149,10 @@
                     <a href="https://datos.gob.ar" target="_blank" rel="noopener">open data</a>. Monthly, from December 2016,
                     when INDEC's current price index starts (its 2007-2015 figures were widely discredited).
                     <span id="latestNote"></span></li>
+                <li><strong>Change (start = 100):</strong> the first month shown is set to 100 and every later month is
+                its ratio to that month, times 100. So 250 means 2.5 times the starting price (up 150%). To compare
+                any two months, divide one by the other: 300 in one month and 200 in an earlier one means prices went
+                up 1.5 times (50%) between them, whichever month the chart starts at.</li>
                 <li><strong>Inflation lines</strong> are INDEC's national consumer price index, overall and by category.
                     "Housing & utilities" is mostly utilities (electricity, gas, water) plus some rent. "Restaurants &
                     hotels" is mostly eating out.</li>
@@ -285,7 +290,7 @@
                 const UNIT_NAME = { ARS: "Pesos", HOURS: "Hours of work" };
                 const HOURS_PER_MONTH = 176;
                 const HELP = {
-                    change: "Each line starts at 100. Pick a currency (the expat's view) and Hours of work (the local's view) to compare.",
+                    change: "Each line starts at 100 and shows each month as a ratio to the first (250 = 2.5 times). Divide two points to get the change between them. Pick a currency (the expat's view) and Hours of work (the local's view) to compare.",
                     amount: "Actual prices and wages. Inflation and world-price lines are indexes with no price, so they're off here.",
                 };
                 let pw = null, blueByMonth = {}, fx = null, fxByMonth = {};
