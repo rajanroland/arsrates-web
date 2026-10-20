@@ -530,3 +530,10 @@ a:focus-visible {
     border-top: 1px solid var(--border);
     color: var(--text-muted);
 }
+
+/* "See chart" sits under the source line, in the same section */
+.rate-tip-source + .rate-tip-source {
+    margin-top: 2px;
+    padding-top: 0;
+    border-top: none;
+}

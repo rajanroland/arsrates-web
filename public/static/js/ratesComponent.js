@@ -168,6 +168,17 @@ const RATE_SOURCES = {
 const methodologyUrl = () =>
   ((window.APP_CONFIG && window.APP_CONFIG.FRONTEND_URL) || "https://arsrates.com") + "/methodology";
 
+// Rates that have a line on the Charts page (history.html reads ?rates=&currency=)
+const CHART_RATES = ["BLUE", "MEP", "CCL", "OFFICIAL", "WU", "VISA", "MC", "AMEX"];
+const chartsUrl = (rateType, currency) => {
+  const params = new URLSearchParams();
+  if (rateType) params.set("rates", rateType);
+  if (currency && currency !== "USD") params.set("currency", currency);
+  const query = params.toString();
+  return ((window.APP_CONFIG && window.APP_CONFIG.FRONTEND_URL) || "https://arsrates.com") + "/history" +
+    (query ? "?" + query : "");
+};
+
 // Shown when a rate name is hovered or tapped: full name and what the rate is
 const RATE_INFO = {
   BLUE: ["Dólar Blue", "Informal (street) market rate: what cuevas pay (buy) and charge (sell) for cash dollars."],
@@ -231,7 +242,7 @@ const VsBlueDisplay = ({ rateType, rateInfo, blueBuy }) => {
   );
 };
 
-const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
+const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy, currency }) => {
   // Rate-name tooltip: opens on hover, or on tap (phones have no hover)
   const [showInfo, setShowInfo] = useState(false);
   if (!rateInfo) return null;
@@ -412,6 +423,9 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy }) => {
                         ? React.createElement("a", { key: "a", href: source[1], target: "_blank", rel: "noopener" }, `${source[0]} ↗`)
                         : React.createElement("a", { key: "a", href: methodologyUrl() }, source[0]),
                     ]),
+                  CHART_RATES.includes(rateType) &&
+                    React.createElement("div", { key: "c", className: "rate-tip-source" },
+                      React.createElement("a", { href: chartsUrl(rateType, currency) }, "See chart →")),
                 ]
               ),
           ]
@@ -477,6 +491,9 @@ const RatesContainer = () => {
 
   useEffect(() => {
     try { localStorage.setItem(CURRENCY_KEY, currency); } catch (e) { /* storage blocked */ }
+    // The "Charts" link under the table opens the charts in the same currency
+    const chartsLink = document.getElementById("chartsLink");
+    if (chartsLink) chartsLink.href = chartsUrl(null, currency);
     if (currency === "USD" || fx) return;
     loadFx().then((data) => { setFx(data); setFxError(false); }).catch(() => setFxError(true));
   }, [currency]);
@@ -650,6 +667,7 @@ const RatesContainer = () => {
       label: ratesData.labels[rateType],
       feedTimestamp: ratesData.timestamp,
       blueBuy: shown.rates.BLUE && shown.rates.BLUE.buy,
+      currency,
     });
 
   const rows = groups.flatMap((group, i) => [

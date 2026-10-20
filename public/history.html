@@ -284,6 +284,11 @@
                     { key: "MC", label: "Mastercard", color: "#C2410C", pair: false, on: false },
                     { key: "AMEX", label: "AMEX", color: "#0F766E", pair: false, on: false },
                 ];
+                // Links from the rates table can pick what opens: ?rates=WU,VISA&currency=EUR
+                const params = new URLSearchParams(location.search);
+                const wanted = (params.get("rates") || "").toUpperCase().split(",")
+                    .filter((k) => RATES.some((r) => r.key === k));
+                if (wanted.length) RATES.forEach((r) => { r.on = wanted.includes(r.key); });
                 const DAY = 86400000;
                 let data = null, first = 0, count = 0, chart = null;
                 let rangeStart = 0, rangeEnd = 0;   // day indexes shown (inclusive)
@@ -321,7 +326,24 @@
                 const CURRENCIES = ["USD", "EUR", "GBP", "CAD", "AUD", "NZD"];
                 const USD_ONLY = ["WU", "VISA", "MC", "AMEX"];
                 const shownCurrencies = new Set(["USD"]);
+                const askedCurrency = (params.get("currency") || "").toUpperCase();
+                if (CURRENCIES.includes(askedCurrency) && askedCurrency !== "USD") {
+                    // Card and WU rates only exist in USD, so keep USD on if one of those was asked for
+                    if (!RATES.some((r) => r.on && USD_ONLY.includes(r.key))) shownCurrencies.delete("USD");
+                    shownCurrencies.add(askedCurrency);
+                }
                 let fx = null, fxFirst = 0;
+                async function loadFx() {
+                    if (fx) return true;
+                    try {
+                        fx = await fetch("/static/data/fx_rates.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
+                        fxFirst = Date.parse(fx.first + "T00:00:00Z");
+                        return true;
+                    } catch (e) {
+                        document.getElementById("rangeChange").textContent = "Couldn't load exchange rates for other currencies.";
+                        return false;
+                    }
+                }
                 const fxPerUsd = (c, i) => {      // c per 1 USD on history day i, or null
                     if (!fx) return null;
                     const n = Math.round((first + i * DAY - fxFirst) / DAY);
@@ -343,15 +365,7 @@
                             if (shownCurrencies.size === 1) return;   // keep at least one
                             shownCurrencies.delete(c);
                         } else {
-                            if (c !== "USD" && !fx) {
-                                try {
-                                    fx = await fetch("/static/data/fx_rates.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
-                                    fxFirst = Date.parse(fx.first + "T00:00:00Z");
-                                } catch (e) {
-                                    document.getElementById("rangeChange").textContent = "Couldn't load exchange rates for other currencies.";
-                                    return;
-                                }
-                            }
+                            if (c !== "USD" && !await loadFx()) return;
                             shownCurrencies.add(c);
                         }
                         paint();
@@ -522,7 +536,17 @@
 
                 fetch("/static/data/rate_history.json", { cache: "no-cache" })
                     .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
-                    .then((d) => {
+                    .then(async (d) => {
+                        // A currency from the link needs the ECB rates before the first draw
+                        if ([...shownCurrencies].some((c) => c !== "USD") && !await loadFx()) {
+                            shownCurrencies.clear();
+                            shownCurrencies.add("USD");
+                            currencyBox.querySelectorAll("button").forEach((b) => {
+                                const on = b.textContent === "USD";
+                                b.className = "btn " + (on ? "btn-secondary" : "btn-outline-secondary");
+                                b.setAttribute("aria-pressed", on);
+                            });
+                        }
                         data = d;
                         first = Date.parse(d.first + "T00:00:00Z");
                         count = d.series.BLUE_SELL.length;
