@@ -556,3 +556,31 @@ a:focus-visible {
     text-align: center;
     font-size: 0.875rem;
 }
+
+/* Bank icon: transfer apps that need an Argentine bank account (ratesComponent.js) */
+.rate-bank-icon {
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-left: 5px;
+    vertical-align: -1px;
+    color: var(--text-muted);
+}
+.rate-tip-need {
+    margin-top: 6px;
+    font-weight: 600;
+}
+.rate-tip-need .rate-bank-icon {
+    margin: 0 2px 0 0;
+}
+
+/* "Visiting?" tip under the home page rates table */
+.visitor-tip {
+    margin: 0.75rem auto 0;
+    max-width: 560px;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    font-size: 0.875rem;
+    text-align: left;
+}

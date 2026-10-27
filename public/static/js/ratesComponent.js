@@ -168,6 +168,25 @@ const RATE_SOURCES = {
 const methodologyUrl = () =>
   ((window.APP_CONFIG && window.APP_CONFIG.FRONTEND_URL) || "https://arsrates.com") + "/methodology";
 
+// Transfer apps pay into an Argentine bank account (CBU) or wallet (CVU), so
+// they're out for most visitors: a bank icon by the name, and a line in the tip.
+// (WU is the cash-pickup option.)
+const NEEDS_LOCAL_ACCOUNT = ["TAPTAP", "REMITLY", "WISE"];
+const LOCAL_ACCOUNT_NOTE = "Needs an Argentine bank account (or a wallet like Mercado Pago) to receive the pesos.";
+const bankIcon = () =>
+  React.createElement(
+    "svg",
+    { key: "bank", className: "rate-bank-icon", viewBox: "0 0 16 16", role: "img", "aria-label": "Needs an Argentine bank account" },
+    [
+      React.createElement("title", { key: "t" }, "Needs an Argentine bank account"),
+      React.createElement("path", {
+        key: "p",
+        fill: "currentColor",
+        d: "M8 1 1 4.5V6h14V4.5L8 1zM2.5 7h2v5h-2zM7 7h2v5H7zM11.5 7h2v5h-2zM1 13h14v2H1z",
+      }),
+    ]
+  );
+
 // Rates that have a line on the Charts page (history.html reads ?rates=&currency=)
 const CHART_RATES = ["BLUE", "MEP", "CCL", "OFFICIAL", "WU", "VISA", "MC", "AMEX"];
 const chartsUrl = (rateType, currency) => {
@@ -394,6 +413,7 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy, curren
               { key: "name", className: info ? "rate-label-name" : undefined },
               SHORT_LABELS[rateType] || label
             ),
+            NEEDS_LOCAL_ACCOUNT.includes(rateType) && bankIcon(),
             rateInfo.projected &&
               React.createElement(
                 "span",
@@ -416,6 +436,11 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy, curren
                 [
                   React.createElement("strong", { key: "n" }, info[0]),
                   React.createElement("div", { key: "d" }, info[1]),
+                  NEEDS_LOCAL_ACCOUNT.includes(rateType) &&
+                    React.createElement("div", { key: "need", className: "rate-tip-need" }, [
+                      bankIcon(),
+                      " " + LOCAL_ACCOUNT_NOTE,
+                    ]),
                   source &&
                     React.createElement("div", { key: "s", className: "rate-tip-source" }, [
                       "Source: ",
