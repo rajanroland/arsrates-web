@@ -609,3 +609,36 @@ a:focus-visible {
 .rates-static thead th:not(:first-child) {
     text-align: right;
 }
+
+/* Home page "Common questions": collapsible (<details>) */
+.faq-item {
+    border-bottom: 1px solid var(--border, rgba(0,0,0,0.1));
+}
+.faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+}
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+.faq-item summary h3 {
+    margin: 0;
+}
+.faq-item summary::after {
+    content: "+";
+    font-size: 1.25rem;
+    line-height: 1;
+    color: var(--primary-dark);
+    flex-shrink: 0;
+}
+.faq-item[open] summary::after {
+    content: "\2212";
+}
+.faq-item p {
+    margin: 0 0 0.75rem;
+}

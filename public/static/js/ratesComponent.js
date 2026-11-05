@@ -507,12 +507,120 @@ function paintFreshness() {
   el.replaceChildren(dot, `Updated ${ago} · ${exact} ARG`);
 }
 
+// "Quick comparison" popup: what a 100,000-peso bill costs in US dollars each way,
+// at the rates the table has loaded. Opened by the link next to the currency
+// selector, or by any link to the home page with #compare.
+const COMPARE_PESOS = 100000;
+const WU_TYPICAL_FEE = 0.07; // about $35 on $500 by debit card, the most common fee from the US
+const COMPARE_ROWS = [
+  // [key, label, rate used]
+  ["WU", "Western Union", (r) => r.rate],
+  ["AMEX", "AMEX", (r) => r.rate],
+  ["BLUE", "Cash dollars (Blue buy)", (r) => r.buy],
+  ["VISA", "Visa", (r) => r.rate],
+  ["MC", "Mastercard", (r) => r.rate],
+];
+const formatUsd = (n) =>
+  "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+const QuickCompare = ({ rates, onClose }) => {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    document.body.classList.add("modal-open");
+    const closeBtn = document.getElementById("compareClose");
+    if (closeBtn) closeBtn.focus();
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.classList.remove("modal-open");
+    };
+  }, []);
+
+  const rows = COMPARE_ROWS.map(([key, label, pick]) => {
+    const info = rates[key];
+    const rate = info ? pick(info) : null;
+    const ok = typeof rate === "number" && rate > 0;
+    return { key, label, rate: ok ? rate : null, cost: ok ? COMPARE_PESOS / rate : null,
+             est: !!(info && info.projected) };
+  }).sort((a, b) => (a.cost === null) - (b.cost === null) || a.cost - b.cost);
+
+  const e = React.createElement;
+  const body = e("div", { className: "modal-body" }, [
+    e("p", { key: "intro", className: "mb-2" },
+      "In US dollars at the current rates, cheapest first."),
+    e("table", { key: "t", className: "table table-sm mb-3 compare-table" }, [
+      e("thead", { key: "h" }, e("tr", null, [
+        e("th", { key: "a", scope: "col" }, "How you pay"),
+        e("th", { key: "b", scope: "col", className: "text-end" }, "Current rate"),
+        e("th", { key: "c", scope: "col", className: "text-end" }, "Cost (US$)"),
+      ])),
+      e("tbody", { key: "b" }, rows.map((r) => e("tr", { key: r.key }, [
+        e("td", { key: "a" }, r.label + (r.est ? " (est.)" : "")),
+        e("td", { key: "b", className: "text-end" }, r.rate ? r.rate.toFixed(0) : "-"),
+        e("td", { key: "c", className: "text-end" },
+          r.cost === null
+            ? e("span", { className: "text-muted" }, "not available")
+            : r.key === "WU"
+            ? [e("span", { key: "v" }, formatUsd(r.cost)),
+               e("div", { key: "f", className: "small text-muted" },
+                 `(${formatUsd(r.cost * (1 + WU_TYPICAL_FEE))} with 7% fee)`)]
+            : formatUsd(r.cost)),
+      ]))),
+    ]),
+    e("ul", { key: "n", className: "small text-muted mb-0 ps-3" }, [
+      e("li", { key: "wu" }, [
+        "Western Union is shown before its fee. 7% is the usual fee from the US ($35 on $500 by debit card); " +
+        "paying in person or from a bank account, or some accounts, cost less. ",
+        e("a", { key: "l", href: frontendUrl("/western-union-vs-cash") }, "WU vs cash"),
+      ]),
+      e("li", { key: "cash" },
+        "Cash: US$100 bills in the current design, changed at an exchange house at the Blue buy rate."),
+      e("li", { key: "cards" },
+        "Cards assume no foreign transaction fee. (est.) means an estimate until the day's rate is out."),
+    ]),
+  ]);
+
+  return ReactDOM.createPortal(
+    e(React.Fragment, null, [
+      e("div", { key: "bd", className: "modal-backdrop fade show" }),
+      e("div", {
+        key: "m",
+        className: "modal fade show d-block",
+        role: "dialog",
+        "aria-modal": "true",
+        "aria-labelledby": "compareTitle",
+        tabIndex: -1,
+        onClick: (ev) => { if (ev.target === ev.currentTarget) onClose(); },
+      }, e("div", { className: "modal-dialog modal-dialog-centered modal-dialog-scrollable" },
+        e("div", { className: "modal-content" }, [
+          e("div", { key: "h", className: "modal-header" }, [
+            e("h2", { key: "t", className: "modal-title h5", id: "compareTitle" }, "What a 100,000-peso bill costs"),
+            e("button", { key: "x", id: "compareClose", type: "button", className: "btn-close",
+                          "aria-label": "Close", onClick: onClose }),
+          ]),
+          body,
+        ]))),
+    ]),
+    document.body
+  );
+};
+
+const frontendUrl = (path) =>
+  ((window.APP_CONFIG && window.APP_CONFIG.FRONTEND_URL) || "https://arsrates.com") + path;
+
 const RatesContainer = () => {
+  const [showCompare, setShowCompare] = useState(() => window.location.hash === "#compare");
   const [ratesData, setRatesData] = useState(null);
   const [lastKnownTimestamp, setLastKnownTimestamp] = useState(null);
   const [currency, setCurrency] = useState(readCurrency);
   const [fx, setFx] = useState(null);
   const [fxError, setFxError] = useState(false);
+
+  useEffect(() => {
+    const onHash = () => { if (window.location.hash === "#compare") setShowCompare(true); };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
 
   useEffect(() => {
     try { localStorage.setItem(CURRENCY_KEY, currency); } catch (e) { /* storage blocked */ }
@@ -690,19 +798,27 @@ const RatesContainer = () => {
           ? `USD rates converted at the ECB rate of ${fxDate} (1 ${currency} = ${(1 / fx.latest[currency]).toFixed(4)} USD). Card and transfer rates are for US dollars, so they're hidden. 24h change is in USD terms.`
           : "Loading exchange rates…"
       ),
-      // WU quotes US dollars, so the calculator only applies in USD
+      // Cards and WU quote US dollars, so the comparison only applies in USD
       currency === "USD" && React.createElement(
         "a",
         {
-          key: "calc",
+          key: "compare",
           className: "ms-auto",
-          href: ((window.APP_CONFIG && window.APP_CONFIG.FRONTEND_URL) || "https://arsrates.com") + "/how-to#wuCalc",
-          title: "Western Union vs cash calculator",
+          href: "#compare",
+          title: "What a 100,000-peso bill costs with each way to pay",
+          onClick: (ev) => { ev.preventDefault(); setShowCompare(true); },
         },
-        "WU calculator"
+        "Quick comparison"
       ),
     ])
   );
+
+  const closeCompare = () => {
+    setShowCompare(false);
+    if (window.location.hash === "#compare") {
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+  };
 
   const rowFor = (rateType) =>
     React.createElement(RateDisplay, {
@@ -739,6 +855,7 @@ const RatesContainer = () => {
       currencyRow,
       headers,
       ...rows,
+      showCompare && React.createElement(QuickCompare, { key: "compare", rates: ratesData.rates, onClose: closeCompare }),
     ]
   );
 };

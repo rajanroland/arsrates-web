@@ -26,15 +26,15 @@
 <!-- Stylesheets -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/static/css/styles.css?v=198234d016">
+<link rel="stylesheet" href="/static/css/styles.css?v=8d5fc6df47">
 
 <!-- PWA/Icons -->
 <link rel="manifest" href="/static/manifest.json">
 <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
 <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
 <link rel="icon" type="image/png" sizes="192x192" href="/static/images/icon-192x192.png">
-        <title>How to Use ARS Rates: Rates Table, Calculator and Tools | ARS Rates</title>
-        <meta name="description" content="How to use ARS Rates: compare Western Union with changing cash at today's rates, read the rates table, and find Western Union locations.">
+        <title>How to Use ARS Rates: Rates Table and Tools | ARS Rates</title>
+        <meta name="description" content="How to use ARS Rates: read the rates table, compare ways to pay with Quick comparison, and find Western Union locations.">
         <link rel="canonical" href="https://arsrates.com/how-to">
     </head>
 
@@ -96,56 +96,6 @@
             <p class="small text-muted mb-4">Last reviewed: November 2026</p>
             <p class="video-link"><svg class="video-link-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8"/><path d="M6.4 4.8v6.4L11.2 8z" fill="#fff"/></svg>Videos: <a href="https://www.youtube.com/watch?v=zTiCjeFyL6w&amp;list=PLCN2zYiVc7AE" target="_blank" rel="noopener">ARS Rates overview</a> · <a href="https://www.youtube.com/watch?v=sMiHqUNf5ao&amp;list=PLCN2zYiVc7AE" target="_blank" rel="noopener">Reading the rates table</a></p>
 
-            <!-- arsrates/app/templates/partials/wu_calculator.html -->
-<!-- Western Union vs cash calculator (static/js/wuCalculator.js, loaded by each page that includes this). Hidden until that script runs: it does nothing without JavaScript -->
-<section id="wuCalc" class="card mb-4" aria-labelledby="wuCalcTitle" hidden>
-    <div class="card-body">
-        <h2 class="h5 card-title" id="wuCalcTitle">Western Union or cash: which gives more pesos today?</h2>
-        <form id="wuCalcForm" autocomplete="off">
-            <div class="row g-3">
-                <div class="col-6">
-                    <label class="form-label" for="wuCalcAmount">Amount to send (US$)</label>
-                    <input class="form-control" id="wuCalcAmount" type="number" inputmode="decimal" min="0" step="any" value="500">
-                </div>
-                <div class="col-6">
-                    <label class="form-label" for="wuCalcFee">Western Union fee (US$)</label>
-                    <input class="form-control" id="wuCalcFee" type="number" inputmode="decimal" min="0" step="any" value="34.99">
-                </div>
-                <div class="col-6">
-                    <label class="form-label" for="wuCalcWu">Western Union rate</label>
-                    <input class="form-control" id="wuCalcWu" type="number" inputmode="decimal" min="0" step="any">
-                </div>
-                <div class="col-6">
-                    <label class="form-label" for="wuCalcBlue">Blue buy rate</label>
-                    <input class="form-control" id="wuCalcBlue" type="number" inputmode="decimal" min="0" step="any">
-                </div>
-            </div>
-        </form>
-        <p class="small text-muted mt-2 mb-3"><span id="wuCalcStatus">Loading today's rates...</span>
-            Use the rate and fee Western Union shows you for this amount.</p>
-        <div id="wuCalcResult" aria-live="polite" hidden>
-            <p class="h5 mb-1" id="wuCalcVerdict"></p>
-            <p class="mb-3" id="wuCalcWhy"></p>
-            <div class="table-responsive">
-                <table class="table table-sm mb-2">
-                    <thead>
-                        <tr><th></th><th>Western Union</th><th>Changing cash</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>You pay</td><td id="wuCalcPayWu"></td><td id="wuCalcPayCash"></td></tr>
-                        <tr><td>You get (pesos)</td><td id="wuCalcGetWu"></td><td id="wuCalcGetCash"></td></tr>
-                        <tr><td>Pesos per dollar spent</td><td id="wuCalcPerWu"></td><td id="wuCalcPerCash"></td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <p class="small text-muted mb-0">Changing cash assumes you get the Blue buy rate on every dollar,
-                which usually takes US$100 bills in perfect condition.</p>
-        </div>
-        <p class="mb-0" id="wuCalcPrompt" hidden>Enter an amount, a fee and both rates to compare.</p>
-    </div>
-</section>
-
-            <p class="mb-5">See <a href="https://arsrates.com/western-union-vs-cash">how the fee and the gap to Blue decide it</a>.</p>
 
             <div class="feature-section mb-5">
                 <h2 class="h3 feature-title">📈 Reading the rates table</h2>
@@ -163,6 +113,10 @@
                             Mayorista rate.</li>
                         <li><strong>"as of" time:</strong> that rate didn't update on the latest check, so it shows
                             when it last did.</li>
+                        <li><strong>Quick comparison:</strong> the link next to "Pesos per 1 USD" shows what a
+                            100,000-peso bill costs in US dollars with Western Union, AMEX, cash dollars, Visa and
+                            Mastercard at the current rates. See also <a href="https://arsrates.com/western-union-vs-cash">how
+                            the fee and the gap to Blue decide Western Union vs cash</a>.</li>
                         <li><strong>Updates:</strong> every 15 minutes from 7 AM to 9 PM Argentina time, and hourly
                             overnight.</li>
                     </ul>
@@ -275,7 +229,6 @@
 <script>
 // Add any global utility functions that aren't auth-related here
 </script>
-        <script src="/static/js/wuCalculator.js?v=7f53e5c1ad"></script>
     </body>
 
 </html>
