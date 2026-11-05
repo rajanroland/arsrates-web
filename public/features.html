@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <!-- arsrates/app/templates/features.html (served at /features, "Rate Alerts" in the menu) -->
+    <!-- arsrates/app/templates/features.html (served at /features, "Email Rates" in the menu) -->
 
     <head>
         <!-- arsrates/app/templates/partials/head.html -->
@@ -75,7 +75,7 @@
                     <a class="nav-link" href="https://arsrates.com/exchange-houses">Exchange Houses</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="alertsLink" href="https://arsrates.com/features">Rate Alerts</a>
+                    <a class="nav-link" id="alertsLink" href="https://arsrates.com/features">Email Rates</a>
                 </li>
             </ul>
             <ul class="navbar-nav" id="authLinks">
@@ -87,11 +87,25 @@
 
 
         <main class="container" style="max-width: 800px;">
-            <h1 class="h2 mb-1">Rate Alerts and How to Use ARS Rates</h1>
-            <p class="small text-muted mb-4">Last reviewed: October 2026</p>
+            <h1 class="h2 mb-1">Email Rates, Alerts and How to Use ARS Rates</h1>
+            <p class="small text-muted mb-4">Last reviewed: November 2026</p>
             <p class="video-link"><svg class="video-link-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8"/><path d="M6.4 4.8v6.4L11.2 8z" fill="#fff"/></svg><a href="https://www.youtube.com/watch?v=Usf5JuK8CBk&amp;list=PLCN2zYiVc7AE" target="_blank" rel="noopener">Watch the video: rate alerts in one minute</a></p>
 
-            <!-- Alerts and emails first: this is where the "Rate Alerts" button lands -->
+            <!-- Emails and alerts first: this is where the "Email Rates" menu link lands -->
+            <div class="feature-section mb-5">
+                <h2 class="h3 feature-title">📨 Daily rate emails</h2>
+                <div class="feature-content">
+                    <p>Get all the rates and their 24-hour changes by email once a day, at the time you choose
+                        (Argentina time):</p>
+                    <ul class="feature-list">
+                        <li>Morning: 8 AM to noon</li>
+                        <li>Afternoon: 1 to 5 PM</li>
+                        <li>Evening: 7 to 11 PM</li>
+                    </ul>
+                    <p class="mb-0">Turn them on or off on the <a href="https://api.arsrates.com/alerts">Email Rates page</a>. Every email has an unsubscribe link.</p>
+                </div>
+            </div>
+
             <div class="feature-section mb-5">
                 <h2 class="h3 feature-title">🔔 Rate alerts</h2>
                 <div class="feature-content">
@@ -109,20 +123,6 @@
                 </div>
             </div>
 
-            <div class="feature-section mb-5">
-                <h2 class="h3 feature-title">📨 Daily rate emails</h2>
-                <div class="feature-content">
-                    <p>Get all the rates and their 24-hour changes by email once a day, at the time you choose
-                        (Argentina time):</p>
-                    <ul class="feature-list">
-                        <li>Morning: 8 AM to noon</li>
-                        <li>Afternoon: 1 to 5 PM</li>
-                        <li>Evening: 7 to 11 PM</li>
-                    </ul>
-                    <p class="mb-0">Turn them on or off in your profile. Every email has an unsubscribe link.</p>
-                </div>
-            </div>
-
             <div class="card mb-5">
                 <div class="card-body">
                     <h2 class="h5 card-title">Getting started</h2>
@@ -130,8 +130,7 @@
                         <li><a href="https://api.arsrates.com/register">Create a free account</a>.</li>
                         <li>Confirm your email address using the link we send you. Emails and alerts only start after
                             you confirm.</li>
-                        <li>Set up <a href="https://api.arsrates.com/alerts">alerts</a>, and choose daily emails in your
-                            <a href="https://api.arsrates.com/profile">profile</a>.</li>
+                        <li>Choose daily emails or set up alerts on the <a href="https://api.arsrates.com/alerts">Email Rates page</a>.</li>
                     </ol>
                     <a href="https://api.arsrates.com/register" class="btn btn-primary">Create a free account</a>
                     <a href="https://api.arsrates.com/login" class="btn btn-outline-secondary ms-2">Log in</a>
@@ -257,7 +256,7 @@
 
 <!-- App Configuration and Authentication -->
 <script src="/static/js/config.js?v=a3ef942479"></script>
-<script src="/static/js/auth.js?v=c9684263d3"></script>
+<script src="/static/js/auth.js?v=966bb9e258"></script>
 
 <!-- Page view counting (after config.js, which sets APP_CONFIG.API_URL) -->
 <script src="/static/js/pageview.js?v=bf0c132e8b"></script>

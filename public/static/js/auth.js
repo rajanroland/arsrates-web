@@ -96,8 +96,8 @@ const AuthManager = {
         // Normal auth check for app server
         const token = this.getToken();
 
-        // Logged in, the "Rate Alerts" link goes to your alert settings
-        // instead of the page that explains alerts (its href in the navbar)
+        // Logged in, the "Email Rates" link goes to your email and alert settings
+        // instead of the page that explains them (its href in the navbar)
         const alertsLink = document.getElementById('alertsLink');
         if (alertsLink && token) {
             alertsLink.setAttribute('href', '/alerts');
@@ -107,9 +107,6 @@ const AuthManager = {
             authLinks.innerHTML = `
                 <li class="nav-item">
                     <a class="nav-link" href="/profile">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/alerts">Alerts</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="AuthManager.logout(); return false;">Logout</a>
