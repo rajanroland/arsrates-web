@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- arsrates/app/templates/amex_rate.html (served at /amex-rate-argentina on arsrates.com) -->
+
+    <head>
+        <!-- arsrates/app/templates/partials/head.html -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ARS Rates">
+<meta name="theme-color" content="#FFFFFF">
+
+<!-- Link previews (WhatsApp, social media). Each page sets its own description
+     and canonical address after this include. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ARS Rates">
+<meta property="og:title" content="ARS Rates: dollar to peso rates today in Argentina">
+<meta property="og:description" content="Blue, MEP, Western Union, Visa, Mastercard and AMEX rates side by side, updated every 15 minutes.">
+<meta property="og:image" content="https://arsrates.com/static/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ARS Rates: dollar to peso rates in Argentina, with the Sol de Mayo and Argentine flag colors">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Stylesheets -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/styles.css?v=198234d016">
+
+<!-- PWA/Icons -->
+<link rel="manifest" href="/static/manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+<link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="/static/images/icon-192x192.png">
+        <title>What Exchange Rate Does AMEX Use in Argentina? | ARS Rates</title>
+        <meta name="description" content="What exchange rate AMEX uses in Argentina: the Central Bank's A3500 from two business days before the charge, checked against 207 days of real charges (median difference 0.04%).">
+        <link rel="canonical" href="https://arsrates.com/amex-rate-argentina">
+        <!-- Update dateModified and the figures together ("Last reviewed" on the page) -->
+        <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "What Exchange Rate Does AMEX Use in Argentina?",
+  "url": "https://arsrates.com/amex-rate-argentina",
+  "dateModified": "2026-11-04",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Organization",
+    "name": "ARS Rates",
+    "url": "https://arsrates.com/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ARS Rates",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://arsrates.com/static/images/icon-512x512.png"
+    }
+  }
+}
+        </script>
+    </head>
+
+    <body>
+        <!-- arsrates/app/templates/partials/navbar.html -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="https://arsrates.com/">
+            <svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true"><g stroke="#F6B40E" stroke-width="1.6" stroke-linecap="round"><line x1="12.0" y1="4.8" x2="12.0" y2="0.8"/><line x1="14.8" y1="5.3" x2="15.7" y2="3.1"/><line x1="17.1" y1="6.9" x2="19.9" y2="4.1"/><line x1="18.7" y1="9.2" x2="20.9" y2="8.3"/><line x1="19.2" y1="12.0" x2="23.2" y2="12.0"/><line x1="18.7" y1="14.8" x2="20.9" y2="15.7"/><line x1="17.1" y1="17.1" x2="19.9" y2="19.9"/><line x1="14.8" y1="18.7" x2="15.7" y2="20.9"/><line x1="12.0" y1="19.2" x2="12.0" y2="23.2"/><line x1="9.2" y1="18.7" x2="8.3" y2="20.9"/><line x1="6.9" y1="17.1" x2="4.1" y2="19.9"/><line x1="5.3" y1="14.8" x2="3.1" y2="15.7"/><line x1="4.8" y1="12.0" x2="0.8" y2="12.0"/><line x1="5.3" y1="9.2" x2="3.1" y2="8.3"/><line x1="6.9" y1="6.9" x2="4.1" y2="4.1"/><line x1="9.2" y1="5.3" x2="8.3" y2="3.1"/></g><circle cx="12" cy="12" r="5.6" fill="#F6B40E" stroke="#C48A05" stroke-width="0.8"/></svg>
+            ARS Rates
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/guide">Money Guide</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="chartsMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Charts</a>
+                    <ul class="dropdown-menu" aria-labelledby="chartsMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/history">Exchange rates</a></li>
+                        <li><a class="dropdown-item" href="https://arsrates.com/prices">Prices &amp; wages</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="wuMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false" aria-label="Western Union">WU</a>
+                    <ul class="dropdown-menu" aria-labelledby="wuMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/wu-guide">How to Get Pesos with WU</a></li>
+                        <li><a class="dropdown-item" href="https://api.arsrates.com/wu-locations">Find a WU Location</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/exchange-houses">Exchange Houses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="alertsLink" href="https://arsrates.com/features">Email Rates</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" id="authLinks">
+                <!-- Will be populated by JavaScript -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+        <main class="container" style="max-width: 800px;">
+            <h1 class="h2 mb-1">What Exchange Rate Does AMEX Use in Argentina?</h1>
+            <p class="small text-muted mb-4">Last reviewed: November 2026</p>
+
+            <div class="alert alert-info">
+                <strong>Short answer:</strong> AMEX converts peso charges at the Argentine Central Bank's wholesale
+                rate (A3500) from two business days before the charge, with no markup. On a US card, that has usually
+                meant more pesos per dollar than Visa or Mastercard.
+            </div>
+
+            <h2 class="h4 mt-4">How we checked</h2>
+            <p>AMEX doesn't publish this rate for Argentina. So we compared real charges on a US-issued AMEX card
+                with the Central Bank's published A3500 rate from two business days earlier. The sample covers 207 days
+                of charges, from August 2025 to October 2026.</p>
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <tbody>
+                        <tr><td>Typical (median) difference</td><td><strong>0.04%</strong></td></tr>
+                        <tr><td>Charges within 0.1%</td><td><strong>68%</strong></td></tr>
+                        <tr><td>Charges within 0.5%</td><td><strong>87%</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Most of the misses are small. Some charges match the previous day's A3500 instead, likely when the
+                merchant submits the charge the same day. So treat the rule as a very good estimate, not a guarantee
+                for every charge.</p>
+
+            <h2 class="h4 mt-5">How it compares with Visa and Mastercard</h2>
+            <p>Since August 2025, this A3500 rate has typically been <strong>4.7% above Visa's rate</strong> for the
+                same day. The gap moves: on 90% of days it was between 1.3% and 6.7%. Mastercard matches Visa on
+                weekdays.</p>
+            <p>On a 100,000-peso bill, a 4.7% gap is roughly the difference between paying about $66 and about $69, as
+                in our <a href="https://www.youtube.com/watch?v=Ohmd8QCiJww&amp;list=PLCN2zYiVc7AE" target="_blank"
+                rel="noopener">dinner example</a>.</p>
+
+            <h2 class="h4 mt-5">Does AMEX still refund the difference later?</h2>
+            <p>AMEX used to charge the official rate, then refund the difference later. On our charges now, the charge
+                shows its final dollar amount right away.</p>
+
+            <h2 class="h4 mt-5">What to do with this</h2>
+            <ul>
+                <li>If you have an AMEX, it's usually the better card to use. Today's estimate is on the
+                    <a href="https://arsrates.com/">rates page</a>.</li>
+                <li>Use a card with no foreign transaction fee. That fee is often another 3%.</li>
+                <li>We've tested acceptance across Buenos Aires (CABA), not elsewhere yet. Keep a Visa or Mastercard as
+                    a backup. More in the <a href="https://arsrates.com/guide">Money Guide</a>.</li>
+                <li>Paying in cash can still beat any card, especially with a cash discount.</li>
+            </ul>
+
+            <p class="mt-5 small text-muted">For information only, not financial advice. Rates are for US-issued cards
+                and US senders where noted; we haven't tested other countries. Questions or corrections? Use the
+                feedback button below.</p>
+
+            <div class="text-center my-4">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                    data-bs-target="#feedbackModal">Provide Feedback</button>
+            </div>
+
+            <!-- arsrates/app/templates/partials/feedback.html -->
+<div class="modal fade" id="feedbackModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Provide Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="feedbackForm" action="https://api.arsrates.com/api/feedback" method="POST">
+                    <div class="mb-3">
+                        <label for="feedbackEmail" class="form-label">Email (optional)</label>
+                        <input type="email" class="form-control" id="feedbackEmail" placeholder="your@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="feedbackText" class="form-label">Your Feedback</label>
+                        <textarea class="form-control" id="feedbackText" rows="4" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary me-3" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="submitFeedback()">Submit
+                    Feedback</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function submitFeedback() {
+        const email = document.getElementById('feedbackEmail').value;
+        const feedbackText = document.getElementById('feedbackText').value;
+
+        if (!feedbackText.trim()) {
+            alert('Please enter your feedback');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${window.APP_CONFIG.API_URL}/api/feedback`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email || null,
+                    feedback_text: feedbackText
+                })
+            })
+            if (response.ok) {
+                alert('Thank you for your feedback!');
+                document.getElementById('feedbackForm').reset();
+                bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
+            } else {
+                throw new Error('Failed to submit feedback');
+            }
+        } catch (error) {
+            alert('Error submitting feedback. Please try again.');
+            console.error('Error:', error);
+        }
+    }
+</script>
+        </main>
+        <!-- arsrates/app/templates/partials/footer.html -->
+<footer class="site-footer text-center my-4 px-3">
+    <div>Rates are for information only and may differ from what providers charge. Not financial advice.</div>
+    <div class="mt-1">© 2026 ARS Rates · <a href="https://arsrates.com/methodology">How we get these rates</a> · <a href="https://arsrates.com/history">Rate history</a> · <a href="https://www.youtube.com/@ARSRates" target="_blank" rel="noopener">Videos</a> · <a href="https://arsrates.com/privacy">Privacy</a></div>
+</footer>
+
+        <!-- arsrates/app/templates/partials/scripts.html -->
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- App Configuration and Authentication -->
+<script src="/static/js/config.js?v=a3ef942479"></script>
+<script src="/static/js/auth.js?v=966bb9e258"></script>
+
+<!-- Page view counting (after config.js, which sets APP_CONFIG.API_URL) -->
+<script src="/static/js/pageview.js?v=bf0c132e8b"></script>
+
+<!-- Add any other global utility functions after auth.js -->
+<script>
+// Add any global utility functions that aren't auth-related here
+</script>
+    </body>
+
+</html>

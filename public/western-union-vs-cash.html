@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- arsrates/app/templates/wu_vs_cash.html (served at /western-union-vs-cash on arsrates.com) -->
+
+    <head>
+        <!-- arsrates/app/templates/partials/head.html -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ARS Rates">
+<meta name="theme-color" content="#FFFFFF">
+
+<!-- Link previews (WhatsApp, social media). Each page sets its own description
+     and canonical address after this include. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ARS Rates">
+<meta property="og:title" content="ARS Rates: dollar to peso rates today in Argentina">
+<meta property="og:description" content="Blue, MEP, Western Union, Visa, Mastercard and AMEX rates side by side, updated every 15 minutes.">
+<meta property="og:image" content="https://arsrates.com/static/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ARS Rates: dollar to peso rates in Argentina, with the Sol de Mayo and Argentine flag colors">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Stylesheets -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/styles.css?v=198234d016">
+
+<!-- PWA/Icons -->
+<link rel="manifest" href="/static/manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+<link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="/static/images/icon-192x192.png">
+        <title>Western Union vs Changing Cash in Argentina: Which Gives More Pesos? | ARS Rates</title>
+        <meta name="description" content="Western Union or changing dollar bills in Argentina: a calculator using today's rates, how the fee and the gap to the Blue rate decide it, and 381 days of data.">
+        <link rel="canonical" href="https://arsrates.com/western-union-vs-cash">
+        <!-- Update dateModified and the figures together ("Last reviewed" on the page) -->
+        <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Western Union vs Changing Cash in Argentina",
+  "url": "https://arsrates.com/western-union-vs-cash",
+  "dateModified": "2026-11-05",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Organization",
+    "name": "ARS Rates",
+    "url": "https://arsrates.com/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ARS Rates",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://arsrates.com/static/images/icon-512x512.png"
+    }
+  }
+}
+        </script>
+    </head>
+
+    <body>
+        <!-- arsrates/app/templates/partials/navbar.html -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="https://arsrates.com/">
+            <svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true"><g stroke="#F6B40E" stroke-width="1.6" stroke-linecap="round"><line x1="12.0" y1="4.8" x2="12.0" y2="0.8"/><line x1="14.8" y1="5.3" x2="15.7" y2="3.1"/><line x1="17.1" y1="6.9" x2="19.9" y2="4.1"/><line x1="18.7" y1="9.2" x2="20.9" y2="8.3"/><line x1="19.2" y1="12.0" x2="23.2" y2="12.0"/><line x1="18.7" y1="14.8" x2="20.9" y2="15.7"/><line x1="17.1" y1="17.1" x2="19.9" y2="19.9"/><line x1="14.8" y1="18.7" x2="15.7" y2="20.9"/><line x1="12.0" y1="19.2" x2="12.0" y2="23.2"/><line x1="9.2" y1="18.7" x2="8.3" y2="20.9"/><line x1="6.9" y1="17.1" x2="4.1" y2="19.9"/><line x1="5.3" y1="14.8" x2="3.1" y2="15.7"/><line x1="4.8" y1="12.0" x2="0.8" y2="12.0"/><line x1="5.3" y1="9.2" x2="3.1" y2="8.3"/><line x1="6.9" y1="6.9" x2="4.1" y2="4.1"/><line x1="9.2" y1="5.3" x2="8.3" y2="3.1"/></g><circle cx="12" cy="12" r="5.6" fill="#F6B40E" stroke="#C48A05" stroke-width="0.8"/></svg>
+            ARS Rates
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/guide">Money Guide</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="chartsMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Charts</a>
+                    <ul class="dropdown-menu" aria-labelledby="chartsMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/history">Exchange rates</a></li>
+                        <li><a class="dropdown-item" href="https://arsrates.com/prices">Prices &amp; wages</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="wuMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false" aria-label="Western Union">WU</a>
+                    <ul class="dropdown-menu" aria-labelledby="wuMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/wu-guide">How to Get Pesos with WU</a></li>
+                        <li><a class="dropdown-item" href="https://api.arsrates.com/wu-locations">Find a WU Location</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/exchange-houses">Exchange Houses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="alertsLink" href="https://arsrates.com/features">Email Rates</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" id="authLinks">
+                <!-- Will be populated by JavaScript -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+        <main class="container" style="max-width: 800px;">
+            <h1 class="h2 mb-1">Western Union vs Changing Cash in Argentina</h1>
+            <p class="small text-muted mb-4">Last reviewed: November 2026</p>
+
+            <div class="alert alert-info">
+                <strong>Short answer:</strong> It depends on the day, so check before you send. Western Union gives more
+                pesos when its rate is above Blue by more than your fee. As of November 2026, it's about 7% above Blue,
+                which is unusually wide. At that gap, Western Union ties or wins at every fee we've seen. Much of
+                the time, it hasn't been that far ahead. Use the calculator to check today's rates with your fee.
+            </div>
+
+            <!-- Hidden until the script below runs: it does nothing without JavaScript -->
+            <section id="wuCalc" class="card mb-4" aria-labelledby="wuCalcTitle" hidden>
+                <div class="card-body">
+                    <h2 class="h5 card-title" id="wuCalcTitle">Which gives more pesos today?</h2>
+                    <form id="wuCalcForm" autocomplete="off">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <label class="form-label" for="wuCalcAmount">Amount to send (US$)</label>
+                                <input class="form-control" id="wuCalcAmount" type="number" inputmode="decimal" min="0" step="any" value="500">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label" for="wuCalcFee">Western Union fee (US$)</label>
+                                <input class="form-control" id="wuCalcFee" type="number" inputmode="decimal" min="0" step="any" value="34.99">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label" for="wuCalcWu">Western Union rate</label>
+                                <input class="form-control" id="wuCalcWu" type="number" inputmode="decimal" min="0" step="any">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label" for="wuCalcBlue">Blue buy rate</label>
+                                <input class="form-control" id="wuCalcBlue" type="number" inputmode="decimal" min="0" step="any">
+                            </div>
+                        </div>
+                    </form>
+                    <p class="small text-muted mt-2 mb-3"><span id="wuCalcStatus">Loading today's rates...</span>
+                        Use the rate and fee Western Union shows you for this amount.</p>
+                    <div id="wuCalcResult" aria-live="polite" hidden>
+                        <p class="h5 mb-1" id="wuCalcVerdict"></p>
+                        <p class="mb-3" id="wuCalcWhy"></p>
+                        <div class="table-responsive">
+                            <table class="table table-sm mb-2">
+                                <thead>
+                                    <tr><th></th><th>Western Union</th><th>Changing cash</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>You pay</td><td id="wuCalcPayWu"></td><td id="wuCalcPayCash"></td></tr>
+                                    <tr><td>You get (pesos)</td><td id="wuCalcGetWu"></td><td id="wuCalcGetCash"></td></tr>
+                                    <tr><td>Pesos per dollar spent</td><td id="wuCalcPerWu"></td><td id="wuCalcPerCash"></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="small text-muted mb-0">Changing cash assumes you get the Blue buy rate on every dollar,
+                            which usually takes US$100 bills in perfect condition.</p>
+                    </div>
+                    <p class="mb-0" id="wuCalcPrompt" hidden>Enter an amount, a fee and both rates to compare.</p>
+                </div>
+            </section>
+
+            <h2 class="h4 mt-4">Compare the gap with your fee</h2>
+            <p>The fee is added on top of what you send, so a fee of 3% means Western Union has to be more than 3% above
+                Blue to win. This table uses the rates from November 4, 2026: Western Union 1,659 and Blue buy 1,540, a gap
+                of 7.7%.</p>
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <thead>
+                        <tr><th>Fee</th><th>Needs a gap over</th><th>Pesos per dollar spent</th><th>vs cash at Blue</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>US$34.99 on $500</td><td>7.0%</td><td>1,550</td><td>+0.7%</td></tr>
+                        <tr><td>US$15 on $500</td><td>3.0%</td><td>1,611</td><td>+4.6%</td></tr>
+                        <tr><td>US$65 on $3,000</td><td>2.2%</td><td>1,624</td><td>+5.4%</td></tr>
+                        <tr><td>US$8 on $500, paid in person</td><td>1.6%</td><td>1,633</td><td>+6.0%</td></tr>
+                        <tr><td>US$23 on $1,500, paid in person</td><td>1.5%</td><td>1,634</td><td>+6.1%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 class="h4 mt-5">Which fee will you pay?</h2>
+            <p>Fees vary, so check yours in the app before you compare. These are the amounts we've seen when sending
+                from the US for cash pickup:</p>
+            <ul>
+                <li><strong>By debit card:</strong> about US$35 on $500 is the most common fee we've seen, and it's the
+                    fastest way to pay.</li>
+                <li><strong>Lower debit card fees:</strong> some accounts pay less, such as US$15 on $500 and US$65 on
+                    $3,000. We don't know how Western Union decides who gets them.</li>
+                <li><strong>New accounts:</strong> the first transfer may be free.</li>
+                <li><strong>Paying in person at a Western Union location in the US:</strong> about US$8 on $500 and US$23
+                    on $1,500. You can pay with cash or debit, and with a credit card at some locations. Western Union
+                    holds the rate for 12 hours, so pay within that time.</li>
+            </ul>
+            <p>Paying a different fee? Tell us with the feedback button below.</p>
+
+            <h2 class="h4 mt-5">How far above Blue is Western Union?</h2>
+            <p>We compared Western Union's daily closing rate with Blue buy on 381 days, from November 2024 to November
+                2026. We have no direct Western Union readings from early November 2025 to late September 2026.</p>
+            <ul>
+                <li>Western Union was above Blue on 64% of those days. Blue was above Western Union on the other 36%,
+                    nearly all before October 2025.</li>
+                <li>Western Union was more than 1.6% above Blue on 38% of days, more than 3% above on 22%, and more than
+                    7% above on 3%.</li>
+                <li>Since October 1, 2026, it has been above Blue every day, by at least 4.6%.</li>
+            </ul>
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <thead><tr><th>Month</th><th>Western Union vs Blue buy (median)</th></tr></thead>
+                    <tbody>
+                        <tr><td>January 2025</td><td>-2.2%</td></tr>
+                        <tr><td>April 2025</td><td>+0.1%</td></tr>
+                        <tr><td>July 2025</td><td>-1.1%</td></tr>
+                        <tr><td>October 2025</td><td>+3.9%</td></tr>
+                        <tr><td>October 2026</td><td>+5.6%</td></tr>
+                        <tr><td>First days of November 2026</td><td>+7.1%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>So the best choice last year may not be the best choice today. Check the
+                <a href="https://arsrates.com/">rates page</a> each time you need pesos, and compare Western Union's gap over
+                Blue with your fee. Past fees may also have differed from today's.</p>
+
+            <h2 class="h4 mt-5">Why you might still choose Western Union</h2>
+            <ul>
+                <li><strong>Your $100 bills are limited.</strong> Exchange houses pay the best rate only for bills in
+                    perfect condition, and you may want to keep some for things like an apartment deposit.</li>
+                <li><strong>You don't need an Argentine bank account,</strong> just your passport.</li>
+                <li><strong>The money is usually ready within minutes,</strong> and you can keep drawing on your bank
+                    account at home.</li>
+            </ul>
+            <p>Our advice: use Western Union unless Blue is clearly better after the fee, and save your bills for
+                when changing cash really pays. See <a href="https://arsrates.com/wu-guide">how to get pesos with Western
+                Union</a>, or find a <a href="https://arsrates.com/exchange-houses">licensed exchange house</a>.</p>
+
+            <p class="mt-5 small text-muted">For information only, not financial advice. Rates are for US-issued cards
+                and US senders where noted; we haven't tested other countries. Questions or corrections? Use the
+                feedback button below.</p>
+
+            <div class="text-center my-4">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                    data-bs-target="#feedbackModal">Provide Feedback</button>
+            </div>
+
+            <!-- arsrates/app/templates/partials/feedback.html -->
+<div class="modal fade" id="feedbackModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Provide Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="feedbackForm" action="https://api.arsrates.com/api/feedback" method="POST">
+                    <div class="mb-3">
+                        <label for="feedbackEmail" class="form-label">Email (optional)</label>
+                        <input type="email" class="form-control" id="feedbackEmail" placeholder="your@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="feedbackText" class="form-label">Your Feedback</label>
+                        <textarea class="form-control" id="feedbackText" rows="4" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary me-3" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="submitFeedback()">Submit
+                    Feedback</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function submitFeedback() {
+        const email = document.getElementById('feedbackEmail').value;
+        const feedbackText = document.getElementById('feedbackText').value;
+
+        if (!feedbackText.trim()) {
+            alert('Please enter your feedback');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${window.APP_CONFIG.API_URL}/api/feedback`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email || null,
+                    feedback_text: feedbackText
+                })
+            })
+            if (response.ok) {
+                alert('Thank you for your feedback!');
+                document.getElementById('feedbackForm').reset();
+                bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
+            } else {
+                throw new Error('Failed to submit feedback');
+            }
+        } catch (error) {
+            alert('Error submitting feedback. Please try again.');
+            console.error('Error:', error);
+        }
+    }
+</script>
+        </main>
+        <!-- arsrates/app/templates/partials/footer.html -->
+<footer class="site-footer text-center my-4 px-3">
+    <div>Rates are for information only and may differ from what providers charge. Not financial advice.</div>
+    <div class="mt-1">© 2026 ARS Rates · <a href="https://arsrates.com/methodology">How we get these rates</a> · <a href="https://arsrates.com/history">Rate history</a> · <a href="https://www.youtube.com/@ARSRates" target="_blank" rel="noopener">Videos</a> · <a href="https://arsrates.com/privacy">Privacy</a></div>
+</footer>
+
+        <!-- arsrates/app/templates/partials/scripts.html -->
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- App Configuration and Authentication -->
+<script src="/static/js/config.js?v=a3ef942479"></script>
+<script src="/static/js/auth.js?v=966bb9e258"></script>
+
+<!-- Page view counting (after config.js, which sets APP_CONFIG.API_URL) -->
+<script src="/static/js/pageview.js?v=bf0c132e8b"></script>
+
+<!-- Add any other global utility functions after auth.js -->
+<script>
+// Add any global utility functions that aren't auth-related here
+</script>
+        <script>
+            // Same-dollars comparison: what you pay in total to WU (amount + fee),
+            // changed as cash at Blue buy instead. The rates are prefilled but editable,
+            // because the rate WU quotes when you send can differ from our last reading.
+            (function () {
+                var NEUTRAL_PCT = 0.5; // same as VS_BLUE_NEUTRAL_PCT in ratesComponent.js
+                var el = function (id) { return document.getElementById(id); };
+                var amountEl = el('wuCalcAmount'), feeEl = el('wuCalcFee');
+                var wuEl = el('wuCalcWu'), blueEl = el('wuCalcBlue');
+                var pesos = function (n) { return Math.round(n).toLocaleString('en-US'); };
+                var usd = function (n) {
+                    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                };
+                var pct = function (n) { return Math.abs(n).toFixed(1) + '%'; };
+
+                function render() {
+                    var amount = parseFloat(amountEl.value), fee = parseFloat(feeEl.value);
+                    var wu = parseFloat(wuEl.value), blue = parseFloat(blueEl.value);
+                    var ok = amount > 0 && fee >= 0 && wu > 0 && blue > 0;
+                    el('wuCalcResult').hidden = !ok;
+                    el('wuCalcPrompt').hidden = ok;
+                    if (!ok) return;
+
+                    var total = amount + fee;
+                    var wuPesos = amount * wu, cashPesos = total * blue;
+                    var edge = (wuPesos / cashPesos - 1) * 100;
+                    var diff = pesos(Math.abs(wuPesos - cashPesos));
+                    var verdict;
+                    if (Math.abs(edge) < NEUTRAL_PCT) {
+                        verdict = 'About the same: within ' + NEUTRAL_PCT + '%';
+                    } else if (edge > 0) {
+                        verdict = 'Western Union gives about ' + diff + ' more pesos (' + pct(edge) + ')';
+                    } else {
+                        verdict = 'Changing cash gives about ' + diff + ' more pesos (' + pct(edge) + ')';
+                    }
+                    el('wuCalcVerdict').textContent = verdict;
+
+                    var gap = (wu / blue - 1) * 100;
+                    var feePct = fee / amount * 100;
+                    var gapText = gap === 0 ? 'the same as Blue'
+                        : pct(gap) + (gap > 0 ? ' above Blue' : ' below Blue');
+                    el('wuCalcWhy').textContent = "Western Union's rate is " + gapText + '. This fee is ' + feePct.toFixed(1)
+                        + '% of what you send, so Western Union needs to be more than ' + feePct.toFixed(1) + '% above Blue to win.';
+
+                    el('wuCalcPayWu').textContent = usd(total);
+                    el('wuCalcPayCash').textContent = usd(total);
+                    el('wuCalcGetWu').textContent = pesos(wuPesos);
+                    el('wuCalcGetCash').textContent = pesos(cashPesos);
+                    el('wuCalcPerWu').textContent = pesos(wuPesos / total);
+                    el('wuCalcPerCash').textContent = pesos(blue);
+                }
+
+                function loadFailed() {
+                    el('wuCalcStatus').textContent = "We couldn't load today's rates. Enter them from the rates page.";
+                }
+
+                el('wuCalc').hidden = false;
+                el('wuCalcForm').addEventListener('input', render);
+                el('wuCalcForm').addEventListener('submit', function (e) { e.preventDefault(); });
+                render();
+
+                fetch('/static/data/current_rates.json', { cache: 'no-cache' })
+                    .then(function (r) {
+                        if (!r.ok) throw new Error('rates ' + r.status);
+                        return r.json();
+                    })
+                    .then(function (data) {
+                        var rates = data.rates || {};
+                        var wu = rates.WU && rates.WU.rate, blue = rates.BLUE && rates.BLUE.buy;
+                        // Never overwrite something typed while the rates were loading
+                        if (wu && !wuEl.value) wuEl.value = wu;
+                        if (blue && !blueEl.value) blueEl.value = blue;
+                        if (!wu || !blue) return loadFailed();
+                        var when = new Date(data.last_updated).toLocaleString('en-US', {
+                            timeZone: 'America/Argentina/Buenos_Aires',
+                            month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+                        });
+                        el('wuCalcStatus').textContent = 'Rates as of ' + when + ', Argentina time.';
+                        render();
+                    })
+                    .catch(loadFailed);
+            })();
+        </script>
+    </body>
+
+</html>
