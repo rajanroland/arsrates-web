@@ -76,8 +76,13 @@
 
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="https://arsrates.com/guide">Money Guide</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="guidesMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Guides</a>
+                    <ul class="dropdown-menu" aria-labelledby="guidesMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/how-to">How to Use This Site</a></li>
+                        <li><a class="dropdown-item" href="https://arsrates.com/guide">Money Guide</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="chartsMenu" role="button"
@@ -121,53 +126,55 @@
                 the time, it hasn't been that far ahead. Use the calculator to check today's rates with your fee.
             </div>
 
-            <!-- Hidden until the script below runs: it does nothing without JavaScript -->
-            <section id="wuCalc" class="card mb-4" aria-labelledby="wuCalcTitle" hidden>
-                <div class="card-body">
-                    <h2 class="h5 card-title" id="wuCalcTitle">Which gives more pesos today?</h2>
-                    <form id="wuCalcForm" autocomplete="off">
-                        <div class="row g-3">
-                            <div class="col-6">
-                                <label class="form-label" for="wuCalcAmount">Amount to send (US$)</label>
-                                <input class="form-control" id="wuCalcAmount" type="number" inputmode="decimal" min="0" step="any" value="500">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label" for="wuCalcFee">Western Union fee (US$)</label>
-                                <input class="form-control" id="wuCalcFee" type="number" inputmode="decimal" min="0" step="any" value="34.99">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label" for="wuCalcWu">Western Union rate</label>
-                                <input class="form-control" id="wuCalcWu" type="number" inputmode="decimal" min="0" step="any">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label" for="wuCalcBlue">Blue buy rate</label>
-                                <input class="form-control" id="wuCalcBlue" type="number" inputmode="decimal" min="0" step="any">
-                            </div>
-                        </div>
-                    </form>
-                    <p class="small text-muted mt-2 mb-3"><span id="wuCalcStatus">Loading today's rates...</span>
-                        Use the rate and fee Western Union shows you for this amount.</p>
-                    <div id="wuCalcResult" aria-live="polite" hidden>
-                        <p class="h5 mb-1" id="wuCalcVerdict"></p>
-                        <p class="mb-3" id="wuCalcWhy"></p>
-                        <div class="table-responsive">
-                            <table class="table table-sm mb-2">
-                                <thead>
-                                    <tr><th></th><th>Western Union</th><th>Changing cash</th></tr>
-                                </thead>
-                                <tbody>
-                                    <tr><td>You pay</td><td id="wuCalcPayWu"></td><td id="wuCalcPayCash"></td></tr>
-                                    <tr><td>You get (pesos)</td><td id="wuCalcGetWu"></td><td id="wuCalcGetCash"></td></tr>
-                                    <tr><td>Pesos per dollar spent</td><td id="wuCalcPerWu"></td><td id="wuCalcPerCash"></td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <p class="small text-muted mb-0">Changing cash assumes you get the Blue buy rate on every dollar,
-                            which usually takes US$100 bills in perfect condition.</p>
-                    </div>
-                    <p class="mb-0" id="wuCalcPrompt" hidden>Enter an amount, a fee and both rates to compare.</p>
+            <!-- arsrates/app/templates/partials/wu_calculator.html -->
+<!-- Western Union vs cash calculator (static/js/wuCalculator.js, loaded by each page that includes this). Hidden until that script runs: it does nothing without JavaScript -->
+<section id="wuCalc" class="card mb-4" aria-labelledby="wuCalcTitle" hidden>
+    <div class="card-body">
+        <h2 class="h5 card-title" id="wuCalcTitle">Western Union or cash: which gives more pesos today?</h2>
+        <form id="wuCalcForm" autocomplete="off">
+            <div class="row g-3">
+                <div class="col-6">
+                    <label class="form-label" for="wuCalcAmount">Amount to send (US$)</label>
+                    <input class="form-control" id="wuCalcAmount" type="number" inputmode="decimal" min="0" step="any" value="500">
                 </div>
-            </section>
+                <div class="col-6">
+                    <label class="form-label" for="wuCalcFee">Western Union fee (US$)</label>
+                    <input class="form-control" id="wuCalcFee" type="number" inputmode="decimal" min="0" step="any" value="34.99">
+                </div>
+                <div class="col-6">
+                    <label class="form-label" for="wuCalcWu">Western Union rate</label>
+                    <input class="form-control" id="wuCalcWu" type="number" inputmode="decimal" min="0" step="any">
+                </div>
+                <div class="col-6">
+                    <label class="form-label" for="wuCalcBlue">Blue buy rate</label>
+                    <input class="form-control" id="wuCalcBlue" type="number" inputmode="decimal" min="0" step="any">
+                </div>
+            </div>
+        </form>
+        <p class="small text-muted mt-2 mb-3"><span id="wuCalcStatus">Loading today's rates...</span>
+            Use the rate and fee Western Union shows you for this amount.</p>
+        <div id="wuCalcResult" aria-live="polite" hidden>
+            <p class="h5 mb-1" id="wuCalcVerdict"></p>
+            <p class="mb-3" id="wuCalcWhy"></p>
+            <div class="table-responsive">
+                <table class="table table-sm mb-2">
+                    <thead>
+                        <tr><th></th><th>Western Union</th><th>Changing cash</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>You pay</td><td id="wuCalcPayWu"></td><td id="wuCalcPayCash"></td></tr>
+                        <tr><td>You get (pesos)</td><td id="wuCalcGetWu"></td><td id="wuCalcGetCash"></td></tr>
+                        <tr><td>Pesos per dollar spent</td><td id="wuCalcPerWu"></td><td id="wuCalcPerCash"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="small text-muted mb-0">Changing cash assumes you get the Blue buy rate on every dollar,
+                which usually takes US$100 bills in perfect condition.</p>
+        </div>
+        <p class="mb-0" id="wuCalcPrompt" hidden>Enter an amount, a fee and both rates to compare.</p>
+    </div>
+</section>
+
 
             <h2 class="h4 mt-4">Compare the gap with your fee</h2>
             <p>The fee is added on top of what you send, so a fee of 3% means Western Union has to be more than 3% above
@@ -334,89 +341,7 @@
 <script>
 // Add any global utility functions that aren't auth-related here
 </script>
-        <script>
-            // Same-dollars comparison: what you pay in total to WU (amount + fee),
-            // changed as cash at Blue buy instead. The rates are prefilled but editable,
-            // because the rate WU quotes when you send can differ from our last reading.
-            (function () {
-                var NEUTRAL_PCT = 0.5; // same as VS_BLUE_NEUTRAL_PCT in ratesComponent.js
-                var el = function (id) { return document.getElementById(id); };
-                var amountEl = el('wuCalcAmount'), feeEl = el('wuCalcFee');
-                var wuEl = el('wuCalcWu'), blueEl = el('wuCalcBlue');
-                var pesos = function (n) { return Math.round(n).toLocaleString('en-US'); };
-                var usd = function (n) {
-                    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                };
-                var pct = function (n) { return Math.abs(n).toFixed(1) + '%'; };
-
-                function render() {
-                    var amount = parseFloat(amountEl.value), fee = parseFloat(feeEl.value);
-                    var wu = parseFloat(wuEl.value), blue = parseFloat(blueEl.value);
-                    var ok = amount > 0 && fee >= 0 && wu > 0 && blue > 0;
-                    el('wuCalcResult').hidden = !ok;
-                    el('wuCalcPrompt').hidden = ok;
-                    if (!ok) return;
-
-                    var total = amount + fee;
-                    var wuPesos = amount * wu, cashPesos = total * blue;
-                    var edge = (wuPesos / cashPesos - 1) * 100;
-                    var diff = pesos(Math.abs(wuPesos - cashPesos));
-                    var verdict;
-                    if (Math.abs(edge) < NEUTRAL_PCT) {
-                        verdict = 'About the same: within ' + NEUTRAL_PCT + '%';
-                    } else if (edge > 0) {
-                        verdict = 'Western Union gives about ' + diff + ' more pesos (' + pct(edge) + ')';
-                    } else {
-                        verdict = 'Changing cash gives about ' + diff + ' more pesos (' + pct(edge) + ')';
-                    }
-                    el('wuCalcVerdict').textContent = verdict;
-
-                    var gap = (wu / blue - 1) * 100;
-                    var feePct = fee / amount * 100;
-                    var gapText = gap === 0 ? 'the same as Blue'
-                        : pct(gap) + (gap > 0 ? ' above Blue' : ' below Blue');
-                    el('wuCalcWhy').textContent = "Western Union's rate is " + gapText + '. This fee is ' + feePct.toFixed(1)
-                        + '% of what you send, so Western Union needs to be more than ' + feePct.toFixed(1) + '% above Blue to win.';
-
-                    el('wuCalcPayWu').textContent = usd(total);
-                    el('wuCalcPayCash').textContent = usd(total);
-                    el('wuCalcGetWu').textContent = pesos(wuPesos);
-                    el('wuCalcGetCash').textContent = pesos(cashPesos);
-                    el('wuCalcPerWu').textContent = pesos(wuPesos / total);
-                    el('wuCalcPerCash').textContent = pesos(blue);
-                }
-
-                function loadFailed() {
-                    el('wuCalcStatus').textContent = "We couldn't load today's rates. Enter them from the rates page.";
-                }
-
-                el('wuCalc').hidden = false;
-                el('wuCalcForm').addEventListener('input', render);
-                el('wuCalcForm').addEventListener('submit', function (e) { e.preventDefault(); });
-                render();
-
-                fetch('/static/data/current_rates.json', { cache: 'no-cache' })
-                    .then(function (r) {
-                        if (!r.ok) throw new Error('rates ' + r.status);
-                        return r.json();
-                    })
-                    .then(function (data) {
-                        var rates = data.rates || {};
-                        var wu = rates.WU && rates.WU.rate, blue = rates.BLUE && rates.BLUE.buy;
-                        // Never overwrite something typed while the rates were loading
-                        if (wu && !wuEl.value) wuEl.value = wu;
-                        if (blue && !blueEl.value) blueEl.value = blue;
-                        if (!wu || !blue) return loadFailed();
-                        var when = new Date(data.last_updated).toLocaleString('en-US', {
-                            timeZone: 'America/Argentina/Buenos_Aires',
-                            month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
-                        });
-                        el('wuCalcStatus').textContent = 'Rates as of ' + when + ', Argentina time.';
-                        render();
-                    })
-                    .catch(loadFailed);
-            })();
-        </script>
+        <script src="/static/js/wuCalculator.js?v=7f53e5c1ad"></script>
     </body>
 
 </html>

@@ -37,7 +37,7 @@
         <!-- React-specific scripts -->
         <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
-        <script src="/static/js/ratesComponent.js?v=5c26aec218"></script>
+        <script src="/static/js/ratesComponent.js?v=90711e6661"></script>
 
         <title>ARS Rates | Dollar to Peso Rates Today in Argentina</title>
         <meta name="description" content="Today's dollar to peso rates in Argentina (dólar blue hoy), updated every 15 minutes: dólar blue, MEP, CCL, official, Western Union, Visa, Mastercard, AMEX, Wise and more.">
@@ -131,8 +131,13 @@
 
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="https://arsrates.com/guide">Money Guide</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="guidesMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Guides</a>
+                    <ul class="dropdown-menu" aria-labelledby="guidesMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/how-to">How to Use This Site</a></li>
+                        <li><a class="dropdown-item" href="https://arsrates.com/guide">Money Guide</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="chartsMenu" role="button"

@@ -690,6 +690,17 @@ const RatesContainer = () => {
           ? `USD rates converted at the ECB rate of ${fxDate} (1 ${currency} = ${(1 / fx.latest[currency]).toFixed(4)} USD). Card and transfer rates are for US dollars, so they're hidden. 24h change is in USD terms.`
           : "Loading exchange rates…"
       ),
+      // WU quotes US dollars, so the calculator only applies in USD
+      currency === "USD" && React.createElement(
+        "a",
+        {
+          key: "calc",
+          className: "ms-auto",
+          href: ((window.APP_CONFIG && window.APP_CONFIG.FRONTEND_URL) || "https://arsrates.com") + "/how-to#wuCalc",
+          title: "Western Union vs cash calculator",
+        },
+        "WU calculator"
+      ),
     ])
   );
 

@@ -52,8 +52,13 @@
 
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="https://arsrates.com/guide">Money Guide</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="guidesMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Guides</a>
+                    <ul class="dropdown-menu" aria-labelledby="guidesMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/how-to">How to Use This Site</a></li>
+                        <li><a class="dropdown-item" href="https://arsrates.com/guide">Money Guide</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="chartsMenu" role="button"
@@ -87,12 +92,11 @@
 
 
         <main class="container" style="max-width: 800px;">
-            <h1 class="h2 mb-1">Email Rates, Alerts and How to Use ARS Rates</h1>
+            <h1 class="h2 mb-1">Free Rate Emails and Alerts</h1>
             <p class="small text-muted mb-4">Last reviewed: November 2026</p>
             <p class="video-link"><svg class="video-link-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8"/><path d="M6.4 4.8v6.4L11.2 8z" fill="#fff"/></svg><a href="https://www.youtube.com/watch?v=Usf5JuK8CBk&amp;list=PLCN2zYiVc7AE" target="_blank" rel="noopener">Watch the video: rate alerts in one minute</a></p>
 
-            <!-- Emails and alerts first: this is where the "Email Rates" menu link lands -->
-            <div class="feature-section mb-5">
+                        <div class="feature-section mb-5">
                 <h2 class="h3 feature-title">📨 Daily rate emails</h2>
                 <div class="feature-content">
                     <p>Get all the rates and their 24-hour changes by email once a day, at the time you choose
@@ -137,112 +141,6 @@
                 </div>
             </div>
 
-            <div class="feature-section mb-5">
-                <h2 class="h3 feature-title">📈 Reading the rates table</h2>
-                <div class="feature-content">
-                    <ul class="feature-list">
-                        <li><strong>Rate names:</strong> tap or hover over any rate name for what it is and how it's
-                            calculated.</li>
-                        <li><strong>Buy/Sell:</strong> rates with two prices show buy (what you get selling dollars)
-                            and sell (what you pay buying dollars).</li>
-                        <li><strong>VS 24H:</strong> the change from about 24 hours earlier.</li>
-                        <li><strong>VS BLUE:</strong> how each rate compares with Blue buy. Green means more pesos per
-                            dollar than Blue, red means fewer.</li>
-                        <li><strong>(Est.):</strong> an estimate, shown until the real rate is out. Mastercard is
-                            estimated from Visa until it publishes around 3 PM ET. AMEX is estimated from BCRA's
-                            Mayorista rate.</li>
-                        <li><strong>"as of" time:</strong> that rate didn't update on the latest check, so it shows
-                            when it last did.</li>
-                        <li><strong>Updates:</strong> every 15 minutes from 7 AM to 9 PM Argentina time, and hourly
-                            overnight.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="feature-section mb-5">
-                <h2 class="h3 feature-title">📍 Western Union tools</h2>
-                <div class="feature-content">
-                    <ul class="feature-list">
-                        <li><a href="https://api.arsrates.com/wu-locations">Find a WU Location</a>: search by address or zip
-                            code, CABA neighborhood or province, filter by the day and time you want to go, and see
-                            the nearest first. "WU branches only" shows WU's own offices, which usually have cash, and
-                            "Had cash here?" lets you report what you found.</li>
-                        <li><a href="https://arsrates.com/wu-guide">How to Get Pesos with WU</a>: setup, keeping the cost
-                            down, and what to bring.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="feature-section mb-5">
-                <h2 class="h3 feature-title">💬 Feedback</h2>
-                <div class="feature-content">
-                    <p>Spotted a wrong rate or have an idea? Let us know.</p>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
-                        data-bs-target="#feedbackModal">Provide Feedback</button>
-                </div>
-            </div>
-
-            <!-- arsrates/app/templates/partials/feedback.html -->
-<div class="modal fade" id="feedbackModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Provide Feedback</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="feedbackForm" action="https://api.arsrates.com/api/feedback" method="POST">
-                    <div class="mb-3">
-                        <label for="feedbackEmail" class="form-label">Email (optional)</label>
-                        <input type="email" class="form-control" id="feedbackEmail" placeholder="your@email.com">
-                    </div>
-                    <div class="mb-3">
-                        <label for="feedbackText" class="form-label">Your Feedback</label>
-                        <textarea class="form-control" id="feedbackText" rows="4" required></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-secondary me-3" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-sm btn-primary" onclick="submitFeedback()">Submit
-                    Feedback</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    async function submitFeedback() {
-        const email = document.getElementById('feedbackEmail').value;
-        const feedbackText = document.getElementById('feedbackText').value;
-
-        if (!feedbackText.trim()) {
-            alert('Please enter your feedback');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${window.APP_CONFIG.API_URL}/api/feedback`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: email || null,
-                    feedback_text: feedbackText
-                })
-            })
-            if (response.ok) {
-                alert('Thank you for your feedback!');
-                document.getElementById('feedbackForm').reset();
-                bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
-            } else {
-                throw new Error('Failed to submit feedback');
-            }
-        } catch (error) {
-            alert('Error submitting feedback. Please try again.');
-            console.error('Error:', error);
-        }
-    }
-</script>
         </main>
         <!-- arsrates/app/templates/partials/footer.html -->
 <footer class="site-footer text-center my-4 px-3">
