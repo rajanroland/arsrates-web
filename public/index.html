@@ -56,7 +56,8 @@
     "@type": "Organization",
     "name": "ARS Rates",
     "url": "https://arsrates.com/",
-    "logo": "https://arsrates.com/static/images/icon-512x512.png"
+    "logo": "https://arsrates.com/static/images/icon-512x512.png",
+    "sameAs": ["https://www.youtube.com/@ARSRates"]
   },
   {
     "@context": "https://schema.org",
@@ -172,6 +173,9 @@
                         <p class="small mb-2" id="last-updated"></p>
                     </div>
                 </div>
+                <!-- Filled on each Pages deploy (scripts/pages/rates_html.py) for crawlers
+                     that don't run JavaScript; removed once the live table has loaded -->
+                <div id="rates-static" class="rates-static"><!-- RATES_HTML --></div>
                 <div id="rates-container" class="list-group mb-2"></div>
 
                 <div class="mc-note text-center">

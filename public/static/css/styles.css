@@ -584,3 +584,28 @@ a:focus-visible {
     font-size: 0.875rem;
     text-align: left;
 }
+
+/* Rates written into the page at deploy, shown until the live table loads */
+.rates-static table {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+.rates-static caption {
+    caption-side: top;
+    padding: 0 0 0.25rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+.rates-static th,
+.rates-static td {
+    padding: 0.35rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+    font-weight: 400;
+}
+.rates-static td {
+    text-align: right;
+}
+.rates-static thead th:not(:first-child) {
+    text-align: right;
+}

@@ -586,7 +586,16 @@ const RatesContainer = () => {
     return () => clearInterval(interval);
   }, [lastKnownTimestamp]);
 
+  // The rates written into the page at deploy (rates_html.py) stay until the live
+  // table is ready, and stay if it can't load
+  useEffect(() => {
+    const prewritten = document.getElementById("rates-static");
+    if (ratesData && prewritten) prewritten.remove();
+  }, [ratesData]);
+
   if (!ratesData) {
+    const prewritten = document.getElementById("rates-static");
+    if (prewritten && prewritten.children.length) return null;
     return React.createElement(
       "div",
       {

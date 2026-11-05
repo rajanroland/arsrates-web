@@ -21,6 +21,18 @@ All rates are pesos per 1 US dollar. Remittance and card rates are headline rate
 - [Western Union location finder](https://api.arsrates.com/wu-locations): search pickup locations by neighborhood, province or address, including WU's own branches
 - [Rate alerts](https://arsrates.com/features): free email alerts when a rate reaches a target
 
+## Videos
+
+- [YouTube channel](https://www.youtube.com/@ARSRates) and [all videos in order](https://www.youtube.com/playlist?list=PLCN2zYiVc7AE)
+- [Overview of ARS Rates](https://youtu.be/zTiCjeFyL6w)
+- [How to read the rates table](https://youtu.be/sMiHqUNf5ao)
+- [Cash, AMEX or Visa: the same dinner paid three ways](https://youtu.be/Ohmd8QCiJww)
+- [Money myths: Visa and MEP, AMEX, old $100 bills](https://youtu.be/VcGn-9x6ljM)
+- Western Union: [why use it](https://youtu.be/GhxAbTiU7F0), [your first transfer](https://youtu.be/5ei1hks3y7w), [picking up your pesos](https://youtu.be/WIhMZNcx4WI)
+- [Changing US dollar bills in Buenos Aires](https://youtu.be/Fs4iMhFtLCM)
+- [Argentina's cost of living since 2016](https://youtu.be/8_v8e8CoOKQ)
+- [Rate alerts and daily emails](https://youtu.be/Usf5JuK8CBk)
+
 ## Findings from our own data
 
 - American Express converts Argentine peso charges at the Central Bank's wholesale reference rate (Comunicación A 3500) from two business days before the charge, with no markup, and the charge shows its final dollar amount right away (AMEX used to charge the official rate and refund the difference later). Checked against about 200 real charges from October 2025 to October 2026: median difference 0.04%. That is typically 4-5% more pesos per dollar than Visa or Mastercard.

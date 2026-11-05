@@ -12,8 +12,11 @@ The prod build copies this file to the Pages repo's tools/ folder.
 Standard library only (it runs on GitHub's build machine).
 """
 import json
+import os
 import sys
 from datetime import datetime, timedelta, timezone
+
+from rates_html import add_to_site
 
 ARG = timezone(timedelta(hours=-3))   # Argentina, no daylight saving
 
@@ -96,6 +99,12 @@ def main(src, dst):
     ]
     with open(dst, "w") as f:
         f.write("\n".join(out))
+
+    # Also put the rates in the home page HTML. A problem here must never stop the deploy.
+    try:
+        add_to_site(data, updated, os.path.dirname(dst) or ".", datetime.now(ARG).strftime("%Y-%m-%d"))
+    except Exception as e:
+        print(f"rates_html failed: {e}")
 
 
 if __name__ == "__main__":
