@@ -25,6 +25,7 @@ GROUPS = [
     ("Market", ["BLUE", "OFFICIAL", "MEP", "CCL", "MAYORISTA", "TARJETA", "CRYPTO"]),
     ("Sending money (headline rate, before fees)", ["WU", "TAPTAP", "REMITLY", "WISE"]),
     ("Card charges in pesos (one rate per day; no foreign transaction fee)", ["VISA", "MC", "AMEX"]),
+    ("Dollar apps (headline rate, before fees)", ["WANDER", "ARQ"]),
 ]
 NOTES = {
     "BLUE": "informal market rate for cash dollars",
@@ -37,12 +38,15 @@ NOTES = {
     "VISA": "one rate per day for all charges",
     "MC": "one rate per day, published around 3 PM ET",
     "AMEX": "one rate per day: A3500 from 2 business days before the charge",
+    "WANDER": "pay in pesos by QR or transfer with dollars from a US bank account; no Argentine account needed",
+    "ARQ": "dollars (USDC) to pesos in an Argentine bank account",
 }
 SOURCES = {
     "BLUE": "DolarHoy", "OFFICIAL": "dolarapi.com", "MEP": "dolarapi.com", "CCL": "dolarapi.com",
     "CRYPTO": "dolarapi.com", "TARJETA": "dolarapi.com", "MAYORISTA": "BCRA",
     "WU": "Western Union", "TAPTAP": "TapTap Send", "REMITLY": "Remitly", "WISE": "Wise",
     "VISA": "Visa", "MC": "Mastercard", "AMEX": "estimated from BCRA A3500",
+    "WANDER": "Wander Wallet", "ARQ": "ARQ",
 }
 # What an estimate ("projected") is based on
 ESTIMATE_NOTES = {

@@ -14,7 +14,8 @@ import os
 import re
 
 # Same order as the rates table (RATE_GROUPS in ratesComponent.js)
-ROWS = ["BLUE", "WU", "VISA", "MC", "AMEX", "TAPTAP", "REMITLY", "WISE", "CRYPTO",
+ROWS = ["BLUE", "WU", "VISA", "MC", "AMEX", "TAPTAP", "REMITLY", "WISE",
+        "WANDER", "ARQ", "CRYPTO",
         "OFFICIAL", "MEP", "CCL", "TARJETA", "MAYORISTA"]
 MARKER = "<!-- RATES_HTML -->"
 HOME_URL = "https://arsrates.com/"

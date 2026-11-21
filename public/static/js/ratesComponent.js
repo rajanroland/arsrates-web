@@ -79,7 +79,7 @@ const RATE_GROUPS = [
   ["BLUE"], // the benchmark for "vs Blue", on its own
   ["WU", "VISA", "MC", "AMEX"],
   ["TAPTAP", "REMITLY", "WISE"],
-  ["CRYPTO"],
+  ["WANDER", "ARQ", "CRYPTO"],
   ["OFFICIAL", "MEP", "CCL", "TARJETA", "MAYORISTA"],
 ];
 
@@ -135,6 +135,8 @@ const SHORT_LABELS = {
   TAPTAP: "TapTap",
   REMITLY: "Remitly",
   WISE: "Wise",
+  WANDER: "Wander",
+  ARQ: "ARQ",
   CRYPTO: "D. Cripto",
   OFFICIAL: "D. Oficial",
   MEP: "D. MEP",
@@ -161,6 +163,8 @@ const RATE_SOURCES = {
   WISE: ["Wise", "https://wise.com/us/currency-converter/usd-to-ars-rate"],
   REMITLY: ["Remitly", "https://www.remitly.com/us/en/argentina"],
   TAPTAP: ["TapTap Send", "https://www.taptapsend.com/"],
+  WANDER: ["Wander Wallet", "https://wanderwallet.io/"],
+  ARQ: ["ARQ", "https://www.arqfinance.com/es-AR"],
 };
 
 // "How we get these rates" (static page on arsrates.com; local on dev). Read
@@ -171,7 +175,7 @@ const methodologyUrl = () =>
 // Transfer apps pay into an Argentine bank account (CBU) or wallet (CVU), so
 // they're out for most visitors: a bank icon by the name, and a line in the tip.
 // (WU is the cash-pickup option.)
-const NEEDS_LOCAL_ACCOUNT = ["TAPTAP", "REMITLY", "WISE"];
+const NEEDS_LOCAL_ACCOUNT = ["TAPTAP", "REMITLY", "WISE", "ARQ"];
 const LOCAL_ACCOUNT_NOTE = "Needs an Argentine bank account (or a wallet like Mercado Pago) to receive the pesos.";
 const bankIcon = () =>
   React.createElement(
@@ -208,6 +212,8 @@ const RATE_INFO = {
   TAPTAP: ["TapTap Send", "Rate for sending dollars to pesos with TapTap Send (US to Argentina). Doesn't include fees."],
   REMITLY: ["Remitly", "Remitly's standard rate (not the first-transfer promo rate). Doesn't include fees."],
   WISE: ["Wise", "Rate for sending dollars to pesos with Wise. Doesn't include fees."],
+  WANDER: ["Wander Wallet", "App for paying in pesos by QR code or bank transfer with dollars you load from a US bank account; no Argentine bank account needed. Doesn't include fees: loading costs $2 + 0.3%, each payment $0.20."],
+  ARQ: ["ARQ", "App (formerly DolarApp) that holds dollars as USDC: the rate for turning them into pesos in your Argentine bank account. Doesn't include fees."],
   CRYPTO: ["Dólar Cripto", "The crypto dollar: what dollar stablecoins (like USDT) cost in pesos on Argentine crypto exchanges."],
   OFFICIAL: ["Dólar Oficial", "Official retail rate at banks."],
   MEP: ["Dólar MEP (Bolsa)", "Legal rate for buying or selling dollars through bonds in a local brokerage account."],
