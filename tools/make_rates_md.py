@@ -22,10 +22,11 @@ ARG = timezone(timedelta(hours=-3))   # Argentina, no daylight saving
 
 # Same groups and order as the rates table (RATE_GROUPS in ratesComponent.js)
 GROUPS = [
-    ("Market", ["BLUE", "OFFICIAL", "MEP", "CCL", "MAYORISTA", "TARJETA", "CRYPTO"]),
-    ("Sending money (headline rate, before fees)", ["WU", "TAPTAP", "REMITLY", "WISE"]),
-    ("Card charges in pesos (one rate per day; no foreign transaction fee)", ["VISA", "MC", "AMEX"]),
-    ("Dollar apps (headline rate, before fees)", ["WANDER", "ARQ"]),
+    ("Getting cash pesos (WU: headline rate, before fees)", ["BLUE", "OFFICIAL", "WU", "CRYPTO"]),
+    ("Payment methods without an Argentine bank (cards: one rate per day, no foreign transaction fee; "
+     "Wander Wallet: before fees)", ["VISA", "AMEX", "MC", "WANDER"]),
+    ("Needs an Argentine bank account (headline rate, before fees)", ["TAPTAP", "REMITLY", "WISE", "ARQ"]),
+    ("Other reference rates", ["MEP", "CCL", "TARJETA", "MAYORISTA"]),
 ]
 NOTES = {
     "BLUE": "informal market rate for cash dollars",

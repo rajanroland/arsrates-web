@@ -74,13 +74,14 @@ const GRID_COLUMNS = SHOW_VS_BLUE
   ? "minmax(0, 1.2fr) minmax(0, 1.45fr) minmax(0, 0.8fr) minmax(0, 0.8fr)"
   : "minmax(0, 1.3fr) minmax(0, 1.5fr) minmax(0, 0.9fr)";
 
-// Rows in display order; a thin band separates the groups
+// Rows in display order, most useful to a visitor first. Each group starts
+// with a grey band carrying its label. Blue stays first: it's the benchmark
+// for the "vs Blue" column.
 const RATE_GROUPS = [
-  ["BLUE"], // the benchmark for "vs Blue", on its own
-  ["WU", "VISA", "MC", "AMEX"],
-  ["TAPTAP", "REMITLY", "WISE"],
-  ["WANDER", "ARQ", "CRYPTO"],
-  ["OFFICIAL", "MEP", "CCL", "TARJETA", "MAYORISTA"],
+  { label: "Getting cash pesos", keys: ["BLUE", "OFFICIAL", "WU", "CRYPTO"] },
+  { label: "Payment methods without an Argentine bank", keys: ["VISA", "AMEX", "MC", "WANDER"] },
+  { label: "Needs an Argentine bank account", keys: ["TAPTAP", "REMITLY", "WISE", "ARQ"] },
+  { label: "Other reference rates", keys: ["MEP", "CCL", "TARJETA", "MAYORISTA"] },
 ];
 
 // Currency selector: pesos per 1 USD (as scraped) or per 1 EUR/GBP/CAD/AUD/NZD,
@@ -769,8 +770,9 @@ const RatesContainer = () => {
   // Converted copy for another currency (until fx loads, USD stays shown)
   const converting = currency !== "USD" && fx && fx.latest[currency];
   const shown = converting ? convertRates(ratesData, currency, fx) : ratesData;
+  // In other currencies only the convertible rows are left; empty groups go
   const groups = converting
-    ? RATE_GROUPS.map((g) => g.filter((k) => CONVERTIBLE.includes(k))).filter((g) => g.length)
+    ? RATE_GROUPS.map((g) => ({ ...g, keys: g.keys.filter((k) => CONVERTIBLE.includes(k)) })).filter((g) => g.keys.length)
     : RATE_GROUPS;
 
   const fxDate = converting
@@ -837,14 +839,9 @@ const RatesContainer = () => {
       currency,
     });
 
-  const rows = groups.flatMap((group, i) => [
-    i > 0 &&
-      React.createElement("div", {
-        key: `sep-${i}`,
-        className: "rates-band",
-        style: { height: "8px" },
-      }),
-    ...group.map(rowFor),
+  const rows = groups.flatMap((group) => [
+    React.createElement("div", { key: `band-${group.label}`, className: "rates-band" }, group.label),
+    ...group.keys.map(rowFor),
   ]);
 
   return React.createElement(
