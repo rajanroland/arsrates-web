@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- arsrates/app/templates/what_to_use.html (served at /what-to-use on arsrates.com, Guides > What Should I Use?
+         in the menu). Costs are worked out in the browser from static/data/current_rates.json. -->
+
+    <head>
+        <!-- arsrates/app/templates/partials/head.html -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ARS Rates">
+<meta name="theme-color" content="#FFFFFF">
+
+<!-- Link previews (WhatsApp, social media). Each page sets its own description
+     and canonical address after this include. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ARS Rates">
+<meta property="og:title" content="ARS Rates: dollar to peso rates today in Argentina">
+<meta property="og:description" content="Blue, MEP, Western Union, Visa, Mastercard and AMEX rates side by side, updated every 15 minutes.">
+<meta property="og:image" content="https://arsrates.com/static/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ARS Rates: dollar to peso rates in Argentina, with the Sol de Mayo and Argentine flag colors">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Stylesheets -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/styles.css?v=ed07058906">
+
+<!-- PWA/Icons -->
+<link rel="manifest" href="/static/manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+<link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="/static/images/icon-192x192.png">
+        <title>What Should I Use to Pay in Argentina? Card, Western Union, Cash or Wander Wallet | ARS Rates</title>
+        <meta name="description" content="Card, Western Union, US dollar bills or Wander Wallet: what each way to pay in Argentina costs for your trip at today's rates, and how much effort each one takes.">
+        <link rel="canonical" href="https://arsrates.com/what-to-use">
+        <!-- Update dateModified when the page changes ("Last reviewed" on the page) -->
+        <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "What Should I Use to Pay in Argentina?",
+  "url": "https://arsrates.com/what-to-use",
+  "dateModified": "2026-11-25",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Organization",
+    "name": "ARS Rates",
+    "url": "https://arsrates.com/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ARS Rates",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://arsrates.com/static/images/icon-512x512.png"
+    }
+  }
+}
+        </script>
+        <style>
+            .effort { font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border); color: #374151;
+                      background: #F3F4F6; border-radius: 999px; padding: 0.1rem 0.55rem; white-space: nowrap; }
+            .cheapest { font-size: 0.75rem; font-weight: 600; color: #FFFFFF; background: #15803D;
+                        border-radius: 999px; padding: 0.1rem 0.55rem; white-space: nowrap; }
+            .option-cost { font-size: 1.25rem; font-weight: 700; color: var(--ink); }
+            .option-extra { color: #4B5563; }
+            .option-extra.zero { color: #15803D; }
+            .spend-input { max-width: 11rem; }
+        </style>
+    </head>
+
+    <body>
+        <!-- arsrates/app/templates/partials/navbar.html -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="https://arsrates.com/">
+            <svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true"><g stroke="#F6B40E" stroke-width="1.6" stroke-linecap="round"><line x1="12.0" y1="4.8" x2="12.0" y2="0.8"/><line x1="14.8" y1="5.3" x2="15.7" y2="3.1"/><line x1="17.1" y1="6.9" x2="19.9" y2="4.1"/><line x1="18.7" y1="9.2" x2="20.9" y2="8.3"/><line x1="19.2" y1="12.0" x2="23.2" y2="12.0"/><line x1="18.7" y1="14.8" x2="20.9" y2="15.7"/><line x1="17.1" y1="17.1" x2="19.9" y2="19.9"/><line x1="14.8" y1="18.7" x2="15.7" y2="20.9"/><line x1="12.0" y1="19.2" x2="12.0" y2="23.2"/><line x1="9.2" y1="18.7" x2="8.3" y2="20.9"/><line x1="6.9" y1="17.1" x2="4.1" y2="19.9"/><line x1="5.3" y1="14.8" x2="3.1" y2="15.7"/><line x1="4.8" y1="12.0" x2="0.8" y2="12.0"/><line x1="5.3" y1="9.2" x2="3.1" y2="8.3"/><line x1="6.9" y1="6.9" x2="4.1" y2="4.1"/><line x1="9.2" y1="5.3" x2="8.3" y2="3.1"/></g><circle cx="12" cy="12" r="5.6" fill="#F6B40E" stroke="#C48A05" stroke-width="0.8"/></svg>
+            ARS Rates
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="guidesMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Guides</a>
+                    <ul class="dropdown-menu" aria-labelledby="guidesMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/what-to-use">What Should I Use?</a></li>
+                        <li><a class="dropdown-item" href="https://arsrates.com/how-to">How to Use This Site</a></li>
+                        <li><a class="dropdown-item" href="https://arsrates.com/guide">Money Guide</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="chartsMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Charts</a>
+                    <ul class="dropdown-menu" aria-labelledby="chartsMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/history">Exchange rates</a></li>
+                        <li><a class="dropdown-item" href="https://arsrates.com/prices">Prices &amp; wages</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="wuMenu" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false" aria-label="Western Union">WU</a>
+                    <ul class="dropdown-menu" aria-labelledby="wuMenu">
+                        <li><a class="dropdown-item" href="https://arsrates.com/wu-guide">How to Get Pesos with WU</a></li>
+                        <li><a class="dropdown-item" href="https://api.arsrates.com/wu-locations">Find a WU Location</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://arsrates.com/exchange-houses">Exchange Houses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="alertsLink" href="https://arsrates.com/features">Email Rates</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" id="authLinks">
+                <!-- Will be populated by JavaScript -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+        <main class="container" style="max-width: 800px;">
+            <h1 class="h2 mb-1">What Should I Use?</h1>
+            <p class="small text-muted mb-3">Last reviewed: November 2026</p>
+            <p>There are four common ways to pay in Argentina without a local bank account. The easier ones cost
+                more. Type what you expect to spend and see what each one costs at today's rates, so you can decide
+                whether the savings are worth the effort.</p>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <label for="spend" class="form-label fw-semibold mb-1">How much will you spend in Argentina?</label>
+                    <div class="input-group spend-input mb-1">
+                        <span class="input-group-text">US$</span>
+                        <input type="number" class="form-control" id="spend" value="2000" min="50" max="1000000"
+                            step="50" inputmode="numeric">
+                    </div>
+                    <div class="small text-muted" id="spendPesos">Valued at the Blue buy rate (what US$100 bills get
+                        at an exchange house).</div>
+                    <div class="form-check mt-3 mb-0">
+                        <input class="form-check-input" type="checkbox" id="hasBank">
+                        <label class="form-check-label" for="hasBank">I have an Argentine bank account</label>
+                    </div>
+                </div>
+            </div>
+
+            <p class="small text-muted mb-3" id="ratesStatus">Loading today's rates…</p>
+
+            <div class="card mb-3" id="opt-card">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+                        <span class="effort">Easiest</span>
+                        <span class="cheapest d-none">Cheapest now</span>
+                    </div>
+                    <h2 class="h5">1. Card for most things, ATM for small cash</h2>
+                    <p class="mb-2"><span class="option-cost" data-cost>–</span>
+                        <span class="option-extra small ms-1" data-extra></span></p>
+                    <p class="small mb-2" data-detail>With Visa or Mastercard. With AMEX:
+                        <strong data-amex>–</strong>.</p>
+                    <p class="mb-2"><strong>What it takes:</strong> nothing beyond the card you have, plus an ATM
+                        withdrawal of about 100,000 pesos for tips and small purchases.</p>
+                    <p class="mb-0 small text-muted">Why it costs more: card rates give fewer pesos per dollar than
+                        cash, and paying by card misses the 10-15% cash discounts many places give. Not counted above: ATM fees, and any foreign transaction fee on your card
+                        (<a href="#ftf">how to check</a>).</p>
+                </div>
+            </div>
+
+            <div class="card mb-3" id="opt-wu">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+                        <span class="effort">Some effort</span>
+                        <span class="cheapest d-none">Cheapest now</span>
+                    </div>
+                    <h2 class="h5">2. Pesos from Western Union</h2>
+                    <p class="mb-2"><span class="option-cost" data-cost>–</span>
+                        <span class="option-extra small ms-1" data-extra></span></p>
+                    <p class="small mb-2" data-detail>Sending from a WU location at home (fee about 1.6%). Sending
+                        online by debit card (about 7%): <strong data-online>–</strong>.</p>
+                    <p class="mb-2"><strong>What it takes:</strong> a WU account from home, then a trip to a WU
+                        location in Argentina with your passport, sometimes with a line. See the
+                        <a href="https://arsrates.com/wu-guide">WU guide</a> and the
+                        <a href="https://api.arsrates.com/wu-locations">WU finder</a>.</p>
+                    <p class="mb-0 small text-muted"><strong>Large amounts late in the month:</strong> locations run
+                        short of pesos toward the end of the month, even WU's own branches. Pick up large amounts
+                        earlier in the month if you can, go when they open, and have a second location in mind.</p>
+                </div>
+            </div>
+
+            <div class="card mb-3" id="opt-bills">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+                        <span class="effort">Some effort</span>
+                        <span class="cheapest d-none">Cheapest now</span>
+                    </div>
+                    <h2 class="h5">3. Pesos from US dollar bills</h2>
+                    <p class="mb-2"><span class="option-cost" data-cost>–</span>
+                        <span class="option-extra small ms-1" data-extra></span></p>
+                    <p class="mb-2"><strong>What it takes:</strong> bringing US$100 bills in perfect condition (current
+                        design, clean, no marks) and changing them at a
+                        <a href="https://arsrates.com/exchange-houses">licensed exchange house</a>. Older, marked or smaller
+                        bills get a lower rate, and you carry the cash with you.</p>
+                </div>
+            </div>
+
+            <div class="card mb-3" id="opt-wander">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+                        <span class="effort">Most setup</span>
+                        <span class="cheapest d-none">Cheapest now</span>
+                    </div>
+                    <h2 class="h5">4. Wander Wallet for QR payments, plus ATM or WU for cash</h2>
+                    <p class="mb-2"><span class="option-cost" data-cost>–</span>
+                        <span class="option-extra small ms-1" data-extra></span></p>
+                    <p class="small mb-2">Includes its fees: $2 + 0.3% to load the wallet from a US bank account, and
+                        $0.20 per payment (counted as one payment per US$20).</p>
+                    <p class="mb-0"><strong>What it takes:</strong> verifying your US bank account, which can take
+                        several days to a week, so set it up before you travel. Many places take QR payments, but
+                        you'll still want some cash for tips and places that don't.</p>
+                </div>
+            </div>
+
+            <div class="card mb-3 d-none" id="opt-bank">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+                        <span class="effort">Needs an Argentine bank account</span>
+                    </div>
+                    <h2 class="h5">Transfer apps into your Argentine account</h2>
+                    <p class="small mb-2">Before each app's fees, which vary by amount and how you pay:</p>
+                    <table class="table table-sm mb-2">
+                        <tbody id="bankRows"></tbody>
+                    </table>
+                    <p class="mb-0 small text-muted">Check the fee in the app before you send. Then pay by bank
+                        transfer or QR, or take cash out of your account.</p>
+                </div>
+            </div>
+
+            <p class="small text-muted mb-4" id="otherOptions">Most other options need an Argentine bank account
+                (TapTap, Remitly, Wise, ARQ) or a crypto exchange or contact in Argentina that you trust. The
+                <a href="https://arsrates.com/">rates page</a> has all of them.</p>
+
+            <div class="alert alert-info" id="ftf">
+                <h2 class="h5 alert-heading">Does my card charge a foreign transaction fee?</h2>
+                <p class="mb-2">The costs above assume it doesn't. To check:</p>
+                <ol class="mb-2">
+                    <li>Pay for something in Argentina by card and note the amount in pesos. Your statement may not
+                        show it.</li>
+                    <li>When the charge posts, divide the pesos by the dollars you were charged.</li>
+                    <li>Compare that with the Visa, Mastercard or AMEX rate for the day it was processed, usually the
+                        day of the purchase or 1-2 days later. Today's is on the <a href="https://arsrates.com/">rates
+                        page</a>, earlier days on the <a href="https://arsrates.com/history?rates=VISA,MC,AMEX">charts</a>.</li>
+                </ol>
+                <p class="mb-0">About the same: no fee. About 3% fewer pesos: a foreign transaction fee. About 1%
+                    fewer: likely a markup by your card issuer.</p>
+            </div>
+
+            <p class="small text-muted">For information only. Rates move during the day; the costs use the latest
+                rates on the <a href="https://arsrates.com/">rates page</a> and the fees we've seen, which can change. More in
+                the <a href="https://arsrates.com/guide">Money Guide</a>.</p>
+
+            <!-- arsrates/app/templates/partials/feedback.html -->
+<div class="modal fade" id="feedbackModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Provide Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="feedbackForm" action="https://api.arsrates.com/api/feedback" method="POST">
+                    <div class="mb-3">
+                        <label for="feedbackEmail" class="form-label">Email (optional)</label>
+                        <input type="email" class="form-control" id="feedbackEmail" placeholder="your@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="feedbackText" class="form-label">Your Feedback</label>
+                        <textarea class="form-control" id="feedbackText" rows="4" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary me-3" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="submitFeedback()">Submit
+                    Feedback</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function submitFeedback() {
+        const email = document.getElementById('feedbackEmail').value;
+        const feedbackText = document.getElementById('feedbackText').value;
+
+        if (!feedbackText.trim()) {
+            alert('Please enter your feedback');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${window.APP_CONFIG.API_URL}/api/feedback`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email || null,
+                    feedback_text: feedbackText
+                })
+            })
+            if (response.ok) {
+                alert('Thank you for your feedback!');
+                document.getElementById('feedbackForm').reset();
+                bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
+            } else {
+                throw new Error('Failed to submit feedback');
+            }
+        } catch (error) {
+            alert('Error submitting feedback. Please try again.');
+            console.error('Error:', error);
+        }
+    }
+</script>
+        </main>
+        <!-- arsrates/app/templates/partials/footer.html -->
+<footer class="site-footer text-center my-4 px-3">
+    <div>Rates are for information only and may differ from what providers charge. Not financial advice.</div>
+    <div class="mt-1">© 2026 ARS Rates · <a href="https://arsrates.com/methodology">How we get these rates</a> · <a href="https://arsrates.com/history">Rate history</a> · <a href="https://www.youtube.com/@ARSRates" target="_blank" rel="noopener">Videos</a> · <a href="https://arsrates.com/privacy">Privacy</a></div>
+</footer>
+
+        <!-- arsrates/app/templates/partials/scripts.html -->
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- App Configuration and Authentication -->
+<script src="/static/js/config.js?v=a3ef942479"></script>
+<script src="/static/js/auth.js?v=966bb9e258"></script>
+
+<!-- Page view counting (after config.js, which sets APP_CONFIG.API_URL) -->
+<script src="/static/js/pageview.js?v=bf0c132e8b"></script>
+
+<!-- Add any other global utility functions after auth.js -->
+<script>
+// Add any global utility functions that aren't auth-related here
+</script>
+        <script>
+            (function () {
+                // Fees as described on the page; update both together
+                const WU_IN_PERSON_FEE = 0.016;  // about US$8 on $500, US$23 on $1,500
+                const WU_ONLINE_FEE = 0.07;      // about $35 on $500 by debit card
+                const WANDER_LOAD_FIXED = 2, WANDER_LOAD_PCT = 0.003;
+                const WANDER_PER_PAYMENT = 0.20, WANDER_PAYMENT_SIZE = 20;
+                const BANK_APPS = [["TAPTAP", "TapTap Send"], ["REMITLY", "Remitly"], ["WISE", "Wise"], ["ARQ", "ARQ"]];
+
+                const usd = (n) => "US$" + Math.round(n).toLocaleString("en-US");
+                const $ = (id) => document.getElementById(id);
+                let rates = null;
+
+                const rateOf = (key, field) => {
+                    const r = rates && rates[key];
+                    const v = r && r[field || "rate"];
+                    return typeof v === "number" && v > 0 ? v : null;
+                };
+
+                function render() {
+                    if (!rates) return;
+                    const blue = rateOf("BLUE", "buy");
+                    const spend = Math.max(0, Number($("spend").value) || 0);
+                    if (!blue || !spend) return;
+                    const pesos = spend * blue;
+                    $("spendPesos").textContent = `About ${Math.round(pesos).toLocaleString("en-US")} pesos at the ` +
+                        `Blue buy rate (${blue.toFixed(0)}), what US$100 bills get at an exchange house.`;
+
+                    // Dollars each way needs to end up with the same pesos
+                    const visa = rateOf("VISA"), amex = rateOf("AMEX"), wu = rateOf("WU"), wander = rateOf("WANDER");
+                    const wanderCost = (r) => {
+                        const loaded = pesos / r;
+                        return loaded * (1 + WANDER_LOAD_PCT) + WANDER_LOAD_FIXED + WANDER_PER_PAYMENT * Math.ceil(loaded / WANDER_PAYMENT_SIZE);
+                    };
+                    const costs = {
+                        "opt-card": visa && pesos / visa,
+                        "opt-wu": wu && (pesos / wu) * (1 + WU_IN_PERSON_FEE),
+                        "opt-bills": pesos / blue,
+                        "opt-wander": wander && wanderCost(wander),
+                    };
+                    const known = Object.values(costs).filter(Boolean);
+                    const best = Math.min(...known);
+                    for (const [id, cost] of Object.entries(costs)) {
+                        const card = $(id);
+                        const extra = card.querySelector("[data-extra]");
+                        card.querySelector("[data-cost]").textContent = cost ? usd(cost) : "rate not available";
+                        const isBest = cost && cost - best < 0.5;
+                        card.querySelector(".cheapest").classList.toggle("d-none", !isBest);
+                        extra.classList.toggle("zero", !!isBest);
+                        extra.textContent = !cost ? "" : isBest ? "the least of the four"
+                            : `${usd(cost - best)} more than the cheapest (+${((cost / best - 1) * 100).toFixed(1)}%)`;
+                    }
+                    // AMEX is usually 4-5% better than Visa, but not always (Nov 2026): say which is cheaper today
+                    const amexEl = $("opt-card").querySelector("[data-amex]");
+                    amexEl.textContent = !amex ? "not available" : usd(pesos / amex) +
+                        (visa ? (amex > visa ? " (cheaper today)" : " (not cheaper today)") : "");
+                    $("opt-wu").querySelector("[data-online]").textContent = wu ? usd((pesos / wu) * (1 + WU_ONLINE_FEE)) : "not available";
+
+                    const bankOn = $("hasBank").checked;
+                    $("opt-bank").classList.toggle("d-none", !bankOn);
+                    $("otherOptions").classList.toggle("d-none", bankOn);
+                    $("bankRows").replaceChildren(...BANK_APPS.map(([key, label]) => {
+                        const r = rateOf(key);
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = "<td></td><td class='text-end'></td>";
+                        tr.children[0].textContent = label;
+                        tr.children[1].textContent = r ? `${usd(pesos / r)} + fee (rate ${r.toFixed(0)})` : "rate not available";
+                        return tr;
+                    }));
+                }
+
+                $("spend").addEventListener("input", render);
+                $("hasBank").addEventListener("change", render);
+
+                fetch("/static/data/current_rates.json", { cache: "no-store" })
+                    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+                    .then((data) => {
+                        rates = data.rates;
+                        const when = new Date(data.timestamp).toLocaleString("en-US", {
+                            month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
+                            timeZone: "America/Argentina/Buenos_Aires",
+                        });
+                        $("ratesStatus").textContent = `Rates as of ${when} Argentina time.`;
+                        render();
+                    })
+                    .catch(() => {
+                        $("ratesStatus").textContent = "Couldn't load today's rates. Try again in a minute, or see the rates page.";
+                    });
+            })();
+        </script>
+    </body>
+
+</html>
