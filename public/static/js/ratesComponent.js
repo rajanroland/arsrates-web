@@ -495,6 +495,19 @@ const RateDisplay = ({ rateType, rateInfo, label, feedTimestamp, blueBuy, curren
 // "● Updated 4 min ago · Oct 6, 8:00 AM ARG". The dot is green while the data
 // is fresh (runs are 15 min apart by day, hourly at night) and grey once stale.
 const STALE_DOT_AFTER_MIN = 90;
+// Rates run every 15 min from 07:00 to 20:59 ARG and hourly otherwise. Rates
+// older than two runs' worth (plus a few minutes for the Pages deploy) mean the
+// static file on arsrates.com missed an update: ask the API instead.
+const API_FALLBACK_EVERY_MS = 5 * 60 * 1000;
+function ratesLookStale(shownMs) {
+  if (!shownMs) return true;  // nothing loaded (the static file failed)
+  const argHour = Number(new Date(shownMs).toLocaleString("en-US", {
+    hour: "numeric", hourCycle: "h23", timeZone: "America/Argentina/Buenos_Aires",
+  }));
+  const runEveryMin = argHour >= 7 && argHour <= 20 ? 15 : 60;
+  return Date.now() - shownMs > (2 * runEveryMin + 10) * 60 * 1000;
+}
+
 function paintFreshness() {
   const el = document.getElementById("last-updated");
   const timestamp = window.__ratesTimestamp;
@@ -618,7 +631,6 @@ const frontendUrl = (path) =>
 const RatesContainer = () => {
   const [showCompare, setShowCompare] = useState(() => window.location.hash === "#compare");
   const [ratesData, setRatesData] = useState(null);
-  const [lastKnownTimestamp, setLastKnownTimestamp] = useState(null);
   const [currency, setCurrency] = useState(readCurrency);
   const [fx, setFx] = useState(null);
   const [fxError, setFxError] = useState(false);
@@ -639,67 +651,54 @@ const RatesContainer = () => {
   }, [currency]);
 
   useEffect(() => {
+    // On arsrates.com the rates come from the static file that each run publishes
+    // to GitHub Pages. If a Pages deploy fails (GitHub outage), that file goes
+    // stale, so we also ask the API, at most every API_FALLBACK_EVERY_MS, and
+    // show whichever copy is newer. Elsewhere (api.arsrates.com, dev) it's the API.
+    const onStaticSite = window.location.hostname === 'arsrates.com';
+    const apiUrl = `${window.APP_CONFIG?.API_URL || 'https://api.arsrates.com'}/api/rates`;
+    let shownMs = 0;      // timestamp of the rates on screen
+    let lastApiTry = 0;
+
+    const getJson = async (url) => {
+      const response = await fetch(url, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Failed to fetch rates from ${url}: ${response.status}`);
+      return response.json();
+    };
+
+    const show = (data) => {
+      const ms = Date.parse(data?.timestamp);
+      if (!ms || ms <= shownMs) return;  // never replace newer rates with older ones
+      shownMs = ms;
+      setRatesData(data);
+      window.__ratesTimestamp = data.timestamp;
+      paintFreshness();
+      // Keep "N min ago" current between updates
+      if (!window.__freshnessTimer) {
+        window.__freshnessTimer = setInterval(paintFreshness, 60 * 1000);
+      }
+    };
+
     const fetchRates = async () => {
+      if (!onStaticSite) {
+        try { show(await getJson(apiUrl)); } catch (error) { console.error("Error loading rates:", error); }
+        return;
+      }
       try {
-        // First, determine which URL to use based on hostname
-        let url;
-        if (window.location.hostname === 'arsrates.com') {
-          // Special case for GitHub Pages
-          url = '/static/data/current_rates.json';
-          console.log('GitHub Pages detected, using static file path:', url);
-        } else {
-          // For API server (both development and production)
-          const apiUrl = window.APP_CONFIG?.API_URL || 'https://api.arsrates.com';
-          url = `${apiUrl}/api/rates`;
-          console.log('API server detected, using API endpoint:', url);
-        }
-
-        console.log(`Fetching rates from: ${url}`);
-
-        const response = await fetch(url, {
-          headers: {
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'
-          }
-        });
-
-        console.log("Fetch response status:", response.status);
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch rates: ${response.status}`);
-        }
-        console.log("Parsing response...");
-        const data = await response.json();
-        console.log("Response parsed successfully, contains data:", !!data);
-
-        // In the useEffect of RatesContainer:
-        const updateLastUpdated = (timestamp) => {
-          window.__ratesTimestamp = timestamp;
-          paintFreshness();
-          // Keep "N min ago" current between updates
-          if (!window.__freshnessTimer) {
-            window.__freshnessTimer = setInterval(paintFreshness, 60 * 1000);
-          }
-        };
-
-        // Update the fetch rates section to use this:
-        if (data.timestamp !== lastKnownTimestamp) {
-          setRatesData(data);
-          setLastKnownTimestamp(data.timestamp);
-          updateLastUpdated(data.timestamp);
-        }
-
-
+        show(await getJson('/static/data/current_rates.json'));
       } catch (error) {
         console.error("Error loading rates:", error);
+      }
+      if (ratesLookStale(shownMs) && Date.now() - lastApiTry >= API_FALLBACK_EVERY_MS) {
+        lastApiTry = Date.now();
+        try { show(await getJson(apiUrl)); } catch (error) { console.error("API fallback failed:", error); }
       }
     };
 
     fetchRates();
     const interval = setInterval(fetchRates, 15000); // Check every 15 seconds
     return () => clearInterval(interval);
-  }, [lastKnownTimestamp]);
+  }, []);
 
   // The rates written into the page at deploy (rates_html.py) stay until the live
   // table is ready, and stay if it can't load
