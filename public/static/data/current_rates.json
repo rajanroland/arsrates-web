@@ -1,1 +1,106 @@
-{"rates": {"MC": {"rate": 1584.109982, "projected": true, "change_24h": -0.64}, "WU": {"rate": 1764, "change_24h": 0.22}, "ARQ": {"rate": 1761.28, "as_of": "2026-11-25T15:30:13.241062-03:00", "change_24h": -1.19}, "CCL": {"buy": 1757.4, "mid": 1757.85, "sell": 1758.3, "change_24h": -1.58}, "MEP": {"buy": 1662.2, "mid": 1663.25, "sell": 1664.3, "change_24h": -1.24}, "AMEX": {"rate": 1575.96, "projected": true, "change_24h": 0.83}, "BLUE": {"buy": 1690, "mid": 1700.0, "sell": 1710, "change_24h": 0.59}, "VISA": {"rate": 1584.109982, "change_24h": -0.64}, "WISE": {"rate": 1603.5, "as_of": "2026-11-25T15:30:13.241062-03:00", "change_24h": 0.69}, "CRYPTO": {"buy": 1750.85, "mid": 1755.25, "sell": 1759.65, "change_24h": -1.4}, "TAPTAP": {"rate": 1740.0, "as_of": "2026-11-25T15:30:13.241062-03:00", "change_24h": 2.35}, "WANDER": {"rate": 1719.67, "as_of": "2026-11-25T15:30:13.241062-03:00", "change_24h": -1.79}, "REMITLY": {"rate": 1793.64, "as_of": "2026-11-25T15:30:13.241062-03:00", "change_24h": 2.47}, "TARJETA": {"rate": 2119, "change_24h": 0.93}, "OFFICIAL": {"buy": 1580, "mid": 1605.0, "sell": 1630, "change_24h": 0.93}, "MAYORISTA": {"rate": 1592.02, "as_of": "2026-11-25T15:30:13.241062-03:00", "change_24h": 1.02}}, "labels": {"MC": "Mastercard", "WU": "Western Union", "ARQ": "ARQ", "CCL": "D\u00f3lar CCL", "MEP": "D\u00f3lar MEP", "AMEX": "AMEX", "BLUE": "D\u00f3lar Blue", "VISA": "Visa", "WISE": "Wise", "CRYPTO": "D\u00f3lar Cripto", "TAPTAP": "TapTap Send", "WANDER": "Wander Wallet", "REMITLY": "Remitly", "TARJETA": "D\u00f3lar Tarjeta", "OFFICIAL": "D\u00f3lar Oficial", "MAYORISTA": "D\u00f3lar Mayorista"}, "timestamp": "2026-11-25T15:30:13.241062-03:00", "last_updated": "2026-11-25T18:30:15.392048"}
+{
+    "rates": {
+        "MC": {
+            "rate": 1584.109982,
+            "projected": true,
+            "change_24h": -0.64
+        },
+        "WU": {
+            "rate": 1764,
+            "change_24h": 0.22
+        },
+        "ARQ": {
+            "rate": 1761.28,
+            "as_of": "2026-11-25T15:30:13.241062-03:00",
+            "change_24h": -1.19
+        },
+        "CCL": {
+            "buy": 1757.4,
+            "mid": 1757.85,
+            "sell": 1758.3,
+            "change_24h": -1.58
+        },
+        "MEP": {
+            "buy": 1662.2,
+            "mid": 1663.25,
+            "sell": 1664.3,
+            "change_24h": -1.24
+        },
+        "AMEX": {
+            "rate": 1575.96,
+            "projected": true,
+            "change_24h": 0.83
+        },
+        "BLUE": {
+            "buy": 1690,
+            "mid": 1700.0,
+            "sell": 1710,
+            "change_24h": 0.59
+        },
+        "VISA": {
+            "rate": 1584.109982,
+            "change_24h": -0.64
+        },
+        "WISE": {
+            "rate": 1603.5,
+            "as_of": "2026-11-25T15:30:13.241062-03:00",
+            "change_24h": 0.69
+        },
+        "CRYPTO": {
+            "buy": 1750.85,
+            "mid": 1755.25,
+            "sell": 1759.65,
+            "change_24h": -1.4
+        },
+        "TAPTAP": {
+            "rate": 1740.0,
+            "as_of": "2026-11-25T15:30:13.241062-03:00",
+            "change_24h": 2.35
+        },
+        "WANDER": {
+            "rate": 1719.67,
+            "as_of": "2026-11-25T15:30:13.241062-03:00",
+            "change_24h": -1.79
+        },
+        "REMITLY": {
+            "rate": 1793.64,
+            "as_of": "2026-11-25T15:30:13.241062-03:00",
+            "change_24h": 2.47
+        },
+        "TARJETA": {
+            "rate": 2119,
+            "change_24h": 0.93
+        },
+        "OFFICIAL": {
+            "buy": 1580,
+            "mid": 1605.0,
+            "sell": 1630,
+            "change_24h": 0.93
+        },
+        "MAYORISTA": {
+            "rate": 1592.02,
+            "as_of": "2026-11-25T15:30:13.241062-03:00",
+            "change_24h": 1.02
+        }
+    },
+    "labels": {
+        "MC": "Mastercard",
+        "WU": "Western Union",
+        "ARQ": "ARQ",
+        "CCL": "D\u00f3lar CCL",
+        "MEP": "D\u00f3lar MEP",
+        "AMEX": "AMEX",
+        "BLUE": "D\u00f3lar Blue",
+        "VISA": "Visa",
+        "WISE": "Wise",
+        "CRYPTO": "D\u00f3lar Cripto",
+        "TAPTAP": "TapTap Send",
+        "WANDER": "Wander Wallet",
+        "REMITLY": "Remitly",
+        "TARJETA": "D\u00f3lar Tarjeta",
+        "OFFICIAL": "D\u00f3lar Oficial",
+        "MAYORISTA": "D\u00f3lar Mayorista"
+    },
+    "timestamp": "2026-11-25T15:30:13.241062-03:00",
+    "last_updated": "2026-11-25T15:30:13.241062-03:00"
+}
